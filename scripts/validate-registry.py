@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """OMEGA Registry Validator — checks YAML consistency and cross-references.
 
-Usage: python math/scripts/validate-registry.py
+Usage: python scripts/validate-registry.py
 """
 
 import sys
