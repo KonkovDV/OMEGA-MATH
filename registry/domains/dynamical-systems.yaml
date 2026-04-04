@@ -1,0 +1,116 @@
+# Dynamical Systems — Open Problems Registry
+# Source: English Wikipedia "List of unsolved problems in mathematics"
+
+problems:
+
+  - id: hilbert-16-limit-cycles
+    name: Hilbert's 16th problem (limit cycles)
+    subdomain: dynamical-systems
+    status: open
+    statement: >
+      What is the upper bound H(n) on the number of limit cycles of
+      polynomial vector fields of degree n in the plane?
+    year_posed: 1900
+    posed_by: [David Hilbert]
+    collections: [hilbert-problems]
+    tags: [limit-cycles, polynomial-ode]
+    difficulty:
+      consensus: extremely-hard
+
+  - id: weinstein-conjecture
+    name: Weinstein conjecture
+    subdomain: symplectic-dynamics
+    status: open
+    statement: >
+      Every Reeb vector field on a closed contact manifold has at least one
+      periodic orbit.
+    posed_by: [Alan Weinstein]
+    tags: [contact-geometry, periodic-orbits]
+    partial_results:
+      - year: 2009
+        authors: [Clifford Taubes]
+        description: Proved in dimension 3
+
+  - id: furstenberg-x2-x3
+    name: Furstenberg ×2 ×3 conjecture
+    subdomain: ergodic-theory
+    status: open
+    statement: >
+      The only ×2 and ×3 jointly ergodic measure on the circle is the
+      Lebesgue measure (and the delta on 0).
+    posed_by: [Hillel Furstenberg]
+    tags: [ergodic-theory, multiplicative-action]
+
+  - id: arnold-diffusion
+    name: Arnold diffusion
+    subdomain: hamiltonian-dynamics
+    status: open
+    statement: >
+      Does Arnold diffusion occur generically in Hamiltonian systems with
+      more than two degrees of freedom?
+    tags: [hamiltonian, instability]
+
+  - id: lyapunov-exponents-standard-map
+    name: Positive Lyapunov exponent for the standard map
+    subdomain: dynamical-systems
+    status: open
+    statement: >
+      Does the standard map with large parameter have a positive Lyapunov
+      exponent almost everywhere?
+    tags: [chaos, standard-map, lyapunov]
+    ai_triage:
+      tier: T2-experimental
+      amenability_score: 6
+      approaches: [numerical-verification, monte-carlo]
+
+  - id: three-body-problem-general
+    name: General solutions of the three-body problem
+    subdomain: celestial-mechanics
+    status: open
+    statement: >
+      Find general solutions (or prove impossibility) for the gravitational
+      three-body problem.
+    tags: [three-body, celestial-mechanics, gravity]
+    ai_triage:
+      tier: T2-experimental
+      amenability_score: 5
+      approaches: [numerical-verification, pattern-recognition, reinforcement-learning]
+      notes: >
+        Numerical integration well-understood. Finding new periodic solutions
+        amenable to AI. General analytical solution likely impossible.
+
+  - id: collatz-conjecture
+    name: Collatz conjecture
+    subdomain: iterated-functions
+    status: open
+    statement: >
+      The Collatz function (n/2 if even, 3n+1 if odd) eventually reaches 1
+      for all positive integers.
+    aliases: [3n+1 problem, Ulam conjecture, Syracuse problem]
+    year_posed: 1937
+    posed_by: [Lothar Collatz]
+    difficulty:
+      consensus: extremely-hard
+      decades_open: 9
+    tags: [iterated-functions, dynamics, number-theory]
+    ai_triage:
+      tier: T2-experimental
+      amenability_score: 5
+      approaches: [numerical-verification, pattern-recognition, heuristic-search]
+      compute_profile: heavy
+      notes: >
+        Verified to 2^68. Tao (2019) proved "almost all" orbits attain almost-bounded values.
+        Deep connection to dynamics and number theory. Cross-listed from combinatorics.
+    partial_results:
+      - year: 2019
+        authors: [Terence Tao]
+        description: Almost all Collatz sequences attain almost bounded values
+    related_problems: [three-body-problem-general]
+
+  - id: fatou-conjecture
+    name: Fatou conjecture on quadratic Julia sets
+    subdomain: complex-dynamics
+    status: open
+    statement: >
+      Hyperbolic rational maps are dense among rational maps of degree d.
+    tags: [julia-sets, mandelbrot, hyperbolicity]

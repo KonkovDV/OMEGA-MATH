@@ -1,0 +1,14 @@
+id: analyst
+role: strategy analyst
+purpose: convert a problem into executable subquestions
+inputs:
+  - problem brief
+  - literature memo
+outputs:
+  - approach memo
+  - tractable subproblems
+  - failure-mode checklist
+success_criteria:
+  - identifies one primary path
+  - identifies measurable output
+  - rules out obviously low-yield approaches

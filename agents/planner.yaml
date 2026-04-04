@@ -1,0 +1,16 @@
+id: planner
+role: planner
+purpose: select problems, define phases, enforce stop rules
+inputs:
+  - registry entry
+  - triage score
+  - compute budget
+  - prior run summaries
+outputs:
+  - research brief
+  - task assignments
+  - success criteria
+success_criteria:
+  - brief has clear scope
+  - task is aligned with tier
+  - downstream artifacts are specified

@@ -1,0 +1,68 @@
+# OMEGA Registry Index
+# Auto-generated: 2026-04-04
+# Regenerate with: scripts/generate-index.py (planned)
+
+summary:
+  total_problems: 239
+  with_ai_triage: 60
+  triage_coverage_pct: 25.1
+  triage_matrix_entries: 57
+  domain_files: 13
+  collection_files: 1
+  last_updated: 2026-04-04
+
+tier_distribution:
+  T1-computational: 22
+  T2-experimental: 19
+  T3-pattern: 7
+  T4-structural: 4
+  T5-foundational: 8
+  untriaged: 179
+
+domain_counts:
+  number-theory: 125
+  geometry: 33
+  graph-theory: 16
+  algebra: 14
+  topology: 12
+  analysis: 10
+  combinatorics: 8
+  dynamical-systems: 8
+  game-theory: 4
+  set-theory: 3
+  computer-science: 2
+  probability-theory: 2
+  model-theory: 2
+
+collections:
+  millennium-prize:
+    count: 7
+    file: collections/millennium-prize.yaml
+  hilbert-problems:
+    count: 23
+    open: 5
+    file: collections/hilbert-problems.yaml
+  landau-problems:
+    count: 4
+    open: 4
+    file: collections/landau-problems.yaml
+  smale-problems:
+    count: 18
+    open: 12
+    file: collections/smale-problems.yaml
+  # Planned:
+  # erdos-problems: ~50 (highest activity)
+
+status_notes:
+  - id: telescope-conjecture
+    domain: topology
+    status: resolved
+    note: Disproved by Burklund, Hahn, Levy, Schlank (2023)
+  - id: erdos-faber-lovasz
+    domain: graph-theory
+    status: partially-resolved
+    note: Proved for large k by Kang, Kelly, Kühn, Methuku, Osthus (2023)
+  - id: moving-sofa
+    domain: geometry
+    status: claimed-resolved
+    note: Baek (2024) claims Gerver's sofa optimal; pending peer review

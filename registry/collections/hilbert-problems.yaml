@@ -1,0 +1,156 @@
+# Hilbert's Problems — Quick Reference
+# 23 problems presented at the 1900 ICM. Status as of April 2026.
+# See: https://en.wikipedia.org/wiki/Hilbert%27s_problems
+
+problems:
+
+  - id: hilbert-1
+    name: Continuum hypothesis
+    status: resolved-independent
+    domain: set-theory
+    note: Independent of ZFC (Gödel 1940, Cohen 1963)
+    registry_id: continuum-hypothesis
+
+  - id: hilbert-2
+    name: Consistency of arithmetic
+    status: resolved-negative
+    domain: algebra
+    note: Gödel's incompleteness theorems (1931) show this cannot be proved within arithmetic itself
+
+  - id: hilbert-3
+    name: Hilbert's third problem (Dehn invariant)
+    status: resolved
+    domain: geometry
+    note: Resolved by Max Dehn (1900)
+
+  - id: hilbert-4
+    name: Hilbert's fourth problem (metrics with straight geodesics)
+    status: partially-resolved
+    domain: geometry
+    note: Too vague for a definitive answer; partial results by Busemann, Pogorelov
+
+  - id: hilbert-5
+    name: Lie groups without differentiability
+    status: resolved
+    domain: algebra
+    note: Resolved (Gleason, Montgomery, Zippin, 1952)
+
+  - id: hilbert-6
+    name: Axiomatization of physics
+    status: open
+    domain: mathematical-physics
+    note: Too broad; ongoing program (AQFT, TQFT)
+
+  - id: hilbert-7
+    name: Gelfond–Schneider theorem (irrationality/transcendence)
+    status: resolved
+    domain: number-theory
+    note: Resolved by Gelfond (1934) and Schneider (1935)
+
+  - id: hilbert-8
+    name: Riemann hypothesis & Goldbach
+    status: open
+    domain: number-theory
+    note: Both sub-problems remain open
+    registry_id: riemann-hypothesis
+
+  - id: hilbert-9
+    name: Reciprocity laws in algebraic number fields
+    status: partially-resolved
+    domain: number-theory
+    note: Artin reciprocity (1927) for abelian case; non-abelian Langlands program ongoing
+
+  - id: hilbert-10
+    name: Solvability of Diophantine equations
+    status: resolved-negative
+    domain: number-theory
+    note: Unsolvable in general (Matiyasevich 1970, building on Davis, Putnam, Robinson)
+
+  - id: hilbert-11
+    name: Quadratic forms with algebraic coefficients
+    status: partially-resolved
+    domain: number-theory
+    note: Largely resolved by Hasse–Minkowski theorem; generalizations open
+
+  - id: hilbert-12
+    name: Extension of Kronecker–Weber (explicit class field theory)
+    status: open
+    domain: number-theory
+    note: Known for abelian extensions of Q and imaginary quadratic fields; general case open
+
+  - id: hilbert-13
+    name: Solution of 7th degree equations by functions of 2 variables
+    status: partially-resolved
+    domain: algebra
+    note: Kolmogorov–Arnold representation theorem (1957) resolved a version; original interpretation debated
+
+  - id: hilbert-14
+    name: Finiteness of invariant rings
+    status: resolved-negative
+    domain: algebra
+    note: Counterexample by Nagata (1959)
+
+  - id: hilbert-15
+    name: Rigorous foundation for Schubert calculus
+    status: partially-resolved
+    domain: geometry
+    note: Modern intersection theory resolves much; some aspects open
+
+  - id: hilbert-16
+    name: Topology of algebraic curves and limit cycles
+    status: open
+    domain: dynamical-systems
+    note: Both parts remain open
+    registry_id: hilbert-16-limit-cycles
+
+  - id: hilbert-17
+    name: Expression of definite forms as sums of squares
+    status: resolved
+    domain: algebra
+    note: Resolved by Artin (1927)
+
+  - id: hilbert-18
+    name: Crystallographic groups, sphere packing, densest packing
+    status: partially-resolved
+    domain: geometry
+    note: Bieberbach (1910) for groups; Hales (2005/2017) for 3D packing; higher dims open
+
+  - id: hilbert-19
+    name: Regularity of solutions of variational problems
+    status: resolved
+    domain: analysis
+    note: Resolved (De Giorgi 1957, Nash 1958)
+
+  - id: hilbert-20
+    name: Existence of solutions for boundary value problems
+    status: resolved
+    domain: analysis
+    note: Largely resolved; modern PDE theory
+
+  - id: hilbert-21
+    name: Monodromy and linear ODE (Hilbert's 21st)
+    status: resolved-negative
+    domain: analysis
+    note: Counterexample by Bolibruch (1989)
+
+  - id: hilbert-22
+    name: Uniformization of analytic relations
+    status: resolved
+    domain: analysis
+    note: Resolved by Koebe and Poincaré (1907)
+
+  - id: hilbert-23
+    name: Development of the calculus of variations
+    status: open
+    domain: analysis
+    note: Too broad; ongoing active area
+
+status_summary:
+  total: 23
+  resolved: 10
+  resolved_negative: 3
+  partially_resolved: 5
+  open: 5
+  note: >
+    Classification depends on interpretation; some problems are too broad
+    for a clean "resolved/open" status.

@@ -1,0 +1,27 @@
+# Probability Theory — Open Problems Registry
+# Source: English Wikipedia "List of unsolved problems in mathematics"
+
+problems:
+
+  - id: self-avoiding-walk-connective
+    name: Self-avoiding walk connective constant
+    subdomain: probability
+    status: open
+    statement: >
+      Find the exact connective constant μ for self-avoiding walks on the
+      hexagonal lattice (proven μ = √(2+√2)), and determine μ for the
+      square and other lattices.
+    tags: [random-walk, lattice, connective-constant]
+    ai_triage:
+      tier: T2-experimental
+      amenability_score: 6
+      approaches: [numerical-verification, monte-carlo]
+
+  - id: gaussian-correlation
+    name: Gaussian correlation inequality (extensions)
+    subdomain: probability
+    status: open
+    statement: >
+      Extensions and generalizations of the Gaussian correlation inequality
+      (original proved by Royen 2014).
+    tags: [gaussian, correlation, convex-sets]

@@ -1,0 +1,197 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://omega.microphoenix.dev/schema/problem.json",
+  "title": "OMEGA Problem Registry Entry",
+  "description": "Schema for describing an open mathematical problem in the OMEGA registry",
+  "type": "object",
+  "required": ["id", "name", "domain", "status", "statement"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$",
+      "description": "URL-safe unique identifier, e.g. 'riemann-hypothesis'"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable name of the problem/conjecture"
+    },
+    "aliases": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Alternative names or common abbreviations"
+    },
+    "domain": {
+      "type": "string",
+      "enum": [
+        "algebra",
+        "analysis",
+        "combinatorics",
+        "dynamical-systems",
+        "game-theory",
+        "geometry",
+        "graph-theory",
+        "model-theory",
+        "number-theory",
+        "probability-theory",
+        "set-theory",
+        "topology",
+        "mathematical-physics",
+        "computer-science",
+        "information-theory"
+      ]
+    },
+    "subdomain": {
+      "type": "string",
+      "description": "More specific area, e.g. 'algebraic-geometry', 'prime-numbers', 'group-theory'"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["open", "partially-resolved", "claimed-resolved", "resolved"],
+      "description": "Current status of the problem"
+    },
+    "statement": {
+      "type": "string",
+      "description": "Concise mathematical statement of the problem"
+    },
+    "formal_statement": {
+      "type": "string",
+      "description": "Formal/symbolic statement if available (LaTeX)"
+    },
+    "year_posed": {
+      "type": "integer",
+      "description": "Year the problem was first posed"
+    },
+    "posed_by": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Mathematician(s) who posed the problem"
+    },
+    "collections": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "millennium-prize",
+          "hilbert-problems",
+          "landau-problems",
+          "smale-problems",
+          "erdos-problems",
+          "thurston-questions",
+          "taniyama-problems",
+          "simon-problems",
+          "darpa-challenges",
+          "kourovka-notebook",
+          "scottish-book",
+          "sverdlovsk-notebook",
+          "dniester-notebook",
+          "erlagol-notebook"
+        ]
+      },
+      "description": "Named problem collections this belongs to"
+    },
+    "prize": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "amount_usd": { "type": "number" },
+        "organization": { "type": "string" }
+      },
+      "description": "Prize associated with the problem, if any"
+    },
+    "difficulty": {
+      "type": "object",
+      "properties": {
+        "consensus": {
+          "type": "string",
+          "enum": ["elementary", "hard", "very-hard", "extremely-hard", "possibly-undecidable"],
+          "description": "Community consensus on difficulty"
+        },
+        "decades_open": {
+          "type": "number",
+          "description": "Number of decades the problem has been open"
+        }
+      }
+    },
+    "ai_triage": {
+      "type": "object",
+      "description": "AI-accessibility assessment for OMEGA",
+      "properties": {
+        "tier": {
+          "type": "string",
+          "enum": ["T1-computational", "T2-experimental", "T3-pattern", "T4-structural", "T5-foundational"],
+          "description": "AI approach tier. T1: direct computation/search. T2: numerical experiments can provide evidence. T3: pattern recognition may yield insights. T4: structural/algebraic reasoning needed. T5: deep foundational/metamathematical."
+        },
+        "amenability_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10,
+          "description": "0-10 score of how amenable the problem is to current AI approaches"
+        },
+        "approaches": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "brute-force-search",
+              "heuristic-search",
+              "numerical-verification",
+              "counterexample-search",
+              "pattern-recognition",
+              "conjecture-refinement",
+              "proof-assistant",
+              "symbolic-computation",
+              "sat-solver",
+              "neural-theorem-proving",
+              "reinforcement-learning",
+              "genetic-programming",
+              "monte-carlo",
+              "analogy-transfer"
+            ]
+          },
+          "description": "Potentially applicable AI/computational approaches"
+        },
+        "compute_profile": {
+          "type": "string",
+          "enum": ["trivial", "moderate", "heavy", "massive", "infeasible"],
+          "description": "Estimated compute requirements"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Free text notes on AI approach strategy"
+        }
+      }
+    },
+    "related_problems": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "IDs of related problems in the registry"
+    },
+    "partial_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "year": { "type": "integer" },
+          "authors": { "type": "array", "items": { "type": "string" } },
+          "description": { "type": "string" },
+          "reference": { "type": "string" }
+        }
+      },
+      "description": "Notable partial results or progress"
+    },
+    "references": {
+      "type": "object",
+      "properties": {
+        "wikipedia": { "type": "string", "format": "uri" },
+        "mathworld": { "type": "string", "format": "uri" },
+        "arxiv": { "type": "array", "items": { "type": "string" } },
+        "survey_papers": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Free-form tags for cross-cutting concerns"
+    }
+  }
+}

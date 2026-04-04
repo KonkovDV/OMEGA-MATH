@@ -1,0 +1,1421 @@
+# Number Theory — Open Problems Registry
+# Domain: number-theory
+# Source: English Wikipedia "List of unsolved problems in mathematics" (2026-03-30 revision)
+# Status: Initial catalog — all entries status: open unless noted
+
+problems:
+
+  # ═══════════════════════════════════════════
+  # GENERAL NUMBER THEORY
+  # ═══════════════════════════════════════════
+
+  - id: buchi-problem
+    name: Büchi's problem
+    subdomain: general
+    status: open
+    statement: >
+      Determine whether sufficiently large sequences of square numbers with constant
+      second difference must have specific structural properties.
+    tags: [squares, sequences]
+
+  - id: carmichael-totient
+    name: Carmichael's totient function conjecture
+    subdomain: general
+    status: open
+    statement: >
+      Do all values of Euler's totient function have multiplicity greater than 1?
+    posed_by: [Robert Daniel Carmichael]
+    tags: [totient, multiplicative-functions]
+
+  - id: catalan-dickson-aliquot
+    name: Catalan–Dickson conjecture on aliquot sequences
+    subdomain: general
+    status: open
+    statement: >
+      No aliquot sequences are infinite but non-repeating.
+    tags: [aliquot-sequences, divisor-sums]
+
+  - id: exponent-pair-conjecture
+    name: Exponent pair conjecture
+    subdomain: general
+    status: open
+    statement: >
+      For all ε > 0, is the pair (ε, 1/2+ε) an exponent pair?
+    tags: [exponential-sums]
+
+  - id: gauss-circle-problem
+    name: Gauss circle problem
+    subdomain: general
+    status: open
+    statement: >
+      How far can the number of integer points in a circle centered at the
+      origin be from the area of the circle?
+    posed_by: [Carl Friedrich Gauss]
+    tags: [lattice-points, estimation]
+    ai_triage:
+      tier: T2-experimental
+      amenability_score: 5
+      approaches: [numerical-verification, pattern-recognition]
+      notes: Extensive numerical verification possible; tight bounds subject of ongoing research.
+
+  - id: grimm-conjecture
+    name: Grimm's conjecture
+    subdomain: general
+    status: open
+    statement: >
+      Each element of a set of consecutive composite numbers can be assigned
+      a distinct prime number that divides it.
+    posed_by: [Carl Albert Grimm]
+    tags: [primes, composites]
+
+  - id: hall-conjecture
+    name: Hall's conjecture
+    subdomain: general
+    status: open
+    statement: >
+      For any ε > 0, there is some constant c(ε) such that either y² = x³
+      or |y² − x³| > c(ε)·x^(1/2−ε).
+    posed_by: [Marshall Hall Jr.]
+    tags: [elliptic-curves, diophantine]
+
+  - id: lehmer-totient
+    name: Lehmer's totient problem
+    subdomain: general
+    status: open
+    statement: >
+      If φ(n) divides n−1, must n be prime?
+    posed_by: [Derrick Henry Lehmer]
+    tags: [totient, primality]
+
+  - id: magic-square-of-squares
+    name: Magic square of squares
+    subdomain: general
+    status: open
+    statement: >
+      Is there a 3×3 magic square composed of distinct perfect squares?
+    tags: [magic-squares, squares]
+    difficulty:
+      consensus: hard
+    ai_triage:
+      tier: T1-computational
+      amenability_score: 7
+      approaches: [brute-force-search, heuristic-search, sat-solver, parametric-search]
+      compute_profile: heavy
+      notes: >
+        No 3×3 example found despite extensive search. Bremner (2001)
+        found near-misses. Known algebraic parameterizations reduce search
+        space. Euler found 3×3 magic squares of non-distinct squares.
+    partial_results:
+      - year: 2001
+        authors: [Andrew Bremner]
+        description: Near-miss parametric families via elliptic curves
+      - year: 2005
+        authors: [Christian Boyer]
+        description: Catalogued near-misses and partial solutions
+
+  - id: mahler-three-halves
+    name: Mahler's 3/2 problem
+    subdomain: general
+    status: open
+    statement: >
+      No real number x has the property that the fractional parts of x·(3/2)^n
+      are less than 1/2 for all positive integers n.
+    posed_by: [Kurt Mahler]
+    tags: [distribution-mod-1, powers]
+
+  - id: newman-conjecture
+    name: Newman's conjecture
+    subdomain: general
+    status: open
+    statement: >
+      The partition function satisfies any arbitrary congruence infinitely often.
+    tags: [partitions, congruences]
+
+  - id: scholz-conjecture
+    name: Scholz conjecture
+    subdomain: general
+    status: open
+    statement: >
+      The length of the shortest addition chain producing 2^n − 1 is at most
+      n − 1 plus the length of the shortest addition chain producing n.
+    tags: [addition-chains]
+    ai_triage:
+      tier: T1-computational
+      amenability_score: 6
+      approaches: [brute-force-search, heuristic-search]
+
+  - id: singmaster-conjecture
+    name: Singmaster's conjecture
+    subdomain: general
+    status: open
+    statement: >
+      Is there a finite upper bound on the multiplicities of the entries
+      greater than 1 in Pascal's triangle?
+    posed_by: [David Singmaster]
+    tags: [binomial-coefficients, pascal-triangle]
+    ai_triage:
+      tier: T2-experimental
+      amenability_score: 6
+      approaches: [numerical-verification, counterexample-search]
+
+  - id: odd-perfect-numbers
+    name: Existence of odd perfect numbers
+    subdomain: general
+    status: open
+    statement: Do any odd perfect numbers exist?
+    tags: [perfect-numbers, divisor-sums]
+    difficulty:
+      consensus: very-hard
+      decades_open: 20+
+    ai_triage:
+      tier: T2-experimental
+      amenability_score: 4
+      approaches: [numerical-verification, counterexample-search]
+      compute_profile: heavy
+      notes: Known lower bound > 10^1500. Search is computationally extreme.
+
+  - id: infinitely-many-perfect
+    name: Infinitely many perfect numbers
+    subdomain: general
+    status: open
+    statement: Are there infinitely many perfect numbers?
+    tags: [perfect-numbers]
+    related_problems: [infinitely-many-mersenne-primes]
+
+  - id: quasiperfect-numbers
+    name: Existence of quasiperfect numbers
+    subdomain: general
+    status: open
+    statement: Do quasiperfect numbers exist?
+    tags: [perfect-numbers]
+
+  - id: almost-perfect-non-power-2
+    name: Non-power-of-2 almost perfect numbers
+    subdomain: general
+    status: open
+    statement: Do any non-power of 2 almost perfect numbers exist?
+    tags: [perfect-numbers]
+
+  - id: idoneal-numbers-count
+    name: Count of idoneal numbers
+    subdomain: general
+    status: open
+    statement: Are there 65, 66, or 67 idoneal numbers?
+    tags: [idoneal-numbers]
+
+  - id: amicable-opposite-parity
+    name: Amicable numbers with opposite parity
+    subdomain: general
+    status: open
+    statement: Are there any pairs of amicable numbers which have opposite parity?
+    tags: [amicable-numbers]
+
+  - id: amicable-coprime
+    name: Relatively prime amicable numbers
+    subdomain: general
+    status: open
+    statement: Are there any pairs of relatively prime amicable numbers?
+    tags: [amicable-numbers]
+
+  - id: infinitely-many-amicable
+    name: Infinitely many amicable number pairs
+    subdomain: general
+    status: open
+    statement: Are there infinitely many pairs of amicable numbers?
+    tags: [amicable-numbers]
+
+  - id: infinitely-many-giuga
+    name: Infinitely many Giuga numbers
+    subdomain: general
+    status: open
+    statement: Are there infinitely many Giuga numbers?
+    tags: [giuga-numbers]
+
+  - id: lychrel-numbers
+    name: Lychrel numbers in base 10
+    subdomain: general
+    status: open
+    statement: >
+      Do any Lychrel numbers exist in base 10? (A Lychrel number never
+      forms a palindrome through the iterated reverse-and-add process.)
+    tags: [reverse-and-add, palindromes]
+    difficulty:
+      consensus: hard
+    ai_triage:
+      tier: T1-computational
+      amenability_score: 7
+      approaches: [brute-force-search, numerical-verification]
+      compute_profile: heavy
+      notes: >
+        196 is the leading candidate. Wade VanLandingham computed over
+        one billion iterations (2006) without reaching a palindrome.
+        No proof that 196 is Lychrel; no proof that Lychrel numbers exist.
+    partial_results:
+      - year: 2006
+        authors: [Wade VanLandingham]
+        description: 196 iterated over 10^9 times without palindrome formation
+
+  - id: odd-noncototients
+    name: Odd noncototients
+    subdomain: general
+    status: open
+    statement: Do any odd noncototients exist?
+    tags: [totient]
+
+  - id: odd-weird-numbers
+    name: Odd weird numbers
+    subdomain: general
+    status: open
+    statement: >
+      Do any odd weird numbers exist? (A weird number is abundant but not
+      semiperfect — its proper divisors sum to more than it, but no subset
+      sums exactly to it.)
+    tags: [weird-numbers, abundant-numbers]
+    ai_triage:
+      tier: T1-computational
+      amenability_score: 7
+      approaches: [brute-force-search, heuristic-search]
+      compute_profile: heavy
+      notes: >
+        All known weird numbers are even. Benkoski (1972) first asked.
+        Must be > 10^17 if it exists (Friedman, 1993). Must be > 10^21
+        (Iannucci, 2015). Structural constraints significantly narrow search.
+    partial_results:
+      - year: 2015
+        authors: [Douglas Iannucci]
+        description: Proved any odd weird number must exceed 10^21
+
+  - id: pi-normal
+    name: Normality of π
+    subdomain: general
+    status: open
+    statement: Is π a normal number (i.e., is each digit 0–9 equally frequent)?
+    tags: [pi, normal-numbers, transcendental-numbers]
+    difficulty:
+      consensus: extremely-hard
+
+  - id: irrational-algebraic-normal
+    name: Normality of irrational algebraic numbers
+    subdomain: general
+    status: open
+    statement: Are all irrational algebraic numbers normal?
+    tags: [normal-numbers, algebraic-numbers]
+
+  - id: solitary-10
+    name: Is 10 a solitary number?
+    subdomain: general
+    status: open
+    statement: Is 10 a solitary number?
+    tags: [solitary-numbers, abundancy-index]
+
+  - id: covering-system-odd
+    name: Covering system with odd distinct moduli
+    subdomain: general
+    status: open
+    statement: Is there a covering system with odd distinct moduli?
+    tags: [covering-systems]
+
+  # ═══════════════════════════════════════════
+  # ADDITIVE NUMBER THEORY
+  # ═══════════════════════════════════════════
+
+  - id: erdos-arithmetic-progressions
+    name: Erdős conjecture on arithmetic progressions
+    subdomain: additive
+    status: open
+    statement: >
+      If the sum of the reciprocals of the members of a set of positive integers
+      diverges, then the set contains arbitrarily long arithmetic progressions.
+    posed_by: [Paul Erdős]
+    collections: [erdos-problems]
+    tags: [arithmetic-progressions, density]
+
+  - id: erdos-turan-additive-bases
+    name: Erdős–Turán conjecture on additive bases
+    subdomain: additive
+    status: open
+    statement: >
+      If B is an additive basis of order 2, then the number of ways that positive
+      integers n can be expressed as the sum of two numbers in B must tend to
+      infinity as n tends to infinity.
+    posed_by: [Paul Erdős, Pál Turán]
+    collections: [erdos-problems]
+    tags: [additive-bases, representation-functions]
+
+  - id: gilbreath-conjecture
+    name: Gilbreath's conjecture
+    subdomain: additive
+    status: open
+    statement: >
+      Consecutive applications of the unsigned forward difference operator to the
+      sequence of prime numbers always yield 1 as the first element.
+    posed_by: [Norman Gilbreath]
+    tags: [primes, finite-differences]
+    ai_triage:
+      tier: T2-experimental
+      amenability_score: 6
+      approaches: [numerical-verification]
+      notes: Verified to very large bounds; no theoretical approach known.
+
+  - id: goldbach-conjecture
+    name: Goldbach's conjecture
+    subdomain: additive
+    status: open
+    statement: >
+      Every even natural number greater than 2 is the sum of two prime numbers.
+    year_posed: 1742
+    posed_by: [Christian Goldbach]
+    collections: [landau-problems]
+    prize:
+      name: N/A (no formal prize, but immense prestige)
+    difficulty:
+      consensus: extremely-hard
+      decades_open: 28
+    tags: [primes, additive, goldbach]
+    ai_triage:
+      tier: T2-experimental
+      amenability_score: 4
+      approaches: [numerical-verification, pattern-recognition]
+      compute_profile: heavy
+      notes: >
+        Verified to 4×10^18. Weak Goldbach proved by Helfgott (2013).
+        Binary Goldbach remains deeply open. Hardy-Littlewood conjectures
+        give asymptotic predictions. Main approaches: circle method, sieve theory.
+    related_problems: [goldbach-weak, lemoine-conjecture]
+    partial_results:
+      - year: 2013
+        authors: [Harald Helfgott]
+        description: Proved weak Goldbach conjecture (every odd number > 5 is sum of three primes)
+      - year: 2013
+        authors: [Tomás Oliveira e Silva]
+        description: Verified to 4×10^18
+
+  - id: lander-parkin-selfridge
+    name: Lander, Parkin, and Selfridge conjecture
+    subdomain: additive
+    status: open
+    statement: >
+      If the sum of m k-th powers of positive integers is equal to a different
+      sum of n k-th powers of positive integers, then m + n ≥ k.
+    tags: [sums-of-powers, waring]
+
+  - id: lemoine-conjecture
+    name: Lemoine's conjecture
+    subdomain: additive
+    status: open
+    statement: >
+      All odd integers greater than 5 can be represented as the sum of an odd
+      prime number and an even semiprime.
+    aliases: [Levy's conjecture]
+    tags: [primes, semiprimes]
+    related_problems: [goldbach-conjecture]
+
+  - id: skolem-problem
+    name: Skolem problem
+    subdomain: additive
+    status: open
+    statement: >
+      Can an algorithm determine if a constant-recursive sequence contains a zero?
+    tags: [decidability, linear-recurrences]
+    ai_triage:
+      tier: T3-pattern
+      amenability_score: 3
+      approaches: [symbolic-computation]
+      notes: Deep connections to number theory and decidability theory.
+
+  - id: waring-g-k
+    name: Values of g(k) and G(k) in Waring's problem
+    subdomain: additive
+    status: open
+    statement: >
+      Determine the exact values of g(k) and G(k) in Waring's problem for all k.
+    tags: [waring, sums-of-powers]
+
+  - id: ulam-numbers-density
+    name: Density of Ulam numbers
+    subdomain: additive
+    status: open
+    statement: Do the Ulam numbers have a positive density?
+    tags: [ulam-numbers, density]
+    ai_triage:
+      tier: T2-experimental
+      amenability_score: 6
+      approaches: [numerical-verification, pattern-recognition]
+
+  - id: recaman-sequence
+    name: Recamán's sequence completeness
+    subdomain: additive
+    status: open
+    statement: Does every nonnegative integer appear in Recamán's sequence?
+    tags: [sequences]
+    ai_triage:
+      tier: T2-experimental
+      amenability_score: 7
+      approaches: [numerical-verification, heuristic-search]
+
+  - id: pollock-conjectures
+    name: Pollock's conjectures
+    subdomain: additive
+    status: open
+    statement: >
+      Conjectures about the representability of integers as sums of
+      tetrahedral numbers and octahedral numbers.
+    tags: [figurate-numbers, representation]
+
+  # ═══════════════════════════════════════════
+  # ALGEBRAIC NUMBER THEORY
+  # ═══════════════════════════════════════════
+
+  - id: class-number-real-quadratic
+    name: Class number problem for real quadratic fields
+    subdomain: algebraic
+    status: open
+    statement: >
+      Are there infinitely many real quadratic number fields with unique factorization?
+    tags: [class-number, quadratic-fields]
+
+  - id: fontaine-mazur
+    name: Fontaine–Mazur conjecture
+    subdomain: algebraic
+    status: open
+    statement: Numerous conjectures proposed by Jean-Marc Fontaine and Barry Mazur.
+    posed_by: [Jean-Marc Fontaine, Barry Mazur]
+    tags: [galois-representations, p-adic]
+
+  - id: gan-gross-prasad
+    name: Gan–Gross–Prasad conjecture
+    subdomain: algebraic
+    status: open
+    statement: >
+      A restriction problem in representation theory of real or p-adic Lie groups.
+    tags: [representation-theory, p-adic]
+
+  - id: greenberg-conjectures
+    name: Greenberg's conjectures
+    subdomain: algebraic
+    status: open
+    statement: Conjectures on Iwasawa invariants of totally real fields.
+    tags: [iwasawa-theory]
+
+  - id: hermite-problem
+    name: Hermite's problem
+    subdomain: algebraic
+    status: open
+    statement: >
+      Is it possible to assign a sequence of natural numbers to each real number
+      such that the sequence is eventually periodic iff x is algebraic of degree n?
+    posed_by: [Charles Hermite]
+    tags: [algebraic-numbers, classification]
+
+  - id: hilbert-9
+    name: Hilbert's 9th problem
+    subdomain: algebraic
+    status: open
+    statement: >
+      Find the most general reciprocity law for the norm residues of k-th order
+      in a general algebraic number field.
+    year_posed: 1900
+    posed_by: [David Hilbert]
+    collections: [hilbert-problems]
+    tags: [reciprocity, hilbert-symbol]
+
+  - id: hilbert-11
+    name: Hilbert's 11th problem
+    subdomain: algebraic
+    status: open
+    statement: Classify quadratic forms over algebraic number fields.
+    year_posed: 1900
+    posed_by: [David Hilbert]
+    collections: [hilbert-problems]
+    tags: [quadratic-forms]
+
+  - id: hilbert-12
+    name: Hilbert's 12th problem
+    subdomain: algebraic
+    status: open
+    statement: >
+      Extend the Kronecker–Weber theorem on Abelian extensions of Q to any
+      base number field.
+    year_posed: 1900
+    posed_by: [David Hilbert]
+    collections: [hilbert-problems]
+    aliases: [Kronecker's Jugendtraum]
+    tags: [class-field-theory, abelian-extensions]
+
+  - id: kummer-vandiver
+    name: Kummer–Vandiver conjecture
+    subdomain: algebraic
+    status: open
+    statement: >
+      Primes p do not divide the class number of the maximal real subfield
+      of the p-th cyclotomic field.
+    tags: [class-number, cyclotomic-fields, regular-primes]
+    ai_triage:
+      tier: T2-experimental
+      amenability_score: 5
+      approaches: [numerical-verification, symbolic-computation]
+      notes: Verified for all primes up to large bounds.
+
+  - id: lang-trotter-supersingular
+    name: Lang–Trotter conjecture on supersingular primes
+    subdomain: algebraic
+    status: open
+    statement: >
+      The number of supersingular primes less than X is within a constant
+      multiple of √X / ln X.
+    posed_by: [Serge Lang, Hale Trotter]
+    tags: [elliptic-curves, supersingular-primes]
+
+  - id: leopoldt-conjecture
+    name: Leopoldt's conjecture
+    subdomain: algebraic
+    status: open
+    statement: >
+      A p-adic analogue of the regulator of an algebraic number field does not vanish.
+    posed_by: [Heinrich-Wolfgang Leopoldt]
+    tags: [p-adic, regulator]
+
+  - id: stark-conjectures
+    name: Stark conjectures
+    subdomain: algebraic
+    status: open
+    statement: >
+      Conjectures relating L-function values to regulators. Includes
+      Brumer–Stark conjecture.
+    posed_by: [Harold Stark]
+    tags: [l-functions, regulators]
+
+  - id: power-basis-characterization
+    name: Power basis characterization
+    subdomain: algebraic
+    status: open
+    statement: >
+      Characterize all algebraic number fields that have some power basis.
+    tags: [number-fields, power-basis]
+
+  # ═══════════════════════════════════════════
+  # ANALYTIC NUMBER THEORY
+  # ═══════════════════════════════════════════
+
+  - id: riemann-hypothesis
+    name: Riemann hypothesis
+    subdomain: analytic
+    status: open
+    statement: >
+      The nontrivial zeros of the Riemann zeta function lie on the critical
+      line 1/2 + it with real t.
+    year_posed: 1859
+    posed_by: [Bernhard Riemann]
+    collections: [millennium-prize, hilbert-problems, smale-problems]
+    prize:
+      name: Millennium Prize
+      amount_usd: 1000000
+      organization: Clay Mathematics Institute
+    difficulty:
+      consensus: extremely-hard
+      decades_open: 16
+    tags: [zeta-function, zeros, complex-analysis]
+    ai_triage:
+      tier: T5-foundational
+      amenability_score: 1
+      approaches: [numerical-verification, pattern-recognition]
+      notes: >
+        Over 10^13 zeros verified on critical line. Deep connections to random
+        matrix theory. Likely requires entirely new mathematics.
+    related_problems:
+      - generalized-riemann-hypothesis
+      - grand-riemann-hypothesis
+      - lindelof-hypothesis
+      - montgomery-pair-correlation
+
+  - id: generalized-riemann-hypothesis
+    name: Generalized Riemann hypothesis
+    subdomain: analytic
+    status: open
+    statement: >
+      The nontrivial zeros of all Dirichlet L-functions lie on the critical
+      line 1/2 + it with real t.
+    tags: [l-functions, zeros]
+    related_problems: [riemann-hypothesis]
+
+  - id: grand-riemann-hypothesis
+    name: Grand Riemann hypothesis
+    subdomain: analytic
+    status: open
+    statement: >
+      The nontrivial zeros of all automorphic L-functions lie on the critical
+      line 1/2 + it with real t.
+    tags: [automorphic-forms, l-functions]
+
+  - id: extended-riemann-hypothesis
+    name: Extended Riemann Hypothesis
+    subdomain: analytic
+    status: open
+    statement: >
+      The nontrivial zeros of all Dedekind zeta functions lie on the critical
+      line 1/2 + it with real t.
+    tags: [dedekind-zeta, number-fields]
+
+  - id: beilinson-conjectures
+    name: Beilinson's conjectures
+    subdomain: analytic
+    status: open
+    statement: Conjectures about special values of L-functions.
+    posed_by: [Alexander Beilinson]
+    tags: [l-functions, special-values]
+
+  - id: siegel-zeros
+    name: Existence of Siegel zeros
+    subdomain: analytic
+    status: open
+    statement: Do Siegel zeros exist?
+    tags: [l-functions, exceptional-zeros]
+
+  - id: de-bruijn-newman
+    name: De Bruijn–Newman constant
+    subdomain: analytic
+    status: open
+    statement: Find the exact value of the De Bruijn–Newman constant.
+    tags: [zeta-function]
+    partial_results:
+      - year: 2018
+        authors: [Brad Rodgers, Terence Tao]
+        description: Proved Λ ≥ 0
+
+  - id: selberg-class-automorphic
+    name: Selberg class equals automorphic L-functions
+    subdomain: analytic
+    status: open
+    statement: >
+      Is the Selberg class of Dirichlet series equal to the class of
+      automorphic L-functions?
+    tags: [selberg-class, automorphic-forms]
+
+  - id: hardy-littlewood-zeta
+    name: Hardy–Littlewood zeta function conjectures
+    subdomain: analytic
+    status: open
+    statement: Conjectures on the behavior of the Riemann zeta function.
+    tags: [zeta-function]
+
+  - id: hilbert-polya
+    name: Hilbert–Pólya conjecture
+    subdomain: analytic
+    status: open
+    statement: >
+      The nontrivial zeros of the Riemann zeta function correspond to
+      eigenvalues of a self-adjoint operator.
+    tags: [zeta-function, spectral-theory, random-matrix]
+
+  - id: lindelof-hypothesis
+    name: Lindelöf hypothesis
+    subdomain: analytic
+    status: open
+    statement: For all ε > 0, ζ(1/2 + it) = o(t^ε).
+    tags: [zeta-function, growth-estimates]
+    related_problems: [riemann-hypothesis]
+
+  - id: montgomery-pair-correlation
+    name: Montgomery's pair correlation conjecture
+    subdomain: analytic
+    status: open
+    statement: >
+      The normalized pair correlation function between pairs of zeros of the
+      Riemann zeta function equals that of random Hermitian matrices.
+    posed_by: [Hugh Montgomery]
+    tags: [zeta-function, random-matrix-theory]
+
+  - id: ramanujan-petersson
+    name: Ramanujan–Petersson conjecture (generalizations)
+    subdomain: analytic
+    status: open
+    statement: >
+      Generalizations of the original conjecture concerning growth rate of
+      coefficients of automorphic forms.
+    tags: [automorphic-forms, modular-forms]
+
+  - id: selberg-quarter
+    name: Selberg's 1/4 conjecture
+    subdomain: analytic
+    status: open
+    statement: >
+      The eigenvalues of the Laplace operator on Maass wave forms of
+      congruence subgroups are at least 1/4.
+    posed_by: [Atle Selberg]
+    tags: [spectral-theory, maass-forms]
+
+  - id: selberg-orthogonality
+    name: Selberg's orthogonality conjecture
+    subdomain: analytic
+    status: open
+    statement: Generalization of Mertens' theorem for functions in Selberg class.
+    tags: [selberg-class]
+
+  - id: piltz-divisor
+    name: Piltz divisor problem
+    subdomain: analytic
+    status: open
+    statement: Bounding Δ_k(x) = D_k(x) − xP_k(log(x)).
+    tags: [divisor-functions, estimation]
+    related_problems: [dirichlet-divisor]
+
+  - id: dirichlet-divisor
+    name: Dirichlet's divisor problem
+    subdomain: analytic
+    status: open
+    statement: The specific case of the Piltz divisor problem for k = 1.
+    tags: [divisor-functions]
+
+  # ═══════════════════════════════════════════
+  # ARITHMETIC GEOMETRY
+  # ═══════════════════════════════════════════
+
+  - id: birch-swinnerton-dyer
+    name: Birch and Swinnerton-Dyer conjecture
+    subdomain: arithmetic-geometry
+    status: open
+    statement: >
+      The rank of the group of rational points on an elliptic curve E equals
+      the order of vanishing of its L-function L(E,s) at s = 1.
+    year_posed: 1965
+    posed_by: [Bryan Birch, Peter Swinnerton-Dyer]
+    collections: [millennium-prize]
+    prize:
+      name: Millennium Prize
+      amount_usd: 1000000
+      organization: Clay Mathematics Institute
+    difficulty:
+      consensus: extremely-hard
+      decades_open: 6
+    tags: [elliptic-curves, l-functions, rational-points]
+    ai_triage:
+      tier: T4-structural
+      amenability_score: 2
+      approaches: [numerical-verification, symbolic-computation]
+      notes: Partial results exist for rank 0 and 1. Deep algebraic structure.
+
+  - id: bombieri-lang
+    name: Bombieri–Lang conjecture
+    subdomain: arithmetic-geometry
+    status: open
+    statement: >
+      K-rational points on a variety of general type over a number field K
+      are not dense in the Zariski topology.
+    tags: [rational-points, varieties]
+
+  - id: erdos-ulam
+    name: Erdős–Ulam problem
+    subdomain: arithmetic-geometry
+    status: open
+    statement: >
+      Is there a dense set of points in the plane all at rational distances
+      from one another?
+    posed_by: [Paul Erdős, Stanislaw Ulam]
+    collections: [erdos-problems]
+    tags: [rational-distances, plane-geometry]
+
+  - id: manin-conjecture
+    name: Manin conjecture
+    subdomain: arithmetic-geometry
+    status: open
+    statement: >
+      Distribution of rational points of bounded height on Fano varieties
+      follows a specific asymptotic formula.
+    posed_by: [Yuri Manin]
+    tags: [rational-points, height-functions, fano-varieties]
+
+  - id: vojta-conjecture
+    name: Vojta's conjecture
+    subdomain: arithmetic-geometry
+    status: open
+    statement: >
+      Points on non-singular algebraic variety over algebraic number field
+      that don't satisfy certain height inequality are in a Zariski-closed set.
+    posed_by: [Paul Vojta]
+    tags: [diophantine-geometry, height-functions]
+
+  - id: abc-conjecture
+    name: abc conjecture
+    subdomain: arithmetic-geometry
+    status: open
+    statement: >
+      For any ε > 0, rad(abc)^(1+ε) < c is true for only finitely many
+      positive a, b, c such that a + b = c.
+    posed_by: [Joseph Oesterlé, David Masser]
+    difficulty:
+      consensus: extremely-hard
+    tags: [radical, diophantine]
+    ai_triage:
+      tier: T5-foundational
+      amenability_score: 1
+      notes: >
+        Mochizuki's claimed proof (IUT theory) remains controversial.
+        Fundamental conjecture with deep consequences across number theory.
+
+  - id: szpiro-conjecture
+    name: Szpiro's conjecture
+    subdomain: arithmetic-geometry
+    status: open
+    statement: >
+      For any ε > 0, there is constant C(ε) such that for any elliptic curve
+      over Q with minimal discriminant Δ and conductor f: |Δ| ≤ C(ε)·f^(6+ε).
+    tags: [elliptic-curves, discriminant]
+    related_problems: [abc-conjecture]
+
+  - id: n-conjecture
+    name: n conjecture
+    subdomain: arithmetic-geometry
+    status: open
+    statement: A generalization of the abc conjecture to more than three integers.
+    tags: [abc-generalization]
+    related_problems: [abc-conjecture]
+
+  - id: sato-tate
+    name: Sato–Tate conjecture (generalizations)
+    subdomain: arithmetic-geometry
+    status: open
+    statement: Generalizations of the original Sato-Tate conjecture.
+    tags: [elliptic-curves, distribution]
+
+  - id: rational-dense-unit-square
+    name: Rational distance problem for unit square
+    subdomain: arithmetic-geometry
+    status: open
+    statement: >
+      Is there a point in the plane at a rational distance from all four
+      corners of a unit square?
+    tags: [rational-distances]
+
+  # ═══════════════════════════════════════════
+  # DIOPHANTINE APPROXIMATION & TRANSCENDENCE
+  # ═══════════════════════════════════════════
+
+  - id: littlewood-conjecture
+    name: Littlewood conjecture
+    subdomain: diophantine-approximation
+    status: open
+    statement: >
+      For any two real numbers α, β: lim inf_{n→∞} n·‖nα‖·‖nβ‖ = 0,
+      where ‖x‖ is the distance from x to the nearest integer.
+    posed_by: [John Edensor Littlewood]
+    tags: [simultaneous-approximation]
+
+  - id: schanuel-conjecture
+    name: Schanuel's conjecture
+    subdomain: diophantine-approximation
+    status: open
+    statement: >
+      Given n complex numbers z₁,...,zₙ linearly independent over Q,
+      the transcendence degree of Q(z₁,...,zₙ,e^z₁,...,e^zₙ) over Q is ≥ n.
+    posed_by: [Stephen Schanuel]
+    tags: [transcendence, exponential-function]
+    difficulty:
+      consensus: extremely-hard
+    ai_triage:
+      tier: T5-foundational
+      amenability_score: 0
+      notes: Would imply most known transcendence results. Extremely deep.
+
+  - id: e-pi-independence
+    name: Algebraic independence of e and π
+    subdomain: diophantine-approximation
+    status: open
+    statement: Are e and π algebraically independent?
+    tags: [transcendence, e, pi]
+    related_problems: [schanuel-conjecture]
+
+  - id: four-exponentials
+    name: Four exponentials conjecture
+    subdomain: diophantine-approximation
+    status: open
+    statement: >
+      The transcendence of at least one of four exponentials of combinations
+      of irrationals.
+    tags: [transcendence, exponentials]
+
+  - id: euler-constant-irrationality
+    name: Irrationality of Euler's constant γ
+    subdomain: diophantine-approximation
+    status: open
+    statement: Is Euler's constant γ irrational? Is it transcendental?
+    tags: [euler-mascheroni, irrationality, transcendence]
+    ai_triage:
+      tier: T4-structural
+      amenability_score: 2
+      approaches: [numerical-verification, symbolic-computation]
+      notes: >
+        γ ≈ 0.5772156649... Known not to be a simple ratio p/q with small
+        denominators, but irrationality is unproven.
+
+  - id: catalan-constant-irrationality
+    name: Irrationality of Catalan's constant G
+    subdomain: diophantine-approximation
+    status: open
+    statement: Is Catalan's constant G irrational? Transcendental?
+    tags: [catalan-constant, irrationality]
+
+  - id: apery-constant-transcendence
+    name: Transcendence of ζ(3)
+    subdomain: diophantine-approximation
+    status: open
+    statement: Is Apéry's constant ζ(3) transcendental?
+    tags: [apery, zeta-values, transcendence]
+    partial_results:
+      - year: 1978
+        authors: [Roger Apéry]
+        description: Proved ζ(3) is irrational
+
+  - id: hartmanis-stearns
+    name: Hartmanis–Stearns conjecture
+    subdomain: diophantine-approximation
+    status: open
+    statement: >
+      Relates the computational complexity of the decimal expansion of a
+      real number to its algebraic properties.
+    tags: [complexity, real-numbers]
+
+  - id: khinchin-constant-convergence
+    name: Convergence to Khinchin's constant
+    subdomain: diophantine-approximation
+    status: open
+    statement: >
+      Which irrational numbers have simple continued fraction terms whose
+      geometric mean converges to Khinchin's constant?
+    tags: [continued-fractions, khinchin]
+
+  # ═══════════════════════════════════════════
+  # DIOPHANTINE EQUATIONS
+  # ═══════════════════════════════════════════
+
+  - id: beal-conjecture
+    name: Beal's conjecture
+    subdomain: diophantine-equations
+    status: open
+    statement: >
+      For all integral solutions to A^x + B^y = C^z where x,y,z > 2,
+      all three numbers A, B, C must share some prime factor.
+    prize:
+      name: Beal Prize
+      amount_usd: 1000000
+      organization: Andrew Beal
+    tags: [fermat-generalization, powers]
+    ai_triage:
+      tier: T2-experimental
+      amenability_score: 4
+      approaches: [counterexample-search, numerical-verification]
+      compute_profile: heavy
+
+  - id: brocard-problem
+    name: Brocard's problem
+    subdomain: diophantine-equations
+    status: open
+    statement: >
+      Are there any integer solutions to n! + 1 = m² other than n = 4, 5, 7?
+    tags: [factorial, squares]
+    ai_triage:
+      tier: T1-computational
+      amenability_score: 7
+      approaches: [brute-force-search, numerical-verification]
+
+  - id: congruent-number-problem
+    name: Congruent number problem
+    subdomain: diophantine-equations
+    status: open
+    statement: Determine precisely what rational numbers are congruent numbers.
+    tags: [congruent-numbers, elliptic-curves]
+    related_problems: [birch-swinnerton-dyer]
+
+  - id: erdos-moser-equation
+    name: Erdős–Moser problem
+    subdomain: diophantine-equations
+    status: open
+    statement: Is 1¹ + 2¹ = 3¹ the only solution to the Erdős–Moser equation?
+    collections: [erdos-problems]
+    tags: [power-sums]
+
+  - id: erdos-straus
+    name: Erdős–Straus conjecture
+    subdomain: diophantine-equations
+    status: open
+    statement: >
+      For every n ≥ 2, there are positive integers x, y, z such that
+      4/n = 1/x + 1/y + 1/z.
+    year_posed: 1948
+    posed_by: [Paul Erdős, Ernst G. Straus]
+    collections: [erdos-problems]
+    tags: [unit-fractions, egyptian-fractions]
+    difficulty:
+      consensus: hard
+      decades_open: 7
+    ai_triage:
+      tier: T1-computational
+      amenability_score: 8
+      approaches: [brute-force-search, heuristic-search, covering-congruences]
+      compute_profile: moderate
+      notes: >
+        Verified for all n ≤ 10^14. Parametric solutions cover most cases.
+        Covering congruence method can potentially give complete proof.
+        Schinzel (1956) introduced the covering congruence approach.
+    partial_results:
+      - year: 1971
+        authors: [R. C. Vaughan]
+        description: Verified for n ≤ 10^8
+      - year: 2014
+        authors: [Allan Swett]
+        description: Verified for all n ≤ 10^14 via parametric families
+    amenability_axes:
+      searchability: 2
+      experimental_signal: 2
+      formalizability: 1
+      feedback_speed: 2
+      publication_yield: 1
+
+  - id: fermat-catalan
+    name: Fermat–Catalan conjecture
+    subdomain: diophantine-equations
+    status: open
+    statement: >
+      There are finitely many distinct solutions (a^m, b^n, c^k) to
+      a^m + b^n = c^k with a,b,c positive coprime and 1/m + 1/n + 1/k < 1.
+    tags: [powers, fermat-generalization]
+
+  - id: pillai-conjecture
+    name: Pillai's conjecture
+    subdomain: diophantine-equations
+    status: open
+    statement: >
+      For any A, B, C, the equation Ax^m − By^n = C has finitely many
+      solutions when m, n are not both 2.
+    tags: [perfect-powers]
+
+  - id: sums-of-three-cubes
+    name: Sum of three cubes
+    subdomain: diophantine-equations
+    status: open
+    statement: Which integers can be written as the sum of three perfect cubes?
+    tags: [cubes, representation]
+    ai_triage:
+      tier: T1-computational
+      amenability_score: 8
+      approaches: [brute-force-search, heuristic-search]
+      compute_profile: heavy
+      notes: >
+        Major progress by Booker and Sutherland (2019) finding representations
+        for 33 and 42. Many values still unknown. Amenable to distributed computing.
+    partial_results:
+      - year: 2019
+        authors: [Andrew Booker, Andrew Sutherland]
+        description: Found 33 = 8866128975287528³ + (−8778405442862239)³ + (−2736111468807040)³
+
+  - id: sum-of-four-cubes
+    name: Sum of four cubes
+    subdomain: diophantine-equations
+    status: open
+    statement: Can every integer be written as a sum of four perfect cubes?
+    tags: [cubes, waring]
+
+  # ═══════════════════════════════════════════
+  # PRIME NUMBERS
+  # ═══════════════════════════════════════════
+
+  - id: twin-prime-conjecture
+    name: Twin prime conjecture
+    subdomain: primes
+    status: open
+    statement: There are infinitely many twin primes.
+    collections: [landau-problems]
+    difficulty:
+      consensus: extremely-hard
+      decades_open: 11
+    tags: [twin-primes, prime-gaps]
+    ai_triage:
+      tier: T4-structural
+      amenability_score: 2
+      approaches: [numerical-verification, pattern-recognition]
+      notes: >
+        Zhang (2013) proved bounded gaps. Polymath8/Maynard reduced bound to 246.
+        Closing to 2 remains deeply open.
+    partial_results:
+      - year: 2013
+        authors: [Yitang Zhang]
+        description: Proved bounded prime gaps (gap < 70 million)
+      - year: 2014
+        authors: [James Maynard, Polymath8]
+        description: Reduced gap bound to 246
+
+  - id: legendre-conjecture
+    name: Legendre's conjecture
+    subdomain: primes
+    status: open
+    statement: For every positive integer n, there is a prime between n² and (n+1)².
+    collections: [landau-problems]
+    tags: [prime-distribution]
+
+  - id: primes-n-squared-plus-1
+    name: Infinitely many primes of form n²+1
+    subdomain: primes
+    status: open
+    statement: Are there infinitely many primes of the form n² + 1?
+    collections: [landau-problems]
+    tags: [prime-generating]
+
+  - id: agoh-giuga
+    name: Agoh–Giuga conjecture
+    subdomain: primes
+    status: open
+    statement: >
+      p is prime if and only if p·B_{p−1} ≡ −1 (mod p).
+    tags: [bernoulli-numbers, primality-characterization]
+
+  - id: agrawal-conjecture
+    name: Agrawal's conjecture
+    subdomain: primes
+    status: open
+    statement: >
+      Given coprime positive integers n and r, if (X−1)^n ≡ X^n − 1 (mod n, X^r − 1),
+      then either n is prime or n² ≡ 1 (mod r).
+    tags: [primality-testing]
+
+  - id: artin-primitive-roots
+    name: Artin's conjecture on primitive roots
+    subdomain: primes
+    status: open
+    statement: >
+      If an integer is neither a perfect square nor −1, then it is a primitive
+      root modulo infinitely many primes p.
+    posed_by: [Emil Artin]
+    tags: [primitive-roots]
+
+  - id: brocard-conjecture-primes
+    name: Brocard's conjecture
+    subdomain: primes
+    status: open
+    statement: >
+      There are always at least 4 prime numbers between consecutive squares
+      of prime numbers, aside from 2² and 3².
+    tags: [prime-distribution]
+
+  - id: bunyakovsky
+    name: Bunyakovsky conjecture
+    subdomain: primes
+    status: open
+    statement: >
+      If an integer-coefficient polynomial f has a positive leading coefficient,
+      is irreducible over the integers, and has no common factor over all f(x),
+      then f(x) is prime infinitely often.
+    posed_by: [Viktor Bunyakovsky]
+    tags: [prime-generating-polynomials]
+
+  - id: catalan-mersenne
+    name: Catalan's Mersenne conjecture
+    subdomain: primes
+    status: open
+    statement: >
+      Some Catalan–Mersenne number is composite and thus all Catalan–Mersenne
+      numbers are composite after some point.
+    tags: [mersenne-primes]
+
+  - id: dickson-conjecture
+    name: Dickson's conjecture
+    subdomain: primes
+    status: open
+    statement: >
+      For a finite set of linear forms a₁+b₁n,...,aₖ+bₖn, there are
+      infinitely many n for which all forms are prime, unless prevented
+      by a congruence condition.
+    tags: [prime-generating, linear-forms]
+
+  - id: elliott-halberstam
+    name: Elliott–Halberstam conjecture
+    subdomain: primes
+    status: open
+    statement: On the distribution of prime numbers in arithmetic progressions.
+    tags: [prime-distribution, arithmetic-progressions]
+
+  - id: feit-thompson-conjecture
+    name: Feit–Thompson conjecture
+    subdomain: primes
+    status: open
+    statement: >
+      For all distinct primes p and q, (p^q − 1)/(p − 1) does not divide
+      (q^p − 1)/(q − 1).
+    tags: [prime-properties]
+
+  - id: gaussian-moat
+    name: Gaussian moat problem
+    subdomain: primes
+    status: open
+    statement: >
+      Is it possible to walk from the origin to infinity in the Gaussian
+      integers, stepping only on Gaussian primes, with bounded step size?
+    year_posed: 1962
+    posed_by: [Basil Gordon]
+    tags: [gaussian-primes, prime-gaps]
+    ai_triage:
+      tier: T1-computational
+      amenability_score: 7
+      approaches: [brute-force-search, numerical-verification, graph-algorithms]
+      compute_profile: moderate
+      notes: >
+        Tsuchimura (2005) showed no walk with step ≤ √26 reaches
+        beyond norm ~100. Graph-based search in Gaussian lattice.
+    partial_results:
+      - year: 2005
+        authors: [Tsuchimura]
+        description: Showed moat of width √26 exists up to large norm
+
+  - id: goldbach-conjecture-primes
+    name: Goldbach conjecture (in primes section)
+    subdomain: primes
+    status: open
+    statement: >
+      All even natural numbers greater than 2 are the sum of two primes.
+    tags: [primes, goldbach]
+    related_problems: [goldbach-conjecture]
+
+  - id: polignac-conjecture
+    name: Polignac's conjecture
+    subdomain: primes
+    status: open
+    statement: >
+      For all positive even numbers n, there are infinitely many prime gaps of size n.
+    tags: [prime-gaps]
+    related_problems: [twin-prime-conjecture]
+
+  - id: schinzel-hypothesis-h
+    name: Schinzel's hypothesis H
+    subdomain: primes
+    status: open
+    statement: >
+      For every finite collection of nonconstant irreducible polynomials over
+      the integers with positive leading coefficients, either there are infinitely
+      many n for which all are prime, or there's a fixed divisor preventing it.
+    tags: [prime-generating-polynomials]
+    related_problems: [bunyakovsky, dickson-conjecture]
+
+  - id: selfridge-sierpinski
+    name: Selfridge's conjecture (smallest Sierpiński number)
+    subdomain: primes
+    status: open
+    statement: Is 78,557 the lowest Sierpiński number?
+    year_posed: 1962
+    posed_by: [Wacław Sierpiński]
+    tags: [sierpinski-numbers, primality]
+    difficulty:
+      consensus: hard
+      decades_open: 6
+    ai_triage:
+      tier: T1-computational
+      amenability_score: 8
+      approaches: [brute-force-search, heuristic-search, distributed-computing]
+      compute_profile: massive
+      notes: >
+        PrimeGrid distributed computing project actively searching.
+        Sierpiński (1960) proved infinitely many k exist. Selfridge (1962)
+        conjectured 78,557 is smallest. As of 2024, 5 candidate k values remain.
+    partial_results:
+      - year: 2002
+        description: Seventeen or Bust project launched
+      - year: 2016
+        description: PrimeGrid eliminated k=10,223
+      - year: 2024
+        description: 5 candidates remain (21,181; 22,699; 24,737; 55,459; 67,607)
+
+  - id: infinitely-many-mersenne-primes
+    name: Infinitely many Mersenne primes
+    subdomain: primes
+    status: open
+    statement: >
+      Are there infinitely many Mersenne primes? (Lenstra–Pomerance–Wagstaff conjecture)
+    aliases: [Lenstra-Pomerance-Wagstaff conjecture]
+    tags: [mersenne-primes, perfect-numbers]
+    related_problems: [infinitely-many-perfect]
+
+  - id: infinitely-many-fibonacci-primes
+    name: Infinitely many Fibonacci primes
+    subdomain: primes
+    status: open
+    statement: Are there infinitely many Fibonacci primes?
+    tags: [fibonacci, prime-sequences]
+
+  - id: infinitely-many-twin-primes
+    name: Infinitely many twin primes
+    subdomain: primes
+    status: open
+    related_problems: [twin-prime-conjecture]
+    statement: See twin prime conjecture.
+    tags: [twin-primes]
+
+  - id: infinitely-many-sophie-germain
+    name: Infinitely many safe and Sophie Germain primes
+    subdomain: primes
+    status: open
+    statement: Are there infinitely many safe and Sophie Germain primes?
+    tags: [sophie-germain, safe-primes]
+
+  - id: infinitely-many-wieferich
+    name: Infinitely many Wieferich primes
+    subdomain: primes
+    status: open
+    statement: Are there infinitely many Wieferich primes?
+    tags: [wieferich-primes]
+
+  - id: infinitely-many-wilson
+    name: Infinitely many Wilson primes
+    subdomain: primes
+    status: open
+    statement: Are there infinitely many Wilson primes?
+    tags: [wilson-primes]
+
+  - id: infinitely-many-regular-primes
+    name: Infinitely many regular primes (Siegel's conjecture)
+    subdomain: primes
+    status: open
+    statement: >
+      Are there infinitely many regular primes, and if so is their natural
+      density e^{-1/2}?
+    tags: [regular-primes, density]
+
+  - id: wall-sun-sun-primes
+    name: Existence of Wall–Sun–Sun primes
+    subdomain: primes
+    status: open
+    statement: >
+      Are there any primes p such that p² divides the Fibonacci number F(p − (p/5)),
+      where (p/5) is the Legendre symbol?
+    year_posed: 1992
+    posed_by: [Zhi-Hong Sun, Zhi-Wei Sun]
+    tags: [wall-sun-sun, fibonacci, wieferich-like]
+    difficulty:
+      consensus: hard
+    ai_triage:
+      tier: T1-computational
+      amenability_score: 8
+      approaches: [brute-force-search]
+      compute_profile: heavy
+      notes: >
+        None found up to 9.7×10^14 (PrimeGrid, 2017). Related to
+        Wieferich primes (p² | 2^(p−1) − 1). If no Wall–Sun–Sun prime
+        exists, first case of Fermat's Last Theorem holds for all primes.
+    partial_results:
+      - year: 2017
+        description: PrimeGrid searched up to 9.7×10^14 with no examples found
+
+  - id: euclid-mullin-completeness
+    name: Euclid–Mullin sequence completeness
+    subdomain: primes
+    status: open
+    statement: Does every prime number appear in the Euclid–Mullin sequence?
+    tags: [euclid-mullin, prime-sequences]
+
+  - id: smallest-skewes-number
+    name: Smallest Skewes's number
+    subdomain: primes
+    status: open
+    statement: What is the smallest Skewes's number?
+    tags: [prime-counting, li-function]
+    ai_triage:
+      tier: T1-computational
+      amenability_score: 7
+      approaches: [numerical-verification, heuristic-search]
+      compute_profile: massive

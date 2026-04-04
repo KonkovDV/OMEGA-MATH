@@ -1,0 +1,61 @@
+# Millennium Prize Problems — Quick Reference
+# 7 problems, 6 unsolved (Poincaré conjecture resolved by Perelman, 2003)
+
+problems:
+
+  - id: p-vs-np
+    name: P versus NP
+    status: open
+    domain: computer-science
+    prize_usd: 1000000
+    ai_tier: T5-foundational
+    amenability: 0
+
+  - id: riemann-hypothesis
+    name: Riemann hypothesis
+    status: open
+    domain: number-theory
+    prize_usd: 1000000
+    ai_tier: T5-foundational
+    amenability: 1
+
+  - id: yang-mills
+    name: Yang–Mills existence and mass gap
+    status: open
+    domain: analysis (mathematical physics)
+    prize_usd: 1000000
+    ai_tier: T5-foundational
+    amenability: 0
+
+  - id: navier-stokes
+    name: Navier–Stokes existence and smoothness
+    status: open
+    domain: analysis (PDE)
+    prize_usd: 1000000
+    ai_tier: T5-foundational
+    amenability: 1
+
+  - id: hodge-conjecture
+    name: Hodge conjecture
+    status: open
+    domain: geometry (algebraic)
+    prize_usd: 1000000
+    ai_tier: T5-foundational
+    amenability: 0
+
+  - id: birch-swinnerton-dyer
+    name: Birch and Swinnerton-Dyer conjecture
+    status: open
+    domain: number-theory (arithmetic geometry)
+    prize_usd: 1000000
+    ai_tier: T4-structural
+    amenability: 2
+
+  - id: poincare-conjecture
+    name: Poincaré conjecture
+    status: resolved
+    domain: topology
+    prize_usd: 1000000
+    resolved_by: Grigori Perelman
+    resolved_year: 2003
+    note: Perelman declined the prize

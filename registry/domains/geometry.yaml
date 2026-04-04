@@ -1,0 +1,410 @@
+# Geometry — Open Problems Registry
+# Source: English Wikipedia "List of unsolved problems in mathematics"
+
+problems:
+
+  # ═══════════════════════════════════════════
+  # ALGEBRAIC GEOMETRY
+  # ═══════════════════════════════════════════
+
+  - id: hodge-conjecture
+    name: Hodge conjecture
+    subdomain: algebraic-geometry
+    status: open
+    statement: >
+      On a projective non-singular algebraic variety over C, every Hodge class
+      is a rational linear combination of classes of algebraic cycles.
+    year_posed: 1950
+    posed_by: [William Vallance Douglas Hodge]
+    collections: [millennium-prize]
+    prize:
+      name: Millennium Prize
+      amount_usd: 1000000
+      organization: Clay Mathematics Institute
+    difficulty:
+      consensus: extremely-hard
+      decades_open: 7
+    tags: [algebraic-cycles, cohomology]
+    ai_triage:
+      tier: T5-foundational
+      amenability_score: 0
+      notes: Deep algebraic geometry. No computational approach known.
+
+  - id: abundance-conjecture
+    name: Abundance conjecture
+    subdomain: algebraic-geometry
+    status: open
+    statement: >
+      If the canonical bundle of a projective variety with Kawamata log terminal
+      singularities is nef, then it is semiample.
+    tags: [birational-geometry, minimal-model]
+
+  - id: bass-conjecture
+    name: Bass conjecture
+    subdomain: algebraic-geometry
+    status: open
+    statement: On the finite generation of certain algebraic K-groups.
+    tags: [k-theory]
+
+  - id: bass-quillen
+    name: Bass–Quillen conjecture
+    subdomain: algebraic-geometry
+    status: open
+    statement: >
+      Relating vector bundles over a regular Noetherian ring and over
+      polynomial rings A[t₁,...,tₙ].
+    tags: [vector-bundles, noetherian-rings]
+
+  - id: deligne-hochschild
+    name: Deligne's conjecture on Hochschild cohomology
+    subdomain: algebraic-geometry
+    status: open
+    statement: >
+      About the operadic structure on Hochschild cochain complex.
+    posed_by: [Pierre Deligne]
+    tags: [hochschild-cohomology, operads]
+
+  - id: dixmier-conjecture
+    name: Dixmier conjecture
+    subdomain: algebraic-geometry
+    status: open
+    statement: Any endomorphism of a Weyl algebra is an automorphism.
+    tags: [weyl-algebra, automorphisms]
+    related_problems: [jacobian-conjecture]
+
+  - id: froberg-conjecture
+    name: Fröberg conjecture
+    subdomain: algebraic-geometry
+    status: open
+    statement: On the Hilbert functions of a set of forms.
+    tags: [hilbert-functions, commutative-algebra]
+
+  - id: fujita-conjecture
+    name: Fujita conjecture
+    subdomain: algebraic-geometry
+    status: open
+    statement: >
+      Regarding the line bundle K_M ⊗ L^⊗m constructed from a positive
+      holomorphic line bundle L on a compact complex manifold.
+    tags: [line-bundles, complex-manifolds]
+
+  - id: hartshorne-conjectures
+    name: Hartshorne conjectures
+    subdomain: algebraic-geometry
+    status: open
+    statement: Various conjectures in algebraic geometry by Robin Hartshorne.
+    posed_by: [Robin Hartshorne]
+    tags: [varieties, vector-bundles]
+
+  - id: jacobian-conjecture
+    name: Jacobian conjecture
+    subdomain: algebraic-geometry
+    status: open
+    statement: >
+      If a polynomial mapping over a characteristic-0 field has a constant
+      nonzero Jacobian determinant, then it has a regular inverse function.
+    difficulty:
+      consensus: extremely-hard
+    tags: [polynomial-maps, automorphisms]
+    ai_triage:
+      tier: T4-structural
+      amenability_score: 2
+      notes: Equivalent to Dixmier conjecture. Many false proofs published.
+    related_problems: [dixmier-conjecture]
+
+  - id: mnop-conjecture
+    name: Maulik–Nekrasov–Okounkov–Pandharipande conjecture
+    subdomain: algebraic-geometry
+    status: open
+    statement: >
+      Equivalence between Gromov–Witten theory and Donaldson–Thomas theory.
+    tags: [enumerative-geometry, gromov-witten, donaldson-thomas]
+
+  - id: nagata-curves
+    name: Nagata's conjecture on curves
+    subdomain: algebraic-geometry
+    status: open
+    statement: >
+      The minimal degree for a plane algebraic curve to pass through very
+      general points with prescribed multiplicities.
+    posed_by: [Masayoshi Nagata]
+    tags: [algebraic-curves, multiplicity]
+
+  - id: parshin-conjecture
+    name: Parshin's conjecture
+    subdomain: algebraic-geometry
+    status: open
+    statement: >
+      Higher algebraic K-groups of any smooth projective variety over a
+      finite field vanish up to torsion.
+    tags: [k-theory, finite-fields]
+
+  - id: section-conjecture
+    name: Section conjecture
+    subdomain: algebraic-geometry
+    status: open
+    statement: >
+      On splittings of group homomorphisms from fundamental groups of
+      complete smooth curves over finitely-generated fields.
+    tags: [fundamental-group, galois-theory]
+
+  - id: standard-conjectures
+    name: Standard conjectures on algebraic cycles
+    subdomain: algebraic-geometry
+    status: open
+    statement: >
+      A set of conjectures on algebraic cycles proposed by Grothendieck.
+    posed_by: [Alexander Grothendieck]
+    tags: [algebraic-cycles, motives]
+    difficulty:
+      consensus: extremely-hard
+    related_problems: [hodge-conjecture]
+
+  - id: tate-conjecture
+    name: Tate conjecture
+    subdomain: algebraic-geometry
+    status: open
+    statement: >
+      On the connection between algebraic cycles on algebraic varieties
+      and Galois representations on étale cohomology groups.
+    posed_by: [John Tate]
+    tags: [algebraic-cycles, galois-representations, etale-cohomology]
+
+  - id: virasoro-conjecture
+    name: Virasoro conjecture
+    subdomain: algebraic-geometry
+    status: open
+    statement: >
+      A generating function encoding Gromov–Witten invariants of a smooth
+      projective variety is fixed by an action of half the Virasoro algebra.
+    tags: [gromov-witten, virasoro-algebra]
+
+  - id: zariski-multiplicity
+    name: Zariski multiplicity conjecture
+    subdomain: algebraic-geometry
+    status: open
+    statement: >
+      Topological equisingularity and equimultiplicity of varieties at
+      singular points.
+    tags: [singularities, equisingularity]
+
+  - id: resolution-char-p
+    name: Resolution of singularities in characteristic p
+    subdomain: algebraic-geometry
+    status: open
+    statement: >
+      Does resolution of singularities hold for algebraic varieties in
+      characteristic p?
+    tags: [singularities, positive-characteristic]
+    difficulty:
+      consensus: extremely-hard
+
+  - id: infinite-flips
+    name: Termination of flips in dimension > 3
+    subdomain: algebraic-geometry
+    status: open
+    statement: >
+      Are infinite sequences of flips possible in dimensions greater than 3?
+    tags: [birational-geometry, minimal-model-program]
+
+  # ═══════════════════════════════════════════
+  # EUCLIDEAN GEOMETRY
+  # ═══════════════════════════════════════════
+
+  - id: atiyah-configurations
+    name: Atiyah conjecture on configurations
+    subdomain: euclidean-geometry
+    status: open
+    statement: >
+      On the invertibility of a certain n-by-n matrix depending on n points in R³.
+    posed_by: [Michael Atiyah]
+    tags: [point-configurations, matrices]
+
+  - id: bellman-forest
+    name: Bellman's lost-in-a-forest problem
+    subdomain: euclidean-geometry
+    status: open
+    statement: >
+      Find the shortest route guaranteed to reach the boundary of a given
+      shape from an unknown interior point with unknown orientation.
+    tags: [search-problems, optimization]
+    ai_triage:
+      tier: T2-experimental
+      amenability_score: 5
+      approaches: [heuristic-search, monte-carlo]
+
+  - id: ehrhart-volume
+    name: Ehrhart's volume conjecture
+    subdomain: euclidean-geometry
+    status: open
+    statement: >
+      A convex body K in n dimensions containing a single lattice point in its
+      interior as its center of mass cannot have volume > (n+1)^n/n!.
+    tags: [convex-bodies, lattice-points]
+
+  - id: falconer-conjecture
+    name: Falconer's conjecture
+    subdomain: euclidean-geometry
+    status: open
+    statement: >
+      Sets of Hausdorff dimension > d/2 in R^d must have a distance set
+      of nonzero Lebesgue measure.
+    tags: [hausdorff-dimension, distance-sets]
+
+  - id: hermite-constants-higher
+    name: Values of Hermite constants
+    subdomain: euclidean-geometry
+    status: open
+    statement: >
+      Determine the values of the Hermite constants for dimensions other
+      than 1–8 and 24.
+    tags: [lattices, sphere-packing]
+    ai_triage:
+      tier: T1-computational
+      amenability_score: 6
+      approaches: [numerical-verification, heuristic-search]
+
+  - id: moser-worm
+    name: Moser's worm problem
+    subdomain: euclidean-geometry
+    status: open
+    statement: >
+      What is the smallest convex set that contains a unit-length arc of
+      every planar curve?
+    tags: [convex-sets, universal-covers]
+    ai_triage:
+      tier: T2-experimental
+      amenability_score: 5
+      approaches: [numerical-verification, monte-carlo, heuristic-search]
+
+  - id: moving-sofa
+    name: Moving sofa problem
+    subdomain: euclidean-geometry
+    status: claimed-resolved
+    statement: >
+      What is the largest area sofa that can be moved around a right-angled
+      corner in a unit-width hallway?
+    tags: [optimization, geometric-extremum]
+    difficulty:
+      consensus: hard
+    ai_triage:
+      tier: T2-experimental
+      amenability_score: 6
+      approaches: [numerical-verification, heuristic-search, genetic-programming]
+      notes: >
+        Gerver's sofa (area ≈ 2.2195) proven optimal by Jineon Baek (2024 preprint).
+        Status: claimed-resolved pending peer review.
+    partial_results:
+      - year: 2024
+        authors: [Jineon Baek]
+        description: >
+          Preprint claiming proof that Gerver's sofa is optimal (area ≈ 2.2195)
+
+  - id: lebesgue-universal
+    name: Lebesgue's universal covering problem
+    subdomain: euclidean-geometry
+    status: open
+    statement: >
+      What is the smallest convex shape that can cover every planar set of
+      diameter 1?
+    tags: [covering, convex-sets]
+    ai_triage:
+      tier: T2-experimental
+      amenability_score: 6
+      approaches: [numerical-verification, heuristic-search]
+
+  - id: thomson-problem
+    name: Thomson problem
+    subdomain: euclidean-geometry
+    status: open
+    statement: >
+      What is the minimum energy configuration of n mutually repelling
+      point charges on a unit sphere?
+    year_posed: 1904
+    posed_by: [J. J. Thomson]
+    collections: [smale-problems]
+    tags: [sphere, energy-minimization, coulomb]
+    difficulty:
+      consensus: hard
+    ai_triage:
+      tier: T1-computational
+      amenability_score: 8
+      approaches: [heuristic-search, monte-carlo, reinforcement-learning, gradient-optimization]
+      compute_profile: moderate
+      notes: >
+        Known optimal solutions only for small n (≤ ~65 rigorously,
+        ~several thousand numerically). Each new n with proved optimal
+        configuration is publishable. Related to Tammes problem (packing)
+        and Fekete problem (logarithmic energy). Smale's 7th problem.
+    partial_results:
+      - year: 1991
+        authors: [Erber, Hockney]
+        description: Extensive numerical catalogue for n ≤ 200
+      - year: 2019
+        authors: [Bondarenko, Hardin, Saff]
+        description: Asymptotic energy expansions for large n on S²
+
+  # ═══════════════════════════════════════════
+  # DIFFERENTIAL GEOMETRY
+  # ═══════════════════════════════════════════
+
+  - id: filling-area
+    name: Filling area conjecture
+    subdomain: differential-geometry
+    status: open
+    statement: >
+      The hemisphere has minimum area among surfaces filling the Riemannian circle.
+    tags: [systolic-geometry, area-minimization]
+
+  - id: hopf-conjecture
+    name: Hopf conjecture
+    subdomain: differential-geometry
+    status: open
+    statement: >
+      Various conjectures: S² × S² admits no Riemannian metric with positive
+      sectional curvature; Euler characteristic of even-dimensional compact
+      Riemannian manifold with positive sectional curvature is positive.
+    posed_by: [Heinz Hopf]
+    tags: [curvature, euler-characteristic]
+
+  # ═══════════════════════════════════════════
+  # DISCRETE GEOMETRY
+  # ═══════════════════════════════════════════
+
+  - id: illumination-problem
+    name: Illumination problem
+    subdomain: discrete-geometry
+    status: open
+    statement: >
+      Can every convex body in dimension d ≥ 3 be illuminated by 2^d
+      or fewer light sources?
+    tags: [illumination, convex-bodies]
+    ai_triage:
+      tier: T3-pattern
+      amenability_score: 4
+      approaches: [counterexample-search, heuristic-search]
+
+  - id: kobon-triangles
+    name: Kobon triangles
+    subdomain: discrete-geometry
+    status: open
+    statement: >
+      How many non-overlapping triangles can be produced by n straight lines?
+    year_posed: 1978
+    posed_by: [Kobon Fujimura]
+    tags: [arrangements, triangles, line-arrangements]
+    difficulty:
+      consensus: moderate
+    ai_triage:
+      tier: T1-computational
+      amenability_score: 8
+      approaches: [brute-force-search, heuristic-search, sat-solver]
+      compute_profile: moderate
+      notes: >
+        Known values for n ≤ 21. Floor(n(n-2)/3) is the conjectured maximum.
+        Optimal arrangements known for small n; gaps at n = 11, 13, 15, etc.
+        New constructions directly publishable (OEIS A006066).
+    partial_results:
+      - year: 2007
+        authors: [Saburo Tamura]
+        description: Optimal or near-optimal for several small n values

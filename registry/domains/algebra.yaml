@@ -1,0 +1,147 @@
+# Algebra — Open Problems Registry
+# Source: English Wikipedia "List of unsolved problems in mathematics"
+
+problems:
+
+  # ═══════════════════════════════════════════
+  # GENERAL ALGEBRA
+  # ═══════════════════════════════════════════
+
+  - id: birch-tate
+    name: Birch–Tate conjecture
+    subdomain: general
+    status: open
+    statement: >
+      Relates the order of the center of the Steinberg group of the ring
+      of integers of a number field to the field's Dedekind zeta function.
+    tags: [k-theory, zeta-functions]
+
+  - id: green-conjecture
+    name: Green's conjecture
+    subdomain: general
+    status: open
+    statement: >
+      The Clifford index of a non-hyperelliptic curve is determined by the
+      extent to which it, as a canonical curve, has linear syzygies.
+    tags: [algebraic-curves, syzygies]
+
+  - id: grothendieck-katz
+    name: Grothendieck–Katz p-curvature conjecture
+    subdomain: general
+    status: open
+    statement: >
+      A conjectured local–global principle for linear ordinary differential
+      equations.
+    tags: [differential-equations, hasse-principle]
+
+  - id: hilbert-15
+    name: Hilbert's fifteenth problem
+    subdomain: general
+    status: open
+    statement: Put Schubert calculus on a rigorous foundation.
+    year_posed: 1900
+    posed_by: [David Hilbert]
+    collections: [hilbert-problems]
+    tags: [schubert-calculus, enumerative-geometry]
+
+  - id: hilbert-16
+    name: Hilbert's sixteenth problem
+    subdomain: general
+    status: open
+    statement: >
+      What are the possible configurations of the connected components of M-curves?
+    year_posed: 1900
+    posed_by: [David Hilbert]
+    collections: [hilbert-problems]
+    tags: [algebraic-curves, topology]
+
+  - id: homological-conjectures
+    name: Homological conjectures in commutative algebra
+    subdomain: general
+    status: open
+    statement: Various conjectures about homological properties of commutative rings.
+    tags: [commutative-algebra, homological-algebra]
+
+  - id: uniform-boundedness-rational-points
+    name: Uniform boundedness conjecture for rational points
+    subdomain: general
+    status: open
+    statement: >
+      Do algebraic curves of genus g ≥ 2 over number fields K have at most
+      some bounded number N(K,g) of K-rational points?
+    tags: [rational-points, algebraic-curves]
+
+  - id: wild-problems
+    name: Wild problems
+    subdomain: general
+    status: open
+    statement: >
+      Classification of pairs of n×n matrices under simultaneous conjugation.
+    tags: [matrix-theory, classification]
+
+  - id: zilber-pink
+    name: Zilber–Pink conjecture
+    subdomain: general
+    status: open
+    statement: >
+      If X is a mixed Shimura variety or semiabelian variety defined over C,
+      and V ⊆ X is a subvariety, then V contains only finitely many maximal
+      atypical subvarieties.
+    tags: [shimura-varieties, abelian-varieties]
+
+  # ═══════════════════════════════════════════
+  # GROUP THEORY
+  # ═══════════════════════════════════════════
+
+  - id: andrews-curtis
+    name: Andrews–Curtis conjecture
+    subdomain: group-theory
+    status: open
+    statement: >
+      Every balanced presentation of the trivial group can be transformed
+      to the trivial presentation by Andrews–Curtis moves.
+    tags: [combinatorial-group-theory, presentations]
+    ai_triage:
+      tier: T1-computational
+      amenability_score: 6
+      approaches: [brute-force-search, heuristic-search, genetic-programming]
+      notes: >
+        Potential counterexamples found computationally. Amenable to search-based methods.
+
+  - id: burnside-problem
+    name: Burnside problem (bounded)
+    subdomain: group-theory
+    status: open
+    statement: >
+      For which values of d and n is the bounded Burnside group B(d,n) finite?
+    tags: [burnside-groups, finiteness]
+
+  - id: herzog-schoenheim
+    name: Herzog–Schönheim conjecture
+    subdomain: group-theory
+    status: open
+    statement: >
+      Given a finite system of left cosets of subgroups of a group G, if
+      the cosets are disjoint then the indices must have a common prime factor.
+    tags: [coset-covers]
+
+  - id: kourovka-notebook
+    name: Kourovka Notebook problems
+    subdomain: group-theory
+    status: open
+    statement: >
+      Collection of over 100 unsolved problems in group theory, maintained
+      since 1965.
+    tags: [problem-collection]
+
+  # ═══════════════════════════════════════════
+  # REPRESENTATION THEORY
+  # ═══════════════════════════════════════════
+
+  - id: demazure-conjecture
+    name: Demazure conjecture
+    subdomain: representation-theory
+    status: open
+    statement: >
+      On representations of algebraic groups over the integers.
+    tags: [algebraic-groups, representations]

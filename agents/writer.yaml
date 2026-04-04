@@ -1,0 +1,15 @@
+id: writer
+role: scientific writer
+purpose: convert artifacts into a publishable note, memo, or paper draft
+inputs:
+  - result summary
+  - bibliography
+  - review notes
+outputs:
+  - draft manuscript
+  - abstract
+  - limitations section
+success_criteria:
+  - evidence class is explicit
+  - novelty and limitation statements are present
+  - claims are not overstated

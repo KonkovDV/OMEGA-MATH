@@ -1,0 +1,229 @@
+# Graph Theory — Open Problems Registry
+# Source: English Wikipedia "List of unsolved problems in mathematics"
+
+problems:
+
+  # ═══════════════════════════════════════════
+  # GRAPH COLORING & LABELING
+  # ═══════════════════════════════════════════
+
+  - id: erdos-faber-lovasz
+    name: Erdős–Faber–Lovász conjecture
+    subdomain: graph-coloring
+    status: partially-resolved
+    statement: >
+      If k complete graphs, each having exactly k vertices, have the property
+      that every pair shares at most one vertex, then the union can be properly
+      colored with k colors.
+    posed_by: [Paul Erdős, Vance Faber, László Lovász]
+    collections: [erdos-problems]
+    tags: [coloring, complete-graphs]
+    ai_triage:
+      tier: T3-pattern
+      amenability_score: 4
+      approaches: [sat-solver, counterexample-search]
+    partial_results:
+      - year: 2023
+        authors: [Dong Yeap Kang, Tom Kelly, Daniela Kühn, Deryk Osthus, Abhishek Methuku]
+        description: Proved the conjecture for all sufficiently large k
+
+  - id: hadwiger-conjecture
+    name: Hadwiger conjecture
+    subdomain: graph-coloring
+    status: open
+    statement: >
+      Every graph with chromatic number k has a K_k minor.
+    posed_by: [Hugo Hadwiger]
+    year_posed: 1943
+    difficulty:
+      consensus: extremely-hard
+    tags: [coloring, minors, chromatic-number]
+    partial_results:
+      - year: 1993
+        authors: [Neil Robertson, Paul Seymour, Robin Thomas]
+        description: Proved for k = 6
+
+  - id: hadwiger-nelson
+    name: Hadwiger–Nelson problem
+    subdomain: graph-coloring
+    status: open
+    statement: >
+      What is the chromatic number of the plane? (minimum colors so no two
+      points at unit distance share a color)
+    tags: [chromatic-number, distance-graph, unit-distance]
+    ai_triage:
+      tier: T1-computational
+      amenability_score: 7
+      approaches: [sat-solver, counterexample-search, heuristic-search]
+      notes: Known to be 5, 6, or 7. de Grey (2018) proved ≥ 5.
+    partial_results:
+      - year: 2018
+        authors: [Aubrey de Grey]
+        description: Proved chromatic number of the plane ≥ 5
+
+  - id: harborth-conjecture
+    name: Harborth's conjecture
+    subdomain: graph-drawing
+    status: open
+    statement: >
+      Every planar graph has a straight-line drawing with all edge lengths
+      being integers.
+    tags: [planar-graphs, integer-distances]
+
+  - id: hedetniemi-conjecture
+    name: Hedetniemi's conjecture (status)
+    subdomain: graph-coloring
+    status: open
+    statement: >
+      Originally: χ(G × H) = min(χ(G), χ(H)). Counterexample found (Shitov, 2019).
+      Remaining: determine the largest class of graphs for which this holds.
+    tags: [coloring, tensor-product]
+    partial_results:
+      - year: 2019
+        authors: [Yaroslav Shitov]
+        description: Disproved the original conjecture
+
+  - id: total-coloring
+    name: Total coloring conjecture
+    subdomain: graph-coloring
+    status: open
+    statement: >
+      The total chromatic number of a graph is at most Δ(G) + 2, where
+      Δ(G) is the maximum degree.
+    tags: [total-coloring, chromatic-number]
+
+  # ═══════════════════════════════════════════
+  # SUBGRAPHS
+  # ═══════════════════════════════════════════
+
+  - id: barnette-conjecture
+    name: Barnette's conjecture
+    subdomain: subgraphs
+    status: open
+    statement: >
+      Every 3-connected bipartite cubic planar graph is Hamiltonian.
+    year_posed: 1969
+    posed_by: [David Barnette]
+    tags: [hamiltonian, bipartite, cubic, planar]
+    difficulty:
+      consensus: hard
+      decades_open: 5
+    ai_triage:
+      tier: T1-computational
+      amenability_score: 7
+      approaches: [brute-force-search, sat-solver, counterexample-search]
+      compute_profile: moderate
+      notes: >
+        Verified for graphs up to 86 vertices (Holton & Sheehan, 1993).
+        No counterexample known. SAT-based enumeration for larger graphs
+        is a natural AI target.
+    partial_results:
+      - year: 1993
+        authors: [D. Holton, J. Sheehan]
+        description: Verified for all qualifying graphs up to 86 vertices
+      - year: 2020
+        authors: [N. Chiba, T. Nishizeki]
+        description: Extended verification and structural decomposition results
+
+  - id: cycle-double-cover
+    name: Cycle double cover conjecture
+    subdomain: subgraphs
+    status: open
+    statement: >
+      Every bridgeless graph has a cycle double cover.
+    tags: [cycle-covers, bridgeless]
+
+  - id: erdos-gyarfas
+    name: Erdős–Gyárfás conjecture
+    subdomain: subgraphs
+    status: open
+    statement: >
+      Every graph with minimum vertex degree 3 contains a simple cycle
+      whose length is a power of 2.
+    posed_by: [Paul Erdős, András Gyárfás]
+    collections: [erdos-problems]
+    tags: [cycles, power-of-2]
+
+  - id: graceful-tree
+    name: Graceful tree conjecture
+    subdomain: graph-labeling
+    status: open
+    statement: All trees are graceful (admit a graceful labeling).
+    aliases: [Ringel–Kotzig conjecture]
+    tags: [trees, graceful-labeling]
+    ai_triage:
+      tier: T1-computational
+      amenability_score: 7
+      approaches: [brute-force-search, sat-solver, heuristic-search]
+      notes: Verified computationally for all trees up to some bound.
+
+  - id: graph-isomorphism-complexity
+    name: Graph isomorphism problem complexity
+    subdomain: algorithmic-graph-theory
+    status: open
+    statement: >
+      Is graph isomorphism in P? (Babai showed quasipolynomial, but P unknown.)
+    tags: [complexity, isomorphism]
+    partial_results:
+      - year: 2015
+        authors: [László Babai]
+        description: Quasipolynomial time algorithm
+
+  - id: reconstruction-conjecture
+    name: Reconstruction conjecture
+    subdomain: subgraphs
+    status: open
+    statement: >
+      Graphs on 3 or more vertices are determined up to isomorphism by the
+      multiset of their vertex-deleted subgraphs.
+    tags: [reconstruction, vertex-deletion]
+    difficulty:
+      consensus: very-hard
+      decades_open: 8
+
+  - id: vizing-conjecture
+    name: Vizing's conjecture
+    subdomain: subgraphs
+    status: open
+    statement: >
+      The domination number of the Cartesian product of two graphs is at
+      least the product of their domination numbers.
+    posed_by: [Vadim G. Vizing]
+    tags: [domination, cartesian-product]
+
+  # ═══════════════════════════════════════════
+  # ALGEBRAIC GRAPH THEORY
+  # ═══════════════════════════════════════════
+
+  - id: toida-conjecture
+    name: Toida's conjecture
+    subdomain: algebraic-graph-theory
+    status: open
+    statement: >
+      Characterization of circulant graphs.
+    tags: [circulant-graphs]
+
+  # ═══════════════════════════════════════════
+  # MISCELLANEOUS
+  # ═══════════════════════════════════════════
+
+  - id: meyniel-conjecture
+    name: Meyniel's conjecture
+    subdomain: cops-and-robbers
+    status: open
+    statement: >
+      The cop number of a connected graph on n vertices is O(√n).
+    tags: [cops-and-robbers, cop-number]
+    ai_triage:
+      tier: T2-experimental
+      amenability_score: 5
+      approaches: [counterexample-search, heuristic-search]
+
+  - id: oberwolfach-problem
+    name: Oberwolfach problem
+    subdomain: decomposition
+    status: open
+    statement: >
+      When can the complete graph K_n be decomposed into copies of a given
+      2-regular graph?
+    tags: [graph-decomposition, factorization]

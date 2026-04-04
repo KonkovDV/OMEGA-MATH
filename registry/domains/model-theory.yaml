@@ -1,0 +1,26 @@
+# Model Theory & Formal Languages — Open Problems Registry
+# Source: English Wikipedia "List of unsolved problems in mathematics"
+
+problems:
+
+  - id: vaught-conjecture
+    name: Vaught's conjecture
+    subdomain: model-theory
+    status: open
+    statement: >
+      The number of countable models of a first-order complete theory in
+      a countable language is either countable or 2^ℵ₀.
+    posed_by: [Robert Vaught]
+    tags: [countable-models, spectrum]
+    difficulty:
+      consensus: very-hard
+
+  - id: shelah-possible-spectra
+    name: Shelah's possible spectra problem
+    subdomain: model-theory
+    status: open
+    statement: >
+      Characterize all "possible spectra" of complete theories in
+      uncountable languages.
+    posed_by: [Saharon Shelah]
+    tags: [spectrum, classification-theory]

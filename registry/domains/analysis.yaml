@@ -1,0 +1,123 @@
+# Analysis — Open Problems Registry
+# Source: English Wikipedia "List of unsolved problems in mathematics"
+
+problems:
+
+  - id: navier-stokes
+    name: Navier–Stokes existence and smoothness
+    subdomain: partial-differential-equations
+    status: open
+    statement: >
+      Do solutions of the 3D Navier–Stokes equations always exist, and are
+      they always smooth (no singularities in finite time)?
+    year_posed: 2000
+    collections: [millennium-prize]
+    prize:
+      name: Millennium Prize
+      amount_usd: 1000000
+      organization: Clay Mathematics Institute
+    difficulty:
+      consensus: extremely-hard
+    tags: [fluid-dynamics, pde, regularity]
+    ai_triage:
+      tier: T5-foundational
+      amenability_score: 1
+      approaches: [numerical-verification, pattern-recognition]
+      notes: Numerical simulations can provide evidence but proof requires deep PDE analysis.
+
+  - id: yang-mills
+    name: Yang–Mills existence and mass gap
+    subdomain: mathematical-physics
+    status: open
+    statement: >
+      Prove that for any compact simple gauge group G, a non-trivial quantum
+      Yang–Mills theory exists on R⁴ and has a mass gap Δ > 0.
+    year_posed: 2000
+    collections: [millennium-prize]
+    prize:
+      name: Millennium Prize
+      amount_usd: 1000000
+      organization: Clay Mathematics Institute
+    difficulty:
+      consensus: extremely-hard
+    tags: [gauge-theory, quantum-field-theory, mass-gap]
+    ai_triage:
+      tier: T5-foundational
+      amenability_score: 0
+
+  - id: invariant-subspace
+    name: Invariant subspace problem
+    subdomain: functional-analysis
+    status: open
+    statement: >
+      Does every bounded operator on an infinite-dimensional separable
+      Hilbert space have a non-trivial invariant closed subspace?
+    tags: [operators, hilbert-space]
+    difficulty:
+      consensus: very-hard
+
+  - id: vitushkin-conjecture-1d
+    name: Vitushkin's conjecture for 1-dimensional sets
+    subdomain: complex-analysis
+    status: open
+    statement: >
+      A compact set in C is removable for bounded analytic functions iff it
+      has zero analytic capacity iff it is purely 1-unrectifiable.
+    tags: [analytic-capacity, removable-sets]
+
+  - id: khabibullin-conjecture
+    name: Khabibullin's conjecture on integral inequalities
+    subdomain: complex-analysis
+    status: open
+    statement: >
+      Several equivalent forms involving integral inequalities for entire
+      functions and subharmonic functions.
+    tags: [integral-inequalities, entire-functions]
+
+  - id: pompeiu-problem
+    name: Pompeiu problem
+    subdomain: harmonic-analysis
+    status: open
+    statement: >
+      Does a nonempty bounded open set Ω ⊂ R^n for which a nonzero
+      continuous function exists integrating to zero on all congruent
+      copies of Ω necessarily have to be a ball?
+    tags: [integral-geometry, pompeiu]
+
+  - id: schanuel-operator
+    name: Lehmer's conjecture (Mahler measure)
+    subdomain: analysis
+    status: open
+    statement: >
+      Is there a polynomial with integer coefficients with Mahler measure
+      strictly between 1 and Lehmer's Salem number (≈1.17628)?
+    tags: [mahler-measure, salem-numbers]
+
+  - id: sendov-conjecture
+    name: Sendov's conjecture
+    subdomain: complex-analysis
+    status: open
+    statement: >
+      For a polynomial with all zeros in the closed unit disk, each zero
+      has a critical point within distance 1 from it.
+    tags: [polynomial-zeros, critical-points]
+    partial_results:
+      - year: 2020
+        authors: [Terence Tao]
+        description: Proved for sufficiently high degree polynomials
+
+  - id: mean-value-problem
+    name: Mean value problem
+    subdomain: complex-analysis
+    status: open
+    statement: >
+      Is the derivative of a polynomial bounded below in terms of the value
+      of the polynomial at 0?
+    tags: [polynomial-derivatives]
+
+  - id: polya-de-vore
+    name: Pólya–de la Vallée-Poussin conjecture
+    subdomain: analysis
+    status: open
+    statement: On the zeros of Fourier transforms.
+    tags: [fourier-transform, zeros]

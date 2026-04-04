@@ -1,0 +1,38 @@
+# Set Theory — Open Problems Registry
+# Source: English Wikipedia "List of unsolved problems in mathematics"
+
+problems:
+
+  - id: continuum-hypothesis
+    name: Continuum hypothesis (independence)
+    subdomain: set-theory
+    status: open
+    statement: >
+      Is there a "natural" or "preferred" model of set theory that settles
+      whether 2^ℵ₀ = ℵ₁? (The classical CH is independent of ZFC by
+      Gödel 1940 + Cohen 1963.)
+    posed_by: [Georg Cantor]
+    year_posed: 1878
+    collections: [hilbert-problems]
+    tags: [cardinality, forcing, large-cardinals]
+    ai_triage:
+      tier: T5-foundational
+      amenability_score: 0
+
+  - id: woodin-omega-conjecture
+    name: Woodin's Ω-conjecture
+    subdomain: set-theory
+    status: open
+    statement: >
+      A characterization of Ω-valid sentences in terms of large cardinals.
+    posed_by: [W. Hugh Woodin]
+    tags: [large-cardinals, omega-logic]
+
+  - id: reinhardt-cardinals
+    name: Reinhardt cardinals in ZF
+    subdomain: set-theory
+    status: open
+    statement: >
+      Does the existence of a Reinhardt cardinal in ZF (without Choice)
+      lead to a contradiction?
+    tags: [large-cardinals, consistency]

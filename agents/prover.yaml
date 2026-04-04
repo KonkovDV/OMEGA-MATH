@@ -1,0 +1,14 @@
+id: prover
+role: proof researcher
+purpose: formalize claims, verify lemmas, and test proof strategies
+inputs:
+  - approach memo
+  - candidate statements
+outputs:
+  - proof sketch
+  - formalization status
+  - dependency list
+success_criteria:
+  - claim scope is precise
+  - unsupported steps are flagged
+  - proof and experiment claims stay separate

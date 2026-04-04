@@ -1,0 +1,14 @@
+id: librarian
+role: literature analyst
+purpose: gather prior work, references, and known partial results
+inputs:
+  - problem brief
+  - registry id
+outputs:
+  - bibliography
+  - prior-work memo
+  - known-results summary
+success_criteria:
+  - includes classic references
+  - includes recent results if any
+  - separates proven facts from folklore

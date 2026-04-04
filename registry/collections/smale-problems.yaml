@@ -1,0 +1,121 @@
+# Smale's Problems — Quick Reference
+# 18 problems proposed by Stephen Smale (1998). Status as of April 2026.
+# See: https://en.wikipedia.org/wiki/Smale%27s_problems
+
+problems:
+
+  - id: smale-1
+    name: Riemann hypothesis (Smale)
+    status: open
+    domain: number-theory
+    registry_id: riemann-hypothesis
+
+  - id: smale-2
+    name: Poincaré conjecture (Smale)
+    status: resolved
+    domain: topology
+    note: Resolved by Perelman (2003)
+
+  - id: smale-3
+    name: P = NP? (Smale)
+    status: open
+    domain: computer-science
+    registry_id: p-vs-np
+
+  - id: smale-4
+    name: Integer zeros of a polynomial
+    status: open
+    domain: number-theory
+    note: Related to Hilbert's 10th; complexity of integer programming
+
+  - id: smale-5
+    name: Height bounds for Diophantine curves
+    status: partially-resolved
+    domain: number-theory
+    note: Effective Mordell via Faltings + subsequent refinements
+
+  - id: smale-6
+    name: Finiteness of relative equilibria in Newtonian N-body problem
+    status: open
+    domain: dynamical-systems
+    note: Hampton–Moeckel (2006) proved finiteness for N=4; general case open
+
+  - id: smale-7
+    name: Distribution of points on S²
+    status: open
+    domain: geometry
+    note: Thomson problem family; essentially about optimal point distributions
+    registry_id: thomson-problem
+
+  - id: smale-8
+    name: Extend the mathematical model of general equilibrium theory
+    status: open
+    domain: game-theory
+    note: Mathematical economics / optimization
+
+  - id: smale-9
+    name: Linear programming — strongly polynomial algorithm
+    status: open
+    domain: computer-science
+    note: Is there a strongly polynomial time algorithm for LP?
+
+  - id: smale-10
+    name: Pugh's closing lemma (general case)
+    status: open
+    domain: dynamical-systems
+    note: C¹ case proved by Pugh (1967); C^r case open for r ≥ 2
+
+  - id: smale-11
+    name: Is one-dimensional dynamics generally hyperbolic?
+    status: partially-resolved
+    domain: dynamical-systems
+    note: Kozlovski–Shen–van Strien (2007) proved for real polynomials
+
+  - id: smale-12
+    name: Centralizers of generic diffeomorphisms
+    status: resolved
+    domain: dynamical-systems
+    note: Bonatti–Crovisier–Wilkinson (2009)
+
+  - id: smale-13
+    name: Hilbert's 16th problem (limit cycles)
+    status: open
+    domain: dynamical-systems
+    registry_id: hilbert-16-limit-cycles
+
+  - id: smale-14
+    name: Lorenz attractor — sensitivity to initial conditions
+    status: resolved
+    domain: dynamical-systems
+    note: Tucker (2002) gave computer-assisted proof
+
+  - id: smale-15
+    name: Navier–Stokes equations
+    status: open
+    domain: analysis
+    registry_id: navier-stokes
+
+  - id: smale-16
+    name: Jacobian conjecture
+    status: open
+    domain: algebra
+    registry_id: jacobian-conjecture
+
+  - id: smale-17
+    name: Solving polynomial equations (complexity)
+    status: partially-resolved
+    domain: algebra
+    note: Beltran–Pardo (2011), Bürgisser–Cucker (2011) near-optimal algorithms
+
+  - id: smale-18
+    name: Intelligence and computability limits
+    status: open
+    domain: computer-science
+    note: >
+      Vague problem about the limits of intelligence; no consensus formalization
+
+status_summary:
+  total: 18
+  resolved: 3
+  partially_resolved: 3
+  open: 12

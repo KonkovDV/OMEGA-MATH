@@ -1,0 +1,102 @@
+# Combinatorics — Open Problems Registry
+# Source: English Wikipedia "List of unsolved problems in mathematics"
+
+problems:
+
+  - id: frankl-conjecture
+    name: Frankl's union-closed conjecture
+    subdomain: extremal-combinatorics
+    status: open
+    statement: >
+      For any finite union-closed family of finite sets (other than the family
+      containing only ∅), an element exists that belongs to at least half the sets.
+    posed_by: [Péter Frankl]
+    tags: [union-closed, extremal, lattice-theory]
+    ai_triage:
+      tier: T3-pattern
+      amenability_score: 4
+      approaches: [sat-solver, counterexample-search, pattern-recognition]
+      notes: >
+        Gilmer (2022) proved element exists in ≥ (3−√5)/2 ≈ 38.2% of sets.
+        Chase–Lovett (2022) gave simplified proof. Gap between ~38% and 50% remains.
+    partial_results:
+      - year: 2022
+        authors: [Justin Gilmer]
+        description: >
+          Proved element exists in at least (3−√5)/2 ≈ 38.2% of sets
+      - year: 2022
+        authors: [Zachary Chase, Shachar Lovett]
+        description: Simplified and sharpened Gilmer's result
+
+  - id: lonely-runner
+    name: Lonely runner conjecture
+    subdomain: combinatorics
+    status: open
+    statement: >
+      If k ≥ 1 runners with pairwise distinct constant speeds run on a
+      circular track, then each runner is at some time at distance ≥ 1/(k+1)
+      from all others.
+    tags: [diophantine-approximation, circular]
+    ai_triage:
+      tier: T2-experimental
+      amenability_score: 5
+      approaches: [numerical-verification, counterexample-search]
+
+  - id: singmaster-binomial
+    name: Singmaster's conjecture (binomial)
+    subdomain: combinatorics
+    status: open
+    statement: >
+      There is a finite upper bound on the number of times a number > 1
+      can appear in Pascal's triangle.
+    posed_by: [David Singmaster]
+    tags: [binomial-coefficients, pascal-triangle]
+
+  - id: 1-factorization
+    name: 1-factorization conjecture
+    subdomain: combinatorics
+    status: open
+    statement: >
+      Every regular graph of order 2n where n is odd with degree ≥ n
+      is 1-factorable.
+    tags: [graph-factorization, regular-graphs]
+
+  - id: hadamard-matrix
+    name: Hadamard matrix conjecture
+    subdomain: combinatorics
+    status: open
+    statement: Hadamard matrices exist for every positive multiple of 4.
+    tags: [hadamard-matrices, combinatorial-designs]
+    ai_triage:
+      tier: T1-computational
+      amenability_score: 7
+      approaches: [brute-force-search, heuristic-search, sat-solver]
+      notes: First open case is order 668. Many known construction methods.
+
+  - id: thrackle-conjecture
+    name: Conway's thrackle conjecture
+    subdomain: combinatorics
+    status: open
+    statement: >
+      A thrackle (where any two curves meet exactly once) has at most as
+      many edges as vertices.
+    posed_by: [John Horton Conway]
+    tags: [graph-drawing, thrackles]
+
+  - id: union-free-family
+    name: Largest union-free family
+    subdomain: extremal-combinatorics
+    status: open
+    statement: >
+      What is the maximum size of a union-free family of subsets of an n-set?
+    tags: [extremal, set-families]
+
+  - id: vamos-matroid
+    name: Algebraic matroid characterization
+    subdomain: matroid-theory
+    status: open
+    statement: Can one decide algorithmically if a given matroid is algebraic?
+    tags: [matroids, decidability]
+    ai_triage:
+      tier: T3-pattern
+      amenability_score: 3

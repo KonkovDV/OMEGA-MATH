@@ -1,0 +1,60 @@
+# Game Theory & Combinatorial Games — Open Problems Registry
+# Source: English Wikipedia "List of unsolved problems in mathematics"
+
+problems:
+
+  - id: chess-first-move
+    name: Solving chess
+    subdomain: combinatorial-games
+    status: open
+    statement: >
+      What is the outcome of chess with perfect play from both sides?
+      (Is it a first-player win, second-player win, or draw?)
+    tags: [chess, game-solving, strategy]
+    ai_triage:
+      tier: T1-computational
+      amenability_score: 3
+      approaches: [brute-force-search, heuristic-search, reinforcement-learning]
+      compute_profile: infeasible
+      notes: >
+        Shannon number is ~10^120 positions. Endgame tablebases solved for ≤7-piece
+        endings. Full solution infeasible with current (or foreseeable) technology.
+
+  - id: go-first-move
+    name: Optimal play in Go
+    subdomain: combinatorial-games
+    status: open
+    statement: >
+      What is the optimal first move and outcome with perfect play in Go?
+    tags: [go, game-solving]
+    ai_triage:
+      tier: T1-computational
+      amenability_score: 2
+      compute_profile: infeasible
+
+  - id: chomp-winning-strategy
+    name: Chomp winning strategy
+    subdomain: combinatorial-games
+    status: open
+    statement: >
+      Characterize a winning strategy for the first player in Chomp on
+      a general rectangular board.
+    tags: [chomp, strategy, combinatorial-games]
+    ai_triage:
+      tier: T3-pattern
+      amenability_score: 5
+      approaches: [reinforcement-learning, pattern-recognition]
+
+  - id: sudoku-minimum-givens
+    name: Minimum Sudoku givens
+    subdomain: puzzles
+    status: partially-resolved
+    statement: >
+      The minimum number of givens in a standard 9×9 Sudoku with a unique
+      solution is 17. (Proved by McGuire et al., 2012, via exhaustive search.)
+      Open: exact minimum for larger boards.
+    tags: [sudoku, latin-squares]
+    partial_results:
+      - year: 2012
+        authors: [Gary McGuire, Bastian Tugemann, Gilles Civario]
+        description: Proved 17 is the minimum for 9×9 via exhaustive computation

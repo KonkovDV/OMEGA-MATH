@@ -1,0 +1,51 @@
+# Computer Science — Open Problems Registry
+# Source: English Wikipedia "List of unsolved problems in mathematics"
+
+problems:
+
+  # ═══════════════════════════════════════════
+  # COMPUTATIONAL COMPLEXITY
+  # ═══════════════════════════════════════════
+
+  - id: p-vs-np
+    name: P versus NP
+    subdomain: computational-complexity
+    status: open
+    statement: Is P = NP?
+    year_posed: 1971
+    posed_by: [Stephen Cook, Leonid Levin]
+    collections: [millennium-prize, smale-problems]
+    prize:
+      name: Millennium Prize
+      amount_usd: 1000000
+      organization: Clay Mathematics Institute
+    difficulty:
+      consensus: possibly-undecidable
+      decades_open: 5
+    tags: [complexity-classes, satisfiability]
+    ai_triage:
+      tier: T5-foundational
+      amenability_score: 0
+      notes: >
+        Widely conjectured P ≠ NP. Could potentially be independent of
+        standard axioms. No computational approach.
+
+  # ═══════════════════════════════════════════
+  # AUTOMATA THEORY
+  # ═══════════════════════════════════════════
+
+  - id: cerny-conjecture
+    name: Černý conjecture
+    subdomain: automata-theory
+    status: open
+    statement: >
+      Every n-state synchronizing DFA has a synchronizing word of length
+      at most (n−1)².
+    year_posed: 1964
+    posed_by: [Ján Černý]
+    tags: [automata, synchronizing-words]
+    ai_triage:
+      tier: T1-computational
+      amenability_score: 7
+      approaches: [brute-force-search, sat-solver, counterexample-search]
+      notes: Verified for small n. Active area of combinatorics + automata theory.

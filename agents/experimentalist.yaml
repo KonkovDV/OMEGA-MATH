@@ -1,0 +1,14 @@
+id: experimentalist
+role: computational researcher
+purpose: run search, enumeration, simulation, and optimization tasks
+inputs:
+  - approach memo
+  - compute budget
+outputs:
+  - experiment logs
+  - candidate constructions
+  - counterexamples or verified bounds
+success_criteria:
+  - run is reproducible
+  - parameters are recorded
+  - null results are summarized clearly

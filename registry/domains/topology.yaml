@@ -1,0 +1,125 @@
+# Topology — Open Problems Registry
+# Source: English Wikipedia "List of unsolved problems in mathematics"
+
+problems:
+
+  - id: smooth-4d-poincare
+    name: Smooth four-dimensional Poincaré conjecture
+    subdomain: differential-topology
+    status: open
+    statement: >
+      Can a four-dimensional topological sphere have two or more inequivalent
+      smooth structures?
+    tags: [4-manifolds, smooth-structures]
+    difficulty:
+      consensus: extremely-hard
+
+  - id: andrews-curtis-topology
+    name: Andrews–Curtis conjecture (topology formulation)
+    subdomain: combinatorial-topology
+    status: open
+    statement: >
+      Every balanced presentation of the trivial group can be transformed
+      to the trivial presentation by Andrews–Curtis moves.
+    tags: [group-presentations, simple-homotopy]
+
+  - id: bing-borsuk
+    name: Bing–Borsuk conjecture
+    subdomain: general-topology
+    status: open
+    statement: >
+      Every n-dimensional homogeneous absolute neighborhood retract is a
+      topological manifold.
+    tags: [ANR, homogeneous-spaces, manifolds]
+
+  - id: borel-conjecture
+    name: Borel conjecture
+    subdomain: geometric-topology
+    status: open
+    statement: >
+      Aspherical closed manifolds are determined up to homeomorphism by
+      their fundamental groups.
+    tags: [aspherical, rigidity]
+
+  - id: mazur-conjectures
+    name: Mazur's conjectures
+    subdomain: general-topology
+    status: open
+    statement: Various topological conjectures by Barry Mazur.
+    posed_by: [Barry Mazur]
+    tags: [manifolds]
+
+  - id: novikov-conjecture
+    name: Novikov conjecture
+    subdomain: algebraic-topology
+    status: open
+    statement: >
+      On the homotopy invariance of certain polynomials in the Pontryagin
+      classes of a manifold arising from the fundamental group.
+    posed_by: [Sergei Novikov]
+    tags: [pontryagin-classes, homotopy-invariance]
+    difficulty:
+      consensus: very-hard
+
+  - id: unknotting-polynomial
+    name: Unknotting problem complexity
+    subdomain: knot-theory
+    status: open
+    statement: Can unknots be recognized in polynomial time?
+    tags: [unknot, complexity, knot-recognition]
+    ai_triage:
+      tier: T3-pattern
+      amenability_score: 4
+      approaches: [heuristic-search, neural-theorem-proving]
+      notes: Known to be in NP ∩ co-NP. Polynomial algorithm not known.
+
+  - id: volume-conjecture
+    name: Volume conjecture
+    subdomain: knot-theory
+    status: open
+    statement: >
+      Relating quantum invariants of knots to the hyperbolic geometry of
+      their knot complements.
+    tags: [quantum-invariants, hyperbolic-geometry, knot-complements]
+
+  - id: whitehead-conjecture
+    name: Whitehead conjecture
+    subdomain: algebraic-topology
+    status: open
+    statement: >
+      Every connected subcomplex of a two-dimensional aspherical CW complex
+      is aspherical.
+    posed_by: [J.H.C. Whitehead]
+    tags: [CW-complex, aspherical]
+
+  - id: zeeman-conjecture
+    name: Zeeman conjecture
+    subdomain: PL-topology
+    status: open
+    statement: >
+      Given a finite contractible two-dimensional CW complex K, is K × [0,1]
+      collapsible?
+    posed_by: [Erik Christopher Zeeman]
+    tags: [contractible, collapsible, CW-complex]
+
+  - id: telescope-conjecture
+    name: Telescope conjecture
+    subdomain: stable-homotopy
+    status: resolved
+    statement: >
+      The last of Ravenel's conjectures in stable homotopy theory.
+      Disproved by Burklund, Hahn, Levy, and Schlank (2023).
+    tags: [ravenel-conjectures, chromatic-homotopy]
+    partial_results:
+      - year: 2023
+        authors: [Robert Burklund, Jeremy Hahn, Ishan Levy, Tomer Schlank]
+        description: Disproved the telescope conjecture
+
+  - id: nontriangulable-manifold
+    name: Existence of exotic triangulations
+    subdomain: geometric-topology
+    status: open
+    statement: >
+      Are there topological manifolds in high dimensions that admit no
+      triangulation? (Resolved in dim 4 by Casson.)
+    tags: [triangulations, manifolds]

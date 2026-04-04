@@ -1,0 +1,396 @@
+# OMEGA Triage Matrix — AI Amenability Assessment
+# Problems sorted by amenability score (highest first) across all domains.
+# This is the prioritized work queue for OMEGA agent teams.
+
+# ═══════════════════════════════════════════════════════════
+# TIER 1 — COMPUTATIONAL (amenability 7–10)
+# Direct computation, exhaustive search, SAT/SMT solving
+# START HERE for quick wins and publishable results.
+# ═══════════════════════════════════════════════════════════
+
+tier_1_computational:
+
+  - id: erdos-straus
+    name: Erdős–Straus conjecture (4/n = 1/x + 1/y + 1/z)
+    score: 8
+    domain: number-theory
+    approach: parametric-search + covering-congruences
+    compute: moderate
+    rationale: >
+      Verified for n ≤ 10^14 by parametric families. Remaining gaps amenable to
+      systematic search. Covering congruence method can potentially give complete proof.
+      Five-axis score: searchability 2, signal 2, formalizability 1, speed 2, yield 1.
+
+  - id: selfridge-sierpinski
+    name: Is 78557 the smallest Sierpiński number?
+    score: 8
+    domain: number-theory
+    approach: distributed-primality-testing
+    compute: massive
+    rationale: >
+      PrimeGrid already running distributed search. Only a few candidates remain.
+      Finding a prime for each remaining candidate confirms the conjecture.
+
+  - id: wall-sun-sun-primes
+    name: Existence of Wall–Sun–Sun primes
+    score: 8
+    domain: number-theory
+    approach: brute-force-search
+    compute: heavy
+    rationale: Pure search problem. If they exist, a search could find one.
+
+  - id: thomson-problem
+    name: Thomson problem (charges on sphere)
+    score: 8
+    domain: geometry
+    approach: optimization + monte-carlo + RL
+    compute: moderate
+    rationale: >
+      Direct optimization problem. New configurations for specific n values
+      publishable. AI optimization methods directly applicable.
+
+  - id: kobon-triangles
+    name: Kobon triangles (max non-overlapping triangles from n lines)
+    score: 8
+    domain: geometry
+    approach: search + SAT
+    compute: moderate
+    rationale: Small combinatorial search space. Known values for small n, gaps exist.
+
+  - id: hadamard-matrix
+    name: Hadamard matrix conjecture (order 668)
+    score: 7
+    domain: combinatorics
+    approach: search + construction
+    compute: heavy
+    rationale: Many construction methods known. First open case (668) is specific target.
+
+  - id: hadwiger-nelson
+    name: Chromatic number of the plane
+    score: 7
+    domain: graph-theory
+    approach: SAT + graph-search
+    compute: heavy
+    rationale: de Grey (2018) found 5-chromatic graph. Pushing to 6 or ruling it out.
+
+  - id: barnette-conjecture
+    name: Barnette's conjecture (bipartite cubic planar Hamiltonian)
+    score: 7
+    domain: graph-theory
+    approach: search + SAT + counterexample
+    compute: moderate
+    rationale: Counterexample search or exhaustive verification for small cases.
+
+  - id: graceful-tree
+    name: Graceful tree conjecture
+    score: 7
+    domain: graph-theory
+    approach: search + SAT
+    compute: moderate
+    rationale: Verified for many classes. Remaining classes amenable to search.
+
+  - id: magic-square-of-squares
+    name: 3×3 magic square of distinct perfect squares
+    score: 7
+    domain: number-theory
+    approach: parametric-search + SAT
+    compute: heavy
+    rationale: Bounded search problem with known algebraic constraints.
+
+  - id: lychrel-numbers
+    name: Lychrel numbers in base 10 (196 problem)
+    score: 7
+    domain: number-theory
+    approach: brute-force-iteration
+    compute: heavy
+    rationale: Pure iteration. Extending current record (billions) is publishable.
+
+  - id: odd-weird-numbers
+    name: Existence of odd weird numbers
+    score: 7
+    domain: number-theory
+    approach: search
+    compute: heavy
+    rationale: Structural constraints narrow the search space.
+
+  - id: gaussian-moat
+    name: Gaussian moat problem
+    score: 7
+    domain: number-theory
+    approach: search + graph-algorithms
+    compute: moderate
+    rationale: Direct finite computation in Gaussian integers.
+
+  - id: smallest-skewes-number
+    name: Smallest Skewes's number
+    score: 7
+    domain: number-theory
+    approach: numerical-search
+    compute: massive
+    rationale: Direct computation with high-performance arithmetic.
+
+  - id: recaman-sequence
+    name: Recamán's sequence completeness
+    score: 7
+    domain: number-theory
+    approach: numerical-search
+    compute: moderate
+    rationale: Iterate sequence, check missing values. Extending known range.
+
+  - id: brocard-problem
+    name: Brocard's problem (n! + 1 = m²)
+    score: 7
+    domain: number-theory
+    approach: search
+    compute: moderate
+    rationale: Finite search per n. Currently verified to large bounds.
+
+  - id: cerny-conjecture
+    name: Černý conjecture (synchronizing words)
+    score: 7
+    domain: computer-science
+    approach: search + SAT
+    compute: moderate
+    rationale: Verified for small n. SAT-based approaches effective.
+
+  - id: hermite-constants-higher
+    name: Hermite constants for higher dimensions
+    score: 6
+    domain: geometry
+    approach: search + optimization
+    compute: heavy
+
+  - id: andrews-curtis
+    name: Andrews–Curtis conjecture
+    score: 6
+    domain: algebra
+    approach: search + genetic-programming
+    compute: moderate
+    rationale: Potential counterexample search via transformation sequences.
+
+  - id: scholz-conjecture
+    name: Scholz conjecture (addition chains)
+    score: 6
+    domain: number-theory
+    approach: search
+    compute: moderate
+
+# ═══════════════════════════════════════════════════════════
+# TIER 2 — EXPERIMENTAL (amenability 4–6)
+# Numerical experiments, large-scale verification, statistical analysis.
+# Results = extended bounds, refined conjectures, pattern discoveries.
+# ═══════════════════════════════════════════════════════════
+
+tier_2_experimental:
+
+  - id: ulam-numbers-density
+    name: Density of Ulam numbers
+    score: 6
+    approach: numerical-computation
+    rationale: Compute Ulam sequence to large bounds, analyze density empirically.
+
+  - id: singmaster-conjecture
+    name: Singmaster's conjecture (Pascal triangle)
+    score: 6
+    approach: numerical-verification
+    rationale: Search for high-multiplicity entries in Pascal's triangle.
+
+  - id: gilbreath-conjecture
+    name: Gilbreath's conjecture
+    score: 6
+    approach: numerical-verification
+    rationale: Extend computational verification range.
+
+  - id: self-avoiding-walk-connective
+    name: Connective constant for square lattice
+    score: 6
+    approach: monte-carlo + numerical
+    rationale: High-precision numerical estimates. Exact value unknown for square.
+
+  - id: moving-sofa
+    name: Moving sofa problem
+    score: 6
+    approach: optimization + genetic-programming
+    rationale: >
+      Optimization problem with known near-optimal solution (Gerver).
+      AI could discover improved shapes or prove optimality numerically.
+
+  - id: lebesgue-universal
+    name: Lebesgue's universal covering problem
+    score: 6
+    approach: optimization + numerical
+    rationale: Improved upper bounds via optimization publishable.
+
+  - id: lyapunov-exponents-standard-map
+    name: Positive Lyapunov exponent for standard map
+    score: 6
+    approach: numerical-simulation
+    rationale: Large-scale simulation providing evidence.
+
+  - id: lonely-runner
+    name: Lonely runner conjecture
+    score: 5
+    approach: numerical-verification + search
+    rationale: Proven for k ≤ 6. Proving k=7 computationally possible.
+
+  - id: collatz-conjecture
+    name: Collatz conjecture
+    score: 5
+    approach: numerical-verification + pattern-recognition
+    rationale: >
+      Extending verification range, statistical analysis of stopping times,
+      structure of counter-examples if any exist.
+
+  - id: gauss-circle-problem
+    name: Gauss circle problem
+    score: 5
+    approach: numerical-verification + pattern-recognition
+
+  - id: meyniel-conjecture
+    name: Meyniel's conjecture (cop number √n)
+    score: 5
+    approach: counterexample-search + construction
+
+  - id: three-body-problem-general
+    name: Three-body periodic solutions
+    score: 5
+    approach: numerical-search + RL
+    rationale: Discovering new periodic three-body solutions amenable to AI.
+
+  - id: bellman-forest
+    name: Bellman's lost-in-a-forest problem
+    score: 5
+    approach: optimization + numerical
+
+  - id: moser-worm
+    name: Moser's worm problem
+    score: 5
+    approach: optimization + numerical
+
+  - id: kummer-vandiver
+    name: Kummer–Vandiver conjecture
+    score: 5
+    approach: numerical-verification + symbolic-computation
+
+  - id: beal-conjecture
+    name: Beal's conjecture ($1M prize)
+    score: 4
+    approach: counterexample-search
+    compute: heavy
+    rationale: >
+      $1M prize. Systematic search for counterexamples.
+      Proof likely requires deep algebra.
+
+  - id: goldbach-conjecture
+    name: Goldbach's conjecture
+    score: 4
+    approach: numerical-verification + statistics
+    rationale: Extending verification bound and analyzing representation counts.
+
+  - id: odd-perfect-numbers
+    name: Odd perfect numbers
+    score: 4
+    approach: numerical-constraint-search
+    rationale: Improving lower bounds on hypothetical odd perfect numbers.
+
+# ═══════════════════════════════════════════════════════════
+# TIER 3 — PATTERN RECOGNITION (amenability 2–4)
+# Cross-domain insights, conjecture refinement, literature synthesis.
+# ═══════════════════════════════════════════════════════════
+
+tier_3_pattern:
+
+  - id: frankl-conjecture
+    name: Frankl's union-closed conjecture
+    score: 4
+    approach: SAT + pattern-recognition
+
+  - id: erdos-faber-lovasz
+    name: Erdős–Faber–Lovász conjecture
+    score: 4
+    approach: SAT + counterexample-search
+
+  - id: illumination-problem
+    name: Illumination problem
+    score: 4
+    approach: counterexample-search + construction
+
+  - id: unknotting-polynomial
+    name: Unknotting in polynomial time
+    score: 4
+    approach: neural-methods + heuristic-search
+
+  - id: chomp-winning-strategy
+    name: Chomp winning strategy
+    score: 5
+    approach: RL + pattern-recognition
+
+  - id: vamos-matroid
+    name: Algebraic matroid decidability
+    score: 3
+
+  - id: skolem-problem
+    name: Skolem problem
+    score: 3
+    approach: symbolic-computation
+
+# ═══════════════════════════════════════════════════════════
+# TIER 4 — STRUCTURAL (amenability 1–2)
+# Deep algebraic/topological reasoning required.
+# AI role: formalization, proof-strategy exploration.
+# ═══════════════════════════════════════════════════════════
+
+tier_4_structural:
+
+  - id: birch-swinnerton-dyer
+    name: Birch and Swinnerton-Dyer conjecture
+    score: 2
+    approach: symbolic + numerical + proof-assistant
+
+  - id: jacobian-conjecture
+    name: Jacobian conjecture
+    score: 2
+    approach: symbolic-computation + proof-assistant
+
+  - id: twin-prime-conjecture
+    name: Twin prime conjecture
+    score: 2
+    approach: numerical-verification + formalization
+
+  - id: euler-constant-irrationality
+    name: Irrationality of Euler's constant
+    score: 2
+    approach: symbolic-computation + formalization
+
+# ═══════════════════════════════════════════════════════════
+# TIER 5 — FOUNDATIONAL (amenability 0–1)
+# Metamathematical, possibly independent of axioms.
+# AI role: literature survey, formalization of known results.
+# ═══════════════════════════════════════════════════════════
+
+tier_5_foundational:
+
+  - id: riemann-hypothesis
+    name: Riemann hypothesis
+    score: 1
+  - id: navier-stokes
+    name: Navier–Stokes existence and smoothness
+    score: 1
+  - id: abc-conjecture
+    name: abc conjecture
+    score: 1
+  - id: schanuel-conjecture
+    name: Schanuel's conjecture
+    score: 0
+  - id: p-vs-np
+    name: P versus NP
+    score: 0
+  - id: hodge-conjecture
+    name: Hodge conjecture
+    score: 0
+  - id: yang-mills
+    name: Yang–Mills existence and mass gap
+    score: 0
+  - id: continuum-hypothesis
+    name: Continuum hypothesis (new axioms)
+    score: 0

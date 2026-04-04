@@ -1,0 +1,33 @@
+name: omega-core-team
+version: 0.1.0
+status: active
+
+orchestration:
+  default_controller: planner
+  execution_order:
+    - librarian
+    - analyst
+    - experimentalist_or_prover
+    - writer
+    - reviewer
+  routing_rules:
+    T1-computational: experimentalist
+    T2-experimental: experimentalist
+    T3-pattern: analyst
+    T4-structural: prover
+    T5-foundational: librarian
+
+artifacts:
+  required:
+    - problem-brief
+    - literature-memo
+    - approach-memo
+    - result-summary
+    - draft
+    - review-report
+
+quality_gates:
+  - explicit_evidence_class
+  - reproducibility_record
+  - literature_collision_check
+  - reviewer_signoff

@@ -1,0 +1,50 @@
+# Landau's Problems — Quick Reference
+# 4 problems on primes presented at the 1912 ICM. All remain open as of April 2026.
+# See: https://en.wikipedia.org/wiki/Landau%27s_problems
+
+problems:
+
+  - id: goldbach-conjecture
+    name: Goldbach's conjecture
+    status: open
+    domain: number-theory
+    statement: Every even integer ≥ 4 is the sum of two primes.
+    year_posed: 1742
+    registry_id: goldbach-conjecture
+    note: >
+      Verified to 4×10^18. Helfgott (2013) proved the weak (ternary) version.
+      Chen (1966) proved every large even number is prime + semiprime.
+
+  - id: twin-prime-conjecture
+    name: Twin prime conjecture
+    status: open
+    domain: number-theory
+    statement: There are infinitely many primes p such that p+2 is also prime.
+    registry_id: twin-prime-conjecture
+    note: >
+      Zhang (2013) proved bounded gaps; Maynard (2013) improved to 246.
+      Polymath 8b further refined.
+
+  - id: legendre-conjecture
+    name: Legendre's conjecture
+    status: open
+    domain: number-theory
+    statement: There is always a prime between n² and (n+1)² for every n ≥ 1.
+    registry_id: legendre-conjecture
+    note: >
+      Implied by Cramér's conjecture. Ingham (1937) showed prime in [n³, (n+1)³].
+      Baker–Harman–Pintz (2001) proved prime in [x, x + x^(21/40)].
+
+  - id: prime-between-squares
+    name: Infinitely many primes p where p²+1 is also prime (n²+1 primes)
+    status: open
+    domain: number-theory
+    statement: Are there infinitely many primes of the form n² + 1?
+    note: >
+      Friedlander–Iwaniec (1998) proved infinitely many primes of form a²+b⁴.
+      Specific n²+1 case remains open.
+
+status_summary:
+  total: 4
+  open: 4
+  note: All four Landau problems remain open as of April 2026.
