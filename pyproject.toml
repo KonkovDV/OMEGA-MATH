@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools>=77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "omega-research"
+version = "0.4.0"
+description = "Standalone Python-first runtime and CLI surface for the OMEGA open-mathematics research lab."
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+authors = [
+  { name = "MicroPhoenix open-source community" },
+]
+dependencies = [
+  "PyYAML==6.0.1",
+  "jsonschema==4.23.0",
+]
+keywords = ["mathematics", "research-software", "lean4", "provenance", "experiment-tracking"]
+classifiers = [
+  "Private :: Do Not Upload",
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Science/Research",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Scientific/Engineering :: Mathematics",
+]
+
+[project.optional-dependencies]
+smt = ["z3-solver>=4.12"]
+sat = ["python-sat>=1.8"]
+cas = ["sympy>=1.13"]
+all = ["z3-solver>=4.12", "python-sat>=1.8", "sympy>=1.13"]
+
+[project.scripts]
+omega-runner = "omega_runner:main"
+omega-generate-index = "generate_index:main"
+omega-generate-experiment-index = "generate_experiment_index:main"
+omega-scaffold-problem = "scaffold_problem:main"
+omega-validate-registry = "validate_registry:main"
+omega-query = "experiment_query:main"
+omega-lean = "lean_adapter:main"
+omega-solve = "solver_adapter:main"
+omega-cas = "cas_adapter:main"
+omega-workflow = "omega_workflow:main"
+
+[tool.setuptools]
+py-modules = [
+  "omega_runner",
+  "generate_index",
+  "generate_experiment_index",
+  "scaffold_problem",
+  "validate_registry",
+  "experiment_query",
+  "lean_adapter",
+  "solver_adapter",
+  "cas_adapter",
+  "omega_workflow",
+]
+
+[tool.setuptools.package-dir]
+"" = "scripts"

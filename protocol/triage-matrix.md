@@ -68,9 +68,11 @@ Score: 2 to 4
 Use when:
 - analogy, structural comparison, or cross-domain synthesis may help
 - direct proof is unlikely but reframing is plausible
+- a target theorem can already be stated precisely and a classical scaffold or reduction template exists
 
 Expected outputs:
 - proof sketches
+- proof-obligation lists
 - equivalence proposals
 - simplified reformulations
 - literature syntheses
@@ -81,11 +83,12 @@ Score: 1 to 2
 
 Use when:
 - deep theory is required
-- AI is mainly a formalization and support layer
+- AI is mainly a formalization and support layer, or a human-verified vibe-proving assistant on strongly scaffolded subclaims
 
 Expected outputs:
 - Lean formalizations of lemmas
 - dependency maps of known proofs
+- proof-obligation packets for correctness-critical steps
 - strategy memos for experts
 
 ### T5 foundational

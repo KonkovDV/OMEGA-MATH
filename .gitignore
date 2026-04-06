@@ -47,3 +47,22 @@ Thumbs.db
 # Project specific
 archive/
 tmp/
+
+# OMEGA runtime artifacts
+research/active/**/paper/*.aux
+research/active/**/paper/*.bbl
+research/active/**/paper/*.blg
+research/active/**/paper/*.log
+research/active/**/paper/*.out
+research/active/**/paper/*.synctex.gz
+research/active/**/paper/temp/
+research/active/**/planning/time/
+research/active/**/planning/*.log
+research/active/**/control/chats/
+research/active/**/control/cost/
+research/active/**/control/time/
+research/active/**/control/codebase/
+research/active/**/control/data/
+research/active/**/control/*.log
+research/active/**/artifacts/runtime/
+research/active/**/logs/

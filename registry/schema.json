@@ -4,7 +4,7 @@
   "title": "OMEGA Problem Registry Entry",
   "description": "Schema for describing an open mathematical problem in the OMEGA registry",
   "type": "object",
-  "required": ["id", "name", "domain", "status", "statement"],
+  "required": ["id", "name", "status", "statement"],
   "properties": {
     "id": {
       "type": "string",
@@ -38,7 +38,8 @@
         "mathematical-physics",
         "computer-science",
         "information-theory"
-      ]
+      ],
+      "description": "Problem domain. May be omitted in domain-scoped YAML files where the file path already implies the domain."
     },
     "subdomain": {
       "type": "string",
@@ -46,7 +47,14 @@
     },
     "status": {
       "type": "string",
-      "enum": ["open", "partially-resolved", "claimed-resolved", "resolved"],
+      "enum": [
+        "open",
+        "partially-resolved",
+        "claimed-resolved",
+        "resolved",
+        "resolved-independent",
+        "resolved-negative"
+      ],
       "description": "Current status of the problem"
     },
     "statement": {
@@ -138,14 +146,19 @@
               "counterexample-search",
               "pattern-recognition",
               "conjecture-refinement",
+              "parametric-search",
               "proof-assistant",
               "symbolic-computation",
               "sat-solver",
               "neural-theorem-proving",
               "reinforcement-learning",
               "genetic-programming",
+              "graph-algorithms",
               "monte-carlo",
-              "analogy-transfer"
+              "analogy-transfer",
+              "covering-congruences",
+              "distributed-computing",
+              "gradient-optimization"
             ]
           },
           "description": "Potentially applicable AI/computational approaches"
@@ -159,6 +172,17 @@
           "type": "string",
           "description": "Free text notes on AI approach strategy"
         }
+      }
+    },
+    "amenability_axes": {
+      "type": "object",
+      "description": "Optional five-axis decomposition of the amenability score.",
+      "properties": {
+        "searchability": { "type": "number", "minimum": 0, "maximum": 2 },
+        "experimental_signal": { "type": "number", "minimum": 0, "maximum": 2 },
+        "formalizability": { "type": "number", "minimum": 0, "maximum": 2 },
+        "feedback_speed": { "type": "number", "minimum": 0, "maximum": 2 },
+        "publication_yield": { "type": "number", "minimum": 0, "maximum": 2 }
       }
     },
     "related_problems": {

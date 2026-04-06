@@ -166,7 +166,7 @@ problems:
     tags: [perfect-numbers, divisor-sums]
     difficulty:
       consensus: very-hard
-      decades_open: 20+
+      decades_open: 50
     ai_triage:
       tier: T2-experimental
       amenability_score: 4

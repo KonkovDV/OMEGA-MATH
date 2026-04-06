@@ -19,12 +19,13 @@ orchestration:
 
 artifacts:
   required:
-    - problem-brief
+    - data-description
     - literature-memo
-    - approach-memo
+    - idea-note
+    - method-plan
     - result-summary
     - draft
-    - review-report
+    - referee-report
 
 quality_gates:
   - explicit_evidence_class

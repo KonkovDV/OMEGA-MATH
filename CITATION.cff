@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use OMEGA, please cite the repository and any derived research artifact."
+title: "OMEGA — Open Mathematics Exploration by Generative Agents"
+type: software
+version: 0.2.0
+date-released: 2026-04-04
+license: MIT
+authors:
+  - name: "MicroPhoenix open-source community"
+abstract: >-
+  Standalone repository for registry-driven, multi-agent exploration of open
+  mathematical problems, including triage, protocol, validation, and research
+  workspace scaffolding.
+keywords:
+  - mathematics
+  - research-software
+  - multi-agent-systems
+  - theorem-proving
+  - experiment-management
+  - open-problems

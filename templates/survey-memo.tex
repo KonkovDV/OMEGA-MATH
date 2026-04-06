@@ -1,0 +1,109 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{longtable}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  citecolor=blue,
+  urlcolor=blue,
+  pdftitle={OMEGA Survey Memo},
+  pdfauthor={Author Name}
+}
+
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{openquestion}{Open Question}
+
+\title{Replace With A Bounded Survey Title}
+\author{Author Name \\ \small OMEGA Research Workflow}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Replace this abstract with a concise summary of the survey scope, the number of sources reviewed,
+the main structural findings, and the specific open questions that came into focus.
+Avoid claiming completeness unless every relevant paper has been checked.
+\end{abstract}
+
+\section{Scope and Method}
+Describe the exact query surface: which databases were searched, which keyword clusters were used,
+what date range was covered, and how borderline relevance was decided.
+If AI-assisted screening was used, state the model, prompt strategy, and false-positive rate estimate.
+
+\section{Problem Background}
+State the problem or family of problems being surveyed.
+Provide the formal statement if one exists, or the strongest currently accepted formulation.
+
+\section{Historical Timeline}
+Summarize the key milestones in chronological order.
+Use a table when the timeline has more than five entries.
+
+\begin{longtable}{lp{10cm}}
+\toprule
+Year & Milestone \\
+\midrule
+Replace & with actual entries \\
+\bottomrule
+\end{longtable}
+
+\section{Current State of Knowledge}
+Organize by approach, technique, or subproblem.
+For each cluster, state:
+\begin{itemize}[leftmargin=1.5em]
+  \item the strongest known result
+  \item the evidence class (formal proof, computational bound, heuristic argument)
+  \item the gap between current knowledge and the target conjecture
+\end{itemize}
+
+\section{AI Amenability Assessment}
+Classify the problem along the OMEGA triage dimensions:
+\begin{itemize}[leftmargin=1.5em]
+  \item Computational tractability (can sub-instances be checked by machine?)
+  \item Formalizability (is there a Lean / Coq / Isabelle formulation?)
+  \item Search-space structure (is there a well-defined space to explore?)
+  \item Prior partial results (are there intermediate claims to build on?)
+  \item Data availability (benchmark datasets, sequence databases, tabulations?)
+\end{itemize}
+
+\section{Open Questions and Gaps}
+List the specific sub-questions that remain open and that are most promising for the next step.
+
+\begin{openquestion}[Replace with a bounded sub-question]
+State the sub-question precisely and note its relationship to the main problem.
+\end{openquestion}
+
+\section{Recommended Next Steps}
+Rank the most productive next actions.
+Separate what can be done immediately from what requires new infrastructure.
+
+\section{Limitations of This Survey}
+State what was not covered, which sources were inaccessible, and where the AI screening
+may have introduced blind spots.
+
+\section*{AI Disclosure}
+This survey was prepared with assistance from AI agents for literature discovery,
+relevance filtering, timeline assembly, and drafting.
+All factual claims require human verification against the cited primary sources.
+
+\section*{Acknowledgments}
+Replace or remove this section as appropriate.
+
+\begin{thebibliography}{99}
+
+\bibitem{placeholder}
+Replace with actual references.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,92 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  citecolor=blue,
+  urlcolor=blue,
+  pdftitle={OMEGA Short Note},
+  pdfauthor={Author Name}
+}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{claim}{Claim}
+
+\title{Replace With A Narrow, Evidence-Bounded Title}
+\author{Author Name \\ \small OMEGA Research Workflow}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Replace this abstract with a narrow summary of the verified contribution.
+Avoid words such as ``solved'' or ``settled'' unless the evidence class truly supports them.
+\end{abstract}
+
+\section{Problem Statement}
+State the problem precisely.
+If needed, include the formal statement or the exact computational target.
+
+\section{Prior Work}
+Summarize the most relevant prior results and cite the specific papers that bound your claim.
+Keep supporting and contrasting citations explicit.
+
+\section{Method}
+Describe the proof strategy, computation, search procedure, or reduction used in this note.
+If the result is computational, give the exact algorithm, parameters, and environment.
+
+\section{Results}
+State only what was actually verified.
+
+\begin{theorem}[Replace with a bounded claim]
+Replace this placeholder theorem with the strongest claim that is fully supported by the stored evidence.
+\end{theorem}
+
+\begin{proof}
+Provide a proof, proof sketch, or an explicit pointer to the mechanized and reproducible evidence.
+\end{proof}
+
+\section{Verification and Reproducibility}
+Record the exact artifacts needed to re-check the result.
+
+\begin{itemize}[leftmargin=1.5em]
+  \item Evidence class: replace with computational / structural / formal.
+  \item Source artifacts: replace with paths under \texttt{research/active/<problem-id>/}.
+  \item Commands: replace with the exact commands used to rerun the result.
+  \item Formal or human review status: replace with Lean / Coq / reviewer report details.
+\end{itemize}
+
+\section{Limitations}
+State what is \emph{not} shown, what depends on external assumptions, and what remains unchecked.
+
+\section{Next Questions}
+List the smallest next steps that follow directly from the current result.
+
+\section*{AI Disclosure}
+This note was prepared with assistance from AI agents for literature synthesis,
+experiment design, computation orchestration, and drafting.
+All mathematical claims require human review and/or formal verification before external submission.
+
+\section*{Acknowledgments}
+Replace or remove this section as appropriate.
+
+\begin{thebibliography}{9}
+
+\bibitem{placeholder}
+Replace with actual references.
+
+\end{thebibliography}
+
+\end{document}

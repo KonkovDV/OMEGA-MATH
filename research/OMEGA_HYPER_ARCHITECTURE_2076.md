@@ -1,5 +1,10 @@
 # OMEGA Singularity: 50-Year Horizon & MicroPhoenix Hyper-Architecture
 
+> **Status: Future Architecture Vision (2035–2076 Horizon)**
+> This document describes a *planned* long-term evolution, not current OMEGA scope. As of April 2026, OMEGA remains a standalone research registry and protocol. The MicroPhoenix integration below is a speculative 50-year architectural roadmap, not an implemented feature.
+> Canonical current roadmap: `OMEGA_DEVELOPMENT_ROADMAP_2026_04_05.md`.
+> Use this file as the far-horizon speculative companion, not as the near-term execution plan.
+
 **Date**: April 4, 2026
 **Framework**: MicroPhoenix v2.9.0 (10-Layer Clean Architecture + Event Sourcing)
 **Horizon**: 2026–2076

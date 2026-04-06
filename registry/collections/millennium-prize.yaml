@@ -1,5 +1,6 @@
 # Millennium Prize Problems — Quick Reference
 # 7 problems, 6 unsolved (Poincaré conjecture resolved by Perelman, 2003)
+# Quick-reference overlay; canonical records live in registry/domains/*.yaml.
 
 problems:
 
@@ -7,6 +8,7 @@ problems:
     name: P versus NP
     status: open
     domain: computer-science
+    registry_id: p-vs-np
     prize_usd: 1000000
     ai_tier: T5-foundational
     amenability: 0
@@ -15,6 +17,7 @@ problems:
     name: Riemann hypothesis
     status: open
     domain: number-theory
+    registry_id: riemann-hypothesis
     prize_usd: 1000000
     ai_tier: T5-foundational
     amenability: 1
@@ -23,6 +26,7 @@ problems:
     name: Yang–Mills existence and mass gap
     status: open
     domain: analysis (mathematical physics)
+    registry_id: yang-mills
     prize_usd: 1000000
     ai_tier: T5-foundational
     amenability: 0
@@ -31,6 +35,7 @@ problems:
     name: Navier–Stokes existence and smoothness
     status: open
     domain: analysis (PDE)
+    registry_id: navier-stokes
     prize_usd: 1000000
     ai_tier: T5-foundational
     amenability: 1
@@ -39,6 +44,7 @@ problems:
     name: Hodge conjecture
     status: open
     domain: geometry (algebraic)
+    registry_id: hodge-conjecture
     prize_usd: 1000000
     ai_tier: T5-foundational
     amenability: 0
@@ -47,6 +53,7 @@ problems:
     name: Birch and Swinnerton-Dyer conjecture
     status: open
     domain: number-theory (arithmetic geometry)
+    registry_id: birch-swinnerton-dyer
     prize_usd: 1000000
     ai_tier: T4-structural
     amenability: 2

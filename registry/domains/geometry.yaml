@@ -394,7 +394,7 @@ problems:
     posed_by: [Kobon Fujimura]
     tags: [arrangements, triangles, line-arrangements]
     difficulty:
-      consensus: moderate
+      consensus: hard
     ai_triage:
       tier: T1-computational
       amenability_score: 8

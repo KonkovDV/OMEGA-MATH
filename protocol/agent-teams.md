@@ -18,7 +18,7 @@ Inputs:
 - prior experiment logs
 
 Outputs:
-- research brief
+- data_description.md
 - task allocation
 - success criteria
 
@@ -30,7 +30,7 @@ Purpose:
 
 Outputs:
 - bibliography
-- related-work memo
+- literature.md
 - known-results summary
 
 ### Analyst
@@ -40,8 +40,8 @@ Purpose:
 - identify search constraints, invariants, and promising reductions
 
 Outputs:
-- approach memo
-- experiment design
+- idea.md
+- methods.md
 - failure-mode checklist
 
 ### Experimentalist
@@ -53,7 +53,7 @@ Purpose:
 Outputs:
 - experiment log
 - reproducible scripts or pseudocode
-- result summary
+- results.md
 
 ### Prover
 
@@ -64,6 +64,8 @@ Purpose:
 
 Outputs:
 - proof sketch
+- proof_obligations.md
+- `artifacts/prover-results/<run-id>.yaml`
 - formalization status
 - dependency chain of lemmas
 
@@ -85,35 +87,45 @@ Purpose:
 - separate proof from experiment from speculation
 
 Outputs:
-- review report
+- referee.md
 - blocking issues
 - publication recommendation
 
 ## Standard Workflow
 
-1. Planner opens a problem brief.
-2. Librarian returns a prior-work packet.
-3. Analyst defines tractable sub-questions.
-4. Experimentalist or Prover executes first, depending on tier.
-5. Writer drafts the artifact.
-6. Reviewer challenges it.
-7. Planner either closes the cycle or schedules another pass.
+1. Planner opens `data_description.md` from the registry entry.
+2. Librarian returns a prior-work packet and novelty memo.
+3. Analyst defines tractable sub-questions and writes the first idea/method notes.
+4. Planner/Reviewer approve a bounded step plan.
+5. Experimentalist or Prover executes first, depending on tier; proof-first work should use a bounded `generate -> referee -> repair` loop and keep explicit proof obligations. Every run is logged in the experiment ledger (see `protocol/experiment-ledger-spec.md`), and proof-first runs that reach a verifier-visible state also emit a prover result artifact (see `protocol/prover-result-contract.md`).
+6. Writer drafts the artifact using a template from `templates/` and fills in `reproducibility.md` from `templates/reproducibility-manifest.md`.
+7. Reviewer challenges it and records `referee.md`.
+8. Planner either closes the cycle or schedules another pass.
+
+For step-by-step operator procedures, see `protocol/operator-runbook.md`.
 
 ## Handoff Artifacts
 
 Each handoff must be concrete.
 
 Required artifacts:
-- brief.md or equivalent summary
+- input_files/data_description.md
+- input_files/literature.md
+- input_files/methods.md
+- input_files/proof_obligations.md when proof work is involved
+- input_files/results.md
+- experiments/ledger.yaml (run records per `protocol/experiment-ledger-spec.md`)
+- artifacts/prover-results/<run-id>.yaml when proof work reaches a verifier-visible outcome
+- reproducibility.md (from `templates/reproducibility-manifest.md`)
 - assumptions list
 - open questions list
-- reproducibility notes
 - evidence links to exact files or outputs
 
 ## Escalation Rules
 
 Escalate to human review when:
 - a proof claim depends on a step the Prover cannot verify
+- proof obligations remain unresolved but theorem language is already being drafted
 - a result appears novel but literature coverage is incomplete
 - computation required exceeds the configured budget
 - the Writer cannot cleanly separate theorem, evidence, and conjecture
