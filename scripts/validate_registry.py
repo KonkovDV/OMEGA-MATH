@@ -35,6 +35,10 @@ DOMAINS_DIR = REPO_ROOT / "registry" / "domains"
 COLLECTIONS_DIR = REPO_ROOT / "registry" / "collections"
 TRIAGE_FILE = REPO_ROOT / "registry" / "triage-matrix.yaml"
 SCHEMA_FILE = REPO_ROOT / "registry" / "schema.json"
+SCHEMAS_DIR = REPO_ROOT / "registry" / "schemas"
+EXPERIMENT_LEDGER_SCHEMA_FILE = SCHEMAS_DIR / "experiment-ledger.schema.json"
+EVIDENCE_BUNDLE_SCHEMA_FILE = SCHEMAS_DIR / "evidence-bundle.schema.json"
+ACTIVE_RESEARCH_DIR = REPO_ROOT / "research" / "active"
 TRIAGE_SECTION_TO_TIER = {
     "tier_1_computational": "T1-computational",
     "tier_2_experimental": "T2-experimental",
@@ -87,6 +91,25 @@ def load_schema() -> dict[str, Any] | None:
     if not (has_yaml and has_jsonschema and SCHEMA_FILE.exists()):
         return None
     return load_yaml(SCHEMA_FILE)
+
+
+def load_optional_schema(path: Path) -> dict[str, Any] | None:
+    if not (has_yaml and has_jsonschema and path.exists()):
+        return None
+    schema = load_yaml(path)
+    if not isinstance(schema, dict):
+        error(f"{path.name}: Schema file must contain a YAML/JSON mapping")
+        return None
+    return schema
+
+
+def validate_with_schema(instance: Any, schema: dict[str, Any], context: str) -> None:
+    assert jsonschema_module is not None
+    try:
+        jsonschema_module.validate(instance, schema)
+    except jsonschema_module.ValidationError as exc:
+        path_hint = ".".join(str(part) for part in exc.absolute_path) or "<root>"
+        error(f"{context}: Schema validation failed at {path_hint}: {exc.message}")
 
 
 def expected_tier_for_score(score: int) -> str:
@@ -250,6 +273,63 @@ def validate_collections(all_domain_ids: set[str]) -> None:
                     warn(f"{collection_file.name}: registry_id '{registry_id}' not found in domain files")
 
 
+def validate_workspace_artifact_schemas() -> None:
+    if not ACTIVE_RESEARCH_DIR.exists():
+        warn("research/active directory not found; skipping workspace artifact schema validation")
+        return
+
+    if not has_yaml:
+        warn("PyYAML unavailable; skipping workspace artifact schema validation")
+        return
+
+    ledger_schema = load_optional_schema(EXPERIMENT_LEDGER_SCHEMA_FILE)
+    evidence_schema = load_optional_schema(EVIDENCE_BUNDLE_SCHEMA_FILE)
+
+    if has_jsonschema and ledger_schema is None:
+        warn(f"{EXPERIMENT_LEDGER_SCHEMA_FILE.name}: missing or unavailable; skipping ledger schema checks")
+    if has_jsonschema and evidence_schema is None:
+        warn(f"{EVIDENCE_BUNDLE_SCHEMA_FILE.name}: missing or unavailable; skipping evidence bundle schema checks")
+
+    for workspace in sorted(ACTIVE_RESEARCH_DIR.iterdir()):
+        if not workspace.is_dir():
+            continue
+
+        ledger_path = workspace / "experiments" / "ledger.yaml"
+        if ledger_path.exists() and ledger_schema is not None:
+            ledger_payload = load_yaml(ledger_path)
+            if ledger_payload is None:
+                ledger_payload = []
+            validate_with_schema(
+                ledger_payload,
+                ledger_schema,
+                str(ledger_path.relative_to(REPO_ROOT)).replace("\\", "/"),
+            )
+
+        evidence_candidates = [
+            workspace / "artifacts" / "evidence-bundle.yaml",
+            workspace / "control" / "evidence-bundle.yaml",
+        ]
+        existing_candidates = [path for path in evidence_candidates if path.exists()]
+        if len(existing_candidates) > 1:
+            warn(
+                f"{workspace.name}: multiple evidence bundle files found; "
+                "prefer a single canonical location"
+            )
+
+        for evidence_path in existing_candidates:
+            if evidence_schema is None:
+                continue
+            evidence_payload = load_yaml(evidence_path)
+            if evidence_payload is None:
+                error(f"{evidence_path.relative_to(REPO_ROOT)}: evidence bundle must not be empty")
+                continue
+            validate_with_schema(
+                evidence_payload,
+                evidence_schema,
+                str(evidence_path.relative_to(REPO_ROOT)).replace("\\", "/"),
+            )
+
+
 def print_summary(all_ids: list[str]) -> None:
     active_domain_files = get_active_domain_files()
     print(f"\n{'=' * 60}")
@@ -291,6 +371,7 @@ def main(argv: list[str] | None = None) -> int:
     domain_id_set = set(all_ids)
     validate_triage_matrix(domain_id_set, set(triaged_ids))
     validate_collections(domain_id_set)
+    validate_workspace_artifact_schemas()
     print_summary(all_ids)
     return 1 if errors else 0
 

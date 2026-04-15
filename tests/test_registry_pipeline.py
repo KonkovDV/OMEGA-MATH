@@ -32,8 +32,12 @@ class RegistryPipelineTests(unittest.TestCase):
 
         (self.repo_root / "registry" / "domains").mkdir(parents=True)
         (self.repo_root / "registry" / "collections").mkdir(parents=True)
+        (self.repo_root / "registry" / "schemas").mkdir(parents=True)
+        (self.repo_root / "research" / "active").mkdir(parents=True)
         self.index_file = self.repo_root / "registry" / "index.yaml"
         self.triage_file = self.repo_root / "registry" / "triage-matrix.yaml"
+        self.ledger_schema_file = self.repo_root / "registry" / "schemas" / "experiment-ledger.schema.json"
+        self.evidence_schema_file = self.repo_root / "registry" / "schemas" / "evidence-bundle.schema.json"
 
     def tearDown(self) -> None:
         if self.repo_root.exists():
@@ -57,7 +61,16 @@ class RegistryPipelineTests(unittest.TestCase):
             COLLECTIONS_DIR=self.repo_root / "registry" / "collections",
             TRIAGE_FILE=self.triage_file,
             SCHEMA_FILE=self.repo_root / "registry" / "missing-schema.json",
+            SCHEMAS_DIR=self.repo_root / "registry" / "schemas",
+            EXPERIMENT_LEDGER_SCHEMA_FILE=self.ledger_schema_file,
+            EVIDENCE_BUNDLE_SCHEMA_FILE=self.evidence_schema_file,
+            ACTIVE_RESEARCH_DIR=self.repo_root / "research" / "active",
         )
+
+    def _seed_workspace_schemas(self) -> None:
+        source_root = Path(__file__).resolve().parents[1] / "registry" / "schemas"
+        shutil.copy2(source_root / "experiment-ledger.schema.json", self.ledger_schema_file)
+        shutil.copy2(source_root / "evidence-bundle.schema.json", self.evidence_schema_file)
 
     def test_generate_index_counts_triage_entries_from_yaml_sections(self) -> None:
         _write_yaml(
@@ -173,6 +186,119 @@ class RegistryPipelineTests(unittest.TestCase):
         self.assertEqual(exit_code, 1)
         self.assertIn("requires tier 'T3-pattern'", report)
         self.assertIn("Missing triaged domain ID 'chess-first-move'", report)
+
+    def test_validate_registry_rejects_invalid_workspace_ledger(self) -> None:
+        self._seed_workspace_schemas()
+        _write_yaml(
+            self.repo_root / "registry" / "domains" / "geometry.yaml",
+            {
+                "problems": [
+                    {
+                        "id": "kobon-triangles",
+                        "name": "Kobon triangles",
+                        "status": "open",
+                        "statement": "maximize triangles",
+                        "tags": ["geometry"],
+                        "ai_triage": {"tier": "T1-computational", "amenability_score": 8},
+                    }
+                ]
+            },
+        )
+        _write_yaml(
+            self.triage_file,
+            {
+                "tier_1_computational": [{"id": "kobon-triangles", "score": 8}],
+                "tier_2_experimental": [],
+                "tier_3_pattern": [],
+                "tier_4_structural": [],
+                "tier_5_foundational": [],
+            },
+        )
+        _write_yaml(
+            self.repo_root / "research" / "active" / "kobon-triangles" / "experiments" / "ledger.yaml",
+            [
+                {
+                    "run_id": "kobon-triangles-20260415-001",
+                    "problem_id": "kobon-triangles",
+                    "started": "2026-04-15T00:00:00Z",
+                    "route": "experiment-first",
+                    "agent": "experimentalist",
+                    "status": "done",
+                }
+            ],
+        )
+
+        stdout = io.StringIO()
+        with self._patch_validate_registry(), contextlib.redirect_stdout(stdout):
+            exit_code = validate_registry.main([])
+
+        report = stdout.getvalue()
+        self.assertEqual(exit_code, 1)
+        self.assertIn("experiments/ledger.yaml: Schema validation failed", report)
+
+    def test_validate_registry_accepts_valid_workspace_ledger_and_evidence_bundle(self) -> None:
+        self._seed_workspace_schemas()
+        _write_yaml(
+            self.repo_root / "registry" / "domains" / "geometry.yaml",
+            {
+                "problems": [
+                    {
+                        "id": "kobon-triangles",
+                        "name": "Kobon triangles",
+                        "status": "open",
+                        "statement": "maximize triangles",
+                        "tags": ["geometry"],
+                        "ai_triage": {"tier": "T1-computational", "amenability_score": 8},
+                    }
+                ]
+            },
+        )
+        _write_yaml(
+            self.triage_file,
+            {
+                "tier_1_computational": [{"id": "kobon-triangles", "score": 8}],
+                "tier_2_experimental": [],
+                "tier_3_pattern": [],
+                "tier_4_structural": [],
+                "tier_5_foundational": [],
+            },
+        )
+        _write_yaml(
+            self.repo_root / "research" / "active" / "kobon-triangles" / "experiments" / "ledger.yaml",
+            [
+                {
+                    "run_id": "kobon-triangles-20260415-001",
+                    "problem_id": "kobon-triangles",
+                    "started": "2026-04-15T00:00:00Z",
+                    "finished": None,
+                    "route": "experiment-first",
+                    "agent": "experimentalist",
+                    "status": "running",
+                    "verdict": None,
+                    "parameters": {"description": "bounded search"},
+                    "artifacts": [],
+                    "parent_run": None,
+                    "notes": "",
+                }
+            ],
+        )
+        _write_yaml(
+            self.repo_root / "research" / "active" / "kobon-triangles" / "control" / "evidence-bundle.yaml",
+            {
+                "problem_id": "kobon-triangles",
+                "timestamp": "2026-04-15T00:00:00Z",
+                "artifact_count": 0,
+                "total_size_bytes": 0,
+                "artifacts": [],
+            },
+        )
+
+        stdout = io.StringIO()
+        with self._patch_validate_registry(), contextlib.redirect_stdout(stdout):
+            exit_code = validate_registry.main([])
+
+        self.assertEqual(exit_code, 0)
+        self.assertIn("0 errors", stdout.getvalue())
 
 
 if __name__ == "__main__":

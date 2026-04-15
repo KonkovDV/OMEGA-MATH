@@ -193,11 +193,12 @@ This repository is intentionally isolated from the main MicroPhoenix application
 22. Dry-run a stage to preview prompts and workspace-contract checks without calling the API: `omega-orchestrate run erdos-straus --stage plan --dry-run`.
 23. Compute a fresh evidence bundle with `omega-verify-evidence compute erdos-straus` and verify it with `omega-verify-evidence verify erdos-straus`.
 24. Check LLM backend health with `omega-model-router health`, inspect routing profiles with `omega-model-router profiles`, and resolve a model for a role/tier with `omega-model-router resolve --role prover --tier T4-structural`.
-25. Import Einstein Arena benchmark table into OMEGA collections with `omega-import-einstein-arena --readme-file .benchmarks/einstein-arena-readme.md`.
-26. Override slug-to-registry mapping without code edits using `omega-import-einstein-arena --aliases-file registry/collections/einstein-arena-aliases.yaml`.
-27. Import Einstein Arena table and copy benchmark constructions from a local donor clone with `omega-import-einstein-arena --readme-file .benchmarks/einstein-arena-readme.md --repo-dir ../EinsteinArena-new-SOTA`.
-28. Query Einstein Arena API with bounded retries and backoff using `omega-einstein-arena --timeout 45 --max-retries 3 --retry-backoff 1.0 <action> ...`.
-29. Use the scheduled sync workflow `.github/workflows/sync-einstein-arena.yml` to auto-open a PR when EinsteinArena benchmark snapshots drift.
+25. Validate registry and workspace artifact contracts (`experiments/ledger.yaml`, `evidence-bundle.yaml`) with `omega-validate-registry`.
+26. Import Einstein Arena benchmark table into OMEGA collections with `omega-import-einstein-arena --readme-file .benchmarks/einstein-arena-readme.md`.
+27. Override slug-to-registry mapping without code edits using `omega-import-einstein-arena --aliases-file registry/collections/einstein-arena-aliases.yaml`.
+28. Import Einstein Arena table and copy benchmark constructions from a local donor clone with `omega-import-einstein-arena --readme-file .benchmarks/einstein-arena-readme.md --repo-dir ../EinsteinArena-new-SOTA`.
+29. Query Einstein Arena API with bounded retries and backoff using `omega-einstein-arena --timeout 45 --max-retries 3 --retry-backoff 1.0 <action> ...`.
+30. Use the scheduled sync workflow `.github/workflows/sync-einstein-arena.yml` to auto-open a PR when EinsteinArena benchmark snapshots drift.
 
 ## Структура проекта
 
@@ -215,6 +216,9 @@ math/
 │
 ├── registry/                          # Каталог открытых проблем
 │   ├── schema.json                    # JSON Schema для записи о проблеме
+│   ├── schemas/
+│   │   ├── experiment-ledger.schema.json
+│   │   └── evidence-bundle.schema.json
 │   ├── triage-matrix.yaml             # Приоритетная очередь по AI-доступности
 │   ├── collections/
 │   │   ├── einstein-arena-aliases.yaml

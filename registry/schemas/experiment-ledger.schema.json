@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://omega.microphoenix.dev/schema/experiment-ledger.json",
+  "title": "OMEGA Experiment Ledger",
+  "description": "Schema for research/active/<problem-id>/experiments/ledger.yaml",
+  "type": "array",
+  "items": {
+    "$ref": "#/$defs/runRecord"
+  },
+  "$defs": {
+    "slugId": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "runId": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+-[0-9]{8}-[0-9]{3}$"
+    },
+    "artifactPath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?![A-Za-z]:)(?!.*\\.\\.)(.+)$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "runArtifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "type"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/artifactPath"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "log",
+            "dataset",
+            "proof-draft",
+            "prover-result",
+            "counterexample",
+            "plot"
+          ]
+        },
+        "checksum": {
+          "$ref": "#/$defs/sha256"
+        },
+        "size_bytes": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "runRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "run_id",
+        "problem_id",
+        "started",
+        "route",
+        "agent",
+        "status"
+      ],
+      "properties": {
+        "run_id": {
+          "$ref": "#/$defs/runId"
+        },
+        "problem_id": {
+          "$ref": "#/$defs/slugId"
+        },
+        "started": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "finished": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "route": {
+          "type": "string",
+          "enum": [
+            "experiment-first",
+            "proof-first",
+            "survey-first"
+          ]
+        },
+        "agent": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "running",
+            "completed",
+            "failed",
+            "abandoned"
+          ]
+        },
+        "verdict": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "positive",
+            "negative",
+            "inconclusive",
+            null
+          ]
+        },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "description"
+          ],
+          "properties": {
+            "description": {
+              "type": "string",
+              "minLength": 1
+            },
+            "bound": {
+              "type": "string"
+            },
+            "model": {
+              "type": "string"
+            },
+            "hardware": {
+              "type": "string"
+            }
+          }
+        },
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/runArtifact"
+          }
+        },
+        "parent_run": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[a-z0-9-]+-[0-9]{8}-[0-9]{3}$"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "corrected_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}

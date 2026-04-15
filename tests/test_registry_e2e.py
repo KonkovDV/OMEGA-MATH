@@ -28,14 +28,22 @@ class RegistryE2ETests(unittest.TestCase):
         registry_dir = temp_dir / "registry"
         domains_dir = registry_dir / "domains"
         collections_dir = registry_dir / "collections"
+        schemas_dir = registry_dir / "schemas"
         scripts_dir.mkdir(parents=True)
         domains_dir.mkdir(parents=True)
         collections_dir.mkdir(parents=True)
+        schemas_dir.mkdir(parents=True)
+        (temp_dir / "research" / "active").mkdir(parents=True)
 
         for script_name in ("generate_index.py", "validate_registry.py"):
             source = REPO_ROOT / "scripts" / script_name
             target = scripts_dir / script_name
             target.write_text(source.read_text(encoding="utf-8"), encoding="utf-8")
+
+        for schema_name in ("experiment-ledger.schema.json", "evidence-bundle.schema.json"):
+            source_schema = REPO_ROOT / "registry" / "schemas" / schema_name
+            target_schema = schemas_dir / schema_name
+            target_schema.write_text(source_schema.read_text(encoding="utf-8"), encoding="utf-8")
 
         return temp_dir, scripts_dir, domains_dir, collections_dir
 
@@ -175,6 +183,61 @@ class RegistryE2ETests(unittest.TestCase):
             self.assertEqual(result.returncode, 1)
             self.assertIn("requires tier 'T3-pattern'", result.stdout)
             self.assertIn("Missing triaged domain ID 'chess-first-move'", result.stdout)
+        finally:
+            shutil.rmtree(workspace)
+
+    def test_validate_registry_script_fails_for_invalid_workspace_ledger_schema(self) -> None:
+        workspace, scripts_dir, domains_dir, _ = self._make_workspace()
+        try:
+            _write_yaml(
+                domains_dir / "geometry.yaml",
+                {
+                    "problems": [
+                        {
+                            "id": "kobon-triangles",
+                            "name": "Kobon triangles",
+                            "status": "open",
+                            "statement": "maximize triangles",
+                            "tags": ["geometry"],
+                            "ai_triage": {"tier": "T1-computational", "amenability_score": 8},
+                        }
+                    ]
+                },
+            )
+            _write_yaml(
+                workspace / "registry" / "triage-matrix.yaml",
+                {
+                    "tier_1_computational": [{"id": "kobon-triangles", "score": 8}],
+                    "tier_2_experimental": [],
+                    "tier_3_pattern": [],
+                    "tier_4_structural": [],
+                    "tier_5_foundational": [],
+                },
+            )
+            _write_yaml(
+                workspace / "research" / "active" / "kobon-triangles" / "experiments" / "ledger.yaml",
+                [
+                    {
+                        "run_id": "kobon-triangles-20260415-001",
+                        "problem_id": "kobon-triangles",
+                        "started": "2026-04-15T00:00:00Z",
+                        "route": "experiment-first",
+                        "agent": "experimentalist",
+                        "status": "done",
+                    }
+                ],
+            )
+
+            result = subprocess.run(
+                [sys.executable, str(scripts_dir / "validate_registry.py")],
+                cwd=workspace,
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("experiments/ledger.yaml: Schema validation failed", result.stdout)
         finally:
             shutil.rmtree(workspace)
 

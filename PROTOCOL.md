@@ -142,6 +142,12 @@ execution loop — by adding three new infrastructure components:
 3. **Evidence Verification CLI** (`scripts/verify_evidence.py`, CLI: `omega-verify-evidence`):
    Standalone SHA-256 evidence bundle compute/verify/status tool.
 
+4. **Workspace Artifact Schema Validation** (`scripts/validate_registry.py`):
+     In addition to registry/domain checks, the validator now enforces separate JSON Schemas for
+     `research/active/*/experiments/ledger.yaml` and workspace evidence bundles via
+     `registry/schemas/experiment-ledger.schema.json` and
+     `registry/schemas/evidence-bundle.schema.json`.
+
 The repeatable execution loop is now:
 ```
 triage → workspace → experiment → evidence-bundle → writeup → review

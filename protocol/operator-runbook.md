@@ -81,6 +81,7 @@ When the GitHub Actions `validate.yml` workflow fails:
    - **Schema violation**: a required field is missing or has the wrong type → fix the YAML entry.
    - **Cross-reference failure**: a `registry_id` in a collection doesn't match any canonical entry → add the canonical entry first or fix the ID.
    - **Duplicate ID**: two entries share the same `id` → rename one.
+   - **Workspace artifact schema violation**: `research/active/*/experiments/ledger.yaml` or evidence-bundle file does not match `registry/schemas/*.schema.json` → fix the artifact structure or regenerate through runner/verification CLIs.
 3. After fixing, run locally:
    ```bash
    python scripts/validate_registry.py
