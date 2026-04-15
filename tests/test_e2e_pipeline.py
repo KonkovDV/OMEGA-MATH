@@ -175,6 +175,9 @@ class EndToEndPipelineTest(unittest.TestCase):
                 self.assertEqual(len(entry["checksum_sha256"]), 64)  # SHA-256 hex length
                 self.assertIn("evidence_class", entry)
                 self.assertIn("stage", entry)
+                self.assertIn("prompt_packet_path", entry)
+                self.assertIn("prompt_packet_sha256", entry)
+                self.assertIn("prompt_packet_file_sha256", entry)
 
             # LLM was called 5 times (once per stage)
             self.assertEqual(mock_llm.call_count, 5)

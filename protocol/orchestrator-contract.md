@@ -8,10 +8,12 @@ executes the 7-agent team workflow as a bounded, auditable LLM-backed pipeline.
 It is not an autonomous research system. It is a dispatcher that:
 1. Loads agent role definitions from `agents/*.yaml`
 2. Assembles problem context from registry + workspace
-3. Constructs structured prompts for each pipeline stage
-4. Invokes an LLM backend via the model router (`scripts/model_router.py`)
-5. Parses structured YAML output artifacts from the response
-6. Persists artifacts with SHA-256 checksums to the workspace
+3. Enforces per-stage workspace prerequisites and auto-materializes required baseline files
+4. Constructs structured prompts for each pipeline stage
+5. Builds a prompt packet (messages + routing config) and records its SHA-256 digest
+6. Invokes an LLM backend via the model router (`scripts/model_router.py`)
+7. Parses structured YAML output artifacts from the response
+8. Persists response artifacts plus prompt packets with SHA-256 checksums to the workspace
 
 ## Pipeline Stages
 
@@ -65,13 +67,43 @@ Built from assembled problem context:
 - Stage-specific instruction
 - Structured output format specification
 
+### Prompt Packet
+
+Each non-dry run now emits a reproducibility packet containing:
+
+- full message list (system + user)
+- stage/role/problem identifiers
+- requested model
+- resolved model/backend
+- temperature/max-token settings
+
+The packet is serialized into `artifacts/prompts/<stage>_<timestamp>.prompt.json`.
+A canonical SHA-256 digest (`prompt_packet_sha256`) is attached to both artifact metadata and manifest entries.
+
 ## Artifact Lifecycle
 
 1. LLM response is received as plain text with an embedded `\`\`\`yaml` block
 2. YAML block is extracted and parsed (evidence class, confidence, key findings)
 3. Full response is saved as `artifacts/<stage>_<timestamp>.md` with YAML frontmatter
-4. SHA-256 checksum is computed and recorded in `artifacts/manifest.yaml`
-5. The manifest serves as the evidence-bundle input for `omega-verify-evidence`
+4. Prompt packet is saved as `artifacts/prompts/<stage>_<timestamp>.prompt.json`
+5. SHA-256 checksums are computed and recorded in `artifacts/manifest.yaml` for both response and prompt packet
+6. The manifest serves as the evidence-bundle input for `omega-verify-evidence`
+
+## Stage Prerequisites
+
+`brief` can run without a workspace.
+
+For stages `novelty`, `triage`, `plan`, `experiment`, `prove`, `survey`, `results`, `paper`, and `referee`, a workspace at `research/active/<problem-id>/` is required.
+
+Before dispatch, the orchestrator guarantees baseline workspace files exist; when missing, they are materialized automatically:
+
+- `README.md`
+- `input_files/data_description.md`
+
+Stage-specific requirements:
+
+- `novelty`, `results`, `paper`, `referee`: `input_files/literature.md`, `input_files/citation_evidence.md`
+- `prove`: `input_files/proof_obligations.md`
 
 ## Dry-Run Mode
 
@@ -80,6 +112,7 @@ Useful for:
 - Debugging prompt construction
 - Cost estimation (token counting)
 - Reviewing system + user prompt quality before a real run
+- Previewing workspace prerequisite materialization (`workspace_contract.created_files`)
 
 ## Dispatch Modes
 
@@ -97,6 +130,7 @@ Stops on first failure.
 
 - Missing agent YAML → `FileNotFoundError` with path
 - Invalid stage name → error dict with valid-stage list
+- Missing workspace for non-brief stages → explicit contract failure with actionable path
 - LLM API failure → `urllib.error.URLError` propagated with context
 - No YAML block in response → metadata defaults to `evidence_class: E2, confidence: C2`
 - Pipeline failure → partial results returned with failing stage identified
@@ -118,3 +152,4 @@ Stops on first failure.
 3. Token budgets per role (defined in `ROLE_TOKEN_BUDGET`) cap response length to prevent runaway cost.
 4. No tool-use or function-calling is supported — the orchestrator is prompt-in/text-out only.
 5. No autonomous looping — the pipeline runs stages sequentially and stops. Iterative refinement requires explicit re-dispatch.
+6. Stage execution trace must include prompt-packet hash + resolved model/backend metadata so evidence bundles remain auditable across backend changes.

@@ -129,8 +129,9 @@ execution loop — by adding three new infrastructure components:
 
 1. **Agent Orchestrator** (`scripts/agent_orchestrator.py`, CLI: `omega-orchestrate`):
    8-stage pipeline dispatcher that loads agent definitions, assembles problem context,
-   constructs structured prompts, invokes LLM backends, parses YAML output artifacts,
-   and persists them with SHA-256 checksums.
+     enforces per-stage workspace prerequisites, constructs structured prompts, invokes
+     LLM backends, parses YAML output artifacts, and persists both responses and prompt
+     packets with SHA-256 checksums.
 
 2. **Model Router** (`scripts/model_router.py`, CLI: `omega-model-router`):
    Declarative routing layer mapping agent roles and problem tiers to specific LLM
@@ -148,6 +149,17 @@ triage → workspace → experiment → evidence-bundle → writeup → review
 
 All outputs are classified as evidence class E2 (LLM-assisted, requires verification)
 until a formal verification step upgrades them.
+
+Runtime guarantees added in April 2026 hardening:
+
+1. Every non-dry orchestrator dispatch records `model_requested`, `model_resolved`,
+     resolved backend, temperature, and token budget in artifact metadata.
+2. Every non-dry dispatch persists a prompt packet under `artifacts/prompts/*.prompt.json`
+     and records a canonical `prompt_packet_sha256` in artifact frontmatter and manifest.
+3. Stages after `brief` require an initialized workspace; missing baseline files are
+     auto-materialized (`README.md`, `input_files/data_description.md`) with stage-specific
+     additions for novelty/results/paper/referee (`literature.md`, `citation_evidence.md`)
+     and prove (`proof_obligations.md`).
 
 See:
 - `protocol/orchestrator-contract.md` for the full orchestrator specification

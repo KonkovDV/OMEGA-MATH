@@ -123,6 +123,32 @@ research/active/<problem-id>/
 
 Fill in `data_description.md` from the registry entry before starting any research run.
 
+## 6.2 Orchestrator Stage Preconditions
+
+`omega-orchestrate` now enforces stage contracts:
+
+1. `brief` can run without an existing workspace.
+2. All later stages require `research/active/<problem-id>/`.
+3. If baseline docs are missing, the orchestrator materializes placeholders automatically:
+   - `README.md`
+   - `input_files/data_description.md`
+   - stage-specific: `literature.md`, `citation_evidence.md`, `proof_obligations.md`
+
+Recommendation:
+
+- initialize via `omega-scaffold-problem` + `omega-workflow triage` before running novelty/plan/experiment/prove stages.
+- treat auto-created placeholders as blocking TODOs, not as completed research content.
+
+## 6.3 Prompt Packet Traceability
+
+Each non-dry orchestrator dispatch now writes:
+
+- response artifact: `artifacts/<stage>_<timestamp>.md`
+- prompt packet: `artifacts/prompts/<stage>_<timestamp>.prompt.json`
+
+Manifest entries include `prompt_packet_sha256` and `prompt_packet_file_sha256`.
+Use this to audit exact prompt + model-routing context for claim-bearing outputs.
+
 ## 6.1 Initializing Workflow Control State
 
 After scaffolding a problem workspace, materialize the local control state from registry triage:

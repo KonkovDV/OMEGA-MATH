@@ -147,6 +147,11 @@ Newly added in v0.5.0:
 3. End-to-end integration test coverage for the full pipeline (brief → experiment → results → evidence bundle)
 4. Model router (`omega-model-router`) with declarative role-to-model profiles, tier-aware routing, fallback chains, and LLM backend health checks
 
+Hardened in April 2026 updates:
+1. Orchestrator prompt-packet traceability: each non-dry dispatch now persists full prompt packets under `artifacts/prompts/*.prompt.json` and records `prompt_packet_sha256` in artifact metadata and manifest entries.
+2. Stage prerequisites are now enforced: all post-brief stages require an initialized workspace and auto-materialize baseline files (`README.md`, `input_files/data_description.md`) plus stage-specific literature/proof placeholders.
+3. Dispatch metadata now includes requested vs resolved model, backend, temperature, and token budget, so evidence bundles capture full routing context.
+
 ## Registry Maturity
 
 - Canonical problem records live in `registry/domains/*.yaml` and are the schema-validated source of truth.
@@ -185,7 +190,7 @@ This repository is intentionally isolated from the main MicroPhoenix application
 19. Run CAS computations with `omega-cas simplify <expr>`, `omega-cas solve <equation>`, `omega-cas series <expr>`, or `omega-cas custom "result = ..."`.
 20. Dispatch an agent for a specific problem and stage: `omega-orchestrate run erdos-straus --stage experiment --model deepseek-chat`.
 21. Run a full pipeline across multiple stages: `omega-orchestrate pipeline erdos-straus --from-stage plan --to-stage results`.
-22. Dry-run a stage to preview the LLM prompt without calling the API: `omega-orchestrate run erdos-straus --stage plan --dry-run`.
+22. Dry-run a stage to preview prompts and workspace-contract checks without calling the API: `omega-orchestrate run erdos-straus --stage plan --dry-run`.
 23. Compute a fresh evidence bundle with `omega-verify-evidence compute erdos-straus` and verify it with `omega-verify-evidence verify erdos-straus`.
 24. Check LLM backend health with `omega-model-router health`, inspect routing profiles with `omega-model-router profiles`, and resolve a model for a role/tier with `omega-model-router resolve --role prover --tier T4-structural`.
 25. Import Einstein Arena benchmark table into OMEGA collections with `omega-import-einstein-arena --readme-file .benchmarks/einstein-arena-readme.md`.

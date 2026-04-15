@@ -224,6 +224,52 @@ class TestSaveArtifact(unittest.TestCase):
             self.assertEqual(len(manifest["artifacts"]), 1)
             self.assertIn("checksum_sha256", manifest["artifacts"][0])
 
+    def test_save_with_prompt_packet_persists_prompt_file(self) -> None:
+        import tempfile
+        from agent_orchestrator import save_artifact
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp_path = Path(tmpdir)
+            workspace = tmp_path / "research" / "active" / "test-problem"
+            workspace.mkdir(parents=True)
+
+            prompt_packet = {
+                "version": "1.0",
+                "problem_id": "test-problem",
+                "stage": "experiment",
+                "messages": [
+                    {"role": "system", "content": "s"},
+                    {"role": "user", "content": "u"},
+                ],
+            }
+
+            with patch("agent_orchestrator.REPO_ROOT", tmp_path):
+                artifact_path = save_artifact(
+                    "test-problem",
+                    "experiment",
+                    "# Experiment Results\nPrompt packet test.",
+                    {
+                        "role": "experimentalist",
+                        "evidence_class": "R1",
+                        "confidence": "C2",
+                        "prompt_packet_sha256": "abc123",
+                    },
+                    prompt_packet=prompt_packet,
+                )
+
+            self.assertTrue(artifact_path.exists())
+            artifacts_dir = workspace / "artifacts"
+            prompt_dir = artifacts_dir / "prompts"
+            self.assertTrue(prompt_dir.exists())
+            prompt_files = list(prompt_dir.glob("*.prompt.json"))
+            self.assertEqual(len(prompt_files), 1)
+
+            manifest = yaml.safe_load((artifacts_dir / "manifest.yaml").read_text(encoding="utf-8"))
+            entry = manifest["artifacts"][0]
+            self.assertIn("prompt_packet_path", entry)
+            self.assertIn("prompt_packet_sha256", entry)
+            self.assertIn("prompt_packet_file_sha256", entry)
+
 
 class TestDryRun(unittest.TestCase):
     """Test dry-run mode (no LLM call)."""
@@ -261,6 +307,77 @@ class TestDryRun(unittest.TestCase):
         self.assertTrue(result["success"])
         self.assertEqual(result["role"], "experimentalist")
         self.assertEqual(result["stage"], "experiment")
+        self.assertIn("prompt_packet_sha256", result)
+        self.assertIn("resolved_model", result)
+        self.assertIn("resolved_backend", result)
+
+
+class TestWorkspaceContract(unittest.TestCase):
+    """Test workspace contract checks and auto-materialization of required files."""
+
+    def _seed_agents(self, tmp_path: Path) -> None:
+        import shutil
+        real_agents = Path(__file__).resolve().parent.parent / "agents"
+        target_agents = tmp_path / "agents"
+        if real_agents.exists():
+            shutil.copytree(real_agents, target_agents)
+
+    def test_non_brief_stage_requires_workspace(self) -> None:
+        from agent_orchestrator import dispatch_agent
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp_path = Path(tmpdir)
+            self._seed_agents(tmp_path)
+            with patch("agent_orchestrator.REPO_ROOT", tmp_path):
+                result = dispatch_agent(
+                    "missing-problem",
+                    role="librarian",
+                    stage="novelty",
+                    dry_run=True,
+                )
+
+        self.assertFalse(result["success"])
+        self.assertIn("requires an initialized workspace", result["error"])
+
+    @patch("agent_orchestrator.invoke_llm")
+    def test_workspace_contract_autocreates_required_files(self, mock_invoke_llm: Any) -> None:
+        from agent_orchestrator import dispatch_agent
+        import tempfile
+
+        mock_invoke_llm.return_value = {
+            "content": "analysis\n```yaml\nartifact_type: novelty\n```",
+            "model": "mock-model",
+            "prompt_tokens": 10,
+            "completion_tokens": 10,
+            "duration_seconds": 0.1,
+        }
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp_path = Path(tmpdir)
+            self._seed_agents(tmp_path)
+            workspace = tmp_path / "research" / "active" / "test-problem"
+            (workspace / "input_files").mkdir(parents=True)
+
+            with patch("agent_orchestrator.REPO_ROOT", tmp_path):
+                result = dispatch_agent(
+                    "test-problem",
+                    role="librarian",
+                    stage="novelty",
+                    model="mock",
+                    dry_run=False,
+                )
+
+            self.assertTrue(result["success"])
+            created = result["workspace_contract"].get("created_files", [])
+            self.assertIn("README.md", created)
+            self.assertIn("input_files/data_description.md", created)
+            self.assertIn("input_files/literature.md", created)
+            self.assertIn("input_files/citation_evidence.md", created)
+
+            self.assertTrue((workspace / "README.md").exists())
+            self.assertTrue((workspace / "input_files" / "literature.md").exists())
+            self.assertTrue((workspace / "input_files" / "citation_evidence.md").exists())
 
 
 class TestPipelineDryRun(unittest.TestCase):

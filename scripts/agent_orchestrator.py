@@ -69,6 +69,39 @@ ROLE_TOKEN_BUDGET: dict[str, int] = {
 DEFAULT_MODEL = "deepseek-chat"
 DEFAULT_TEMPERATURE = 0.3
 
+STAGES_REQUIRING_WORKSPACE = {
+    "novelty",
+    "triage",
+    "plan",
+    "experiment",
+    "prove",
+    "survey",
+    "results",
+    "paper",
+    "referee",
+}
+
+BASE_REQUIRED_WORKSPACE_FILES = {
+    "README.md",
+    "input_files/data_description.md",
+}
+
+STAGE_REQUIRED_WORKSPACE_FILES: dict[str, set[str]] = {
+    "novelty": {"input_files/literature.md", "input_files/citation_evidence.md"},
+    "prove": {"input_files/proof_obligations.md"},
+    "results": {"input_files/literature.md", "input_files/citation_evidence.md"},
+    "paper": {"input_files/literature.md", "input_files/citation_evidence.md"},
+    "referee": {"input_files/literature.md", "input_files/citation_evidence.md"},
+}
+
+WORKSPACE_FILE_TEMPLATES: dict[str, str] = {
+    "README.md": "# Research Workspace\n\nStatus: active\n",
+    "input_files/data_description.md": "# Problem Brief\n\n## Problem Statement\n\n## Success Condition\n",
+    "input_files/literature.md": "# Literature Packet\n\n## Seed Papers\n\n## Known Results\n",
+    "input_files/citation_evidence.md": "# Citation Evidence\n\n## Supporting Citations\n\n## Contrasting Citations\n",
+    "input_files/proof_obligations.md": "# Proof Obligations\n\n## Load-Bearing Claims\n\n## Deferred Risks\n",
+}
+
 
 # ──────────────────────────── Agent Definition Loading ────────────────────────
 
@@ -337,6 +370,144 @@ def build_user_prompt(
     return "\n".join(sections)
 
 
+def infer_backend_name(model: str) -> str:
+    """Infer backend for explicit model selections."""
+    model_lower = model.lower()
+    if "claude" in model_lower:
+        return "anthropic"
+    if "deepseek" in model_lower:
+        return "ollama" if ":" in model_lower else "deepseek"
+    if any(token in model_lower for token in ("gpt", "o3", "o1")):
+        return "openai"
+    if any(token in model_lower for token in ("ollama", "llama", "qwen", "mistral")):
+        return "ollama"
+    if "lmstudio" in model_lower:
+        return "lmstudio"
+    return "openai"
+
+
+def _sha256_text(text: str) -> str:
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def _canonical_json(payload: Any) -> str:
+    return json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+
+
+def ensure_stage_workspace_contract(
+    problem_id: str,
+    stage: str,
+    *,
+    dry_run: bool,
+    context: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Ensure stage prerequisites for workspace/document surfaces.
+
+    For stages beyond brief, a workspace must exist. Required documentation files are
+    auto-materialized from minimal templates when missing.
+    """
+    workspace = REPO_ROOT / "research" / "active" / problem_id
+    if stage not in STAGES_REQUIRING_WORKSPACE:
+        return {
+            "ok": True,
+            "workspace_required": False,
+            "workspace_path": str(workspace),
+            "created_files": [],
+        }
+
+    if not workspace.exists() or not workspace.is_dir():
+        return {
+            "ok": False,
+            "workspace_required": True,
+            "workspace_path": str(workspace),
+            "created_files": [],
+            "error": (
+                f"Stage '{stage}' requires an initialized workspace at {workspace}. "
+                f"Run scaffold and workflow triage before dispatching this stage."
+            ),
+        }
+
+    required = set(BASE_REQUIRED_WORKSPACE_FILES)
+    required.update(STAGE_REQUIRED_WORKSPACE_FILES.get(stage, set()))
+
+    created: list[str] = []
+    registry = (context or {}).get("registry") or {}
+    triage = (context or {}).get("triage") or {}
+    problem_title = str(registry.get("title") or problem_id)
+    problem_statement = str(registry.get("statement") or registry.get("informal_statement") or "")
+    problem_tier = str(triage.get("tier") or "TBD")
+
+    for relative_path in sorted(required):
+        target = workspace / relative_path
+        if target.exists():
+            if target.is_dir():
+                return {
+                    "ok": False,
+                    "workspace_required": True,
+                    "workspace_path": str(workspace),
+                    "created_files": created,
+                    "error": f"Required file path '{target}' exists as a directory.",
+                }
+            continue
+
+        created.append(relative_path)
+        if dry_run:
+            continue
+
+        target.parent.mkdir(parents=True, exist_ok=True)
+        template = WORKSPACE_FILE_TEMPLATES.get(relative_path, f"# {Path(relative_path).name}\n")
+        if relative_path == "README.md":
+            template = f"# {problem_title}\n\nRegistry ID: `{problem_id}`\n\nStatus: active\n"
+        elif relative_path == "input_files/data_description.md":
+            template = (
+                f"# Problem Brief\n\n"
+                f"- Registry ID: {problem_id}\n"
+                f"- Title: {problem_title}\n"
+                f"- Tier: {problem_tier}\n"
+                f"- Route: experiment-first | proof-first | survey-first\n\n"
+                f"## Problem Statement\n\n{problem_statement}\n\n"
+                "## Success Condition\n\n"
+                "## Stop Conditions\n"
+            )
+        target.write_text(template, encoding="utf-8")
+
+    return {
+        "ok": True,
+        "workspace_required": True,
+        "workspace_path": str(workspace),
+        "created_files": created,
+    }
+
+
+def build_prompt_packet(
+    *,
+    problem_id: str,
+    role: str,
+    stage: str,
+    messages: list[dict[str, str]],
+    requested_model: str,
+    resolved_model: str,
+    backend: str,
+    temperature: float,
+    max_tokens: int,
+) -> dict[str, Any]:
+    """Build a reproducibility packet for the exact prompt and routing configuration."""
+    return {
+        "version": "1.0",
+        "problem_id": problem_id,
+        "role": role,
+        "stage": stage,
+        "request": {
+            "requested_model": requested_model,
+            "resolved_model": resolved_model,
+            "backend": backend,
+            "temperature": temperature,
+            "max_tokens": max_tokens,
+        },
+        "messages": messages,
+    }
+
+
 # ──────────────────────────── LLM API Invocation ──────────────────────────────
 
 def _invoke_openai_compatible(
@@ -516,6 +687,8 @@ def save_artifact(
     stage: str,
     content: str,
     metadata: dict[str, Any],
+    *,
+    prompt_packet: dict[str, Any] | None = None,
 ) -> Path:
     """Save an artifact to the problem workspace."""
     workspace = REPO_ROOT / "research" / "active" / problem_id
@@ -525,6 +698,17 @@ def save_artifact(
     timestamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
     filename = f"{stage}_{timestamp}.md"
     artifact_path = artifacts_dir / filename
+
+    prompt_packet_path: Path | None = None
+    prompt_packet_file_sha256: str | None = None
+    if prompt_packet is not None:
+        prompt_dir = artifacts_dir / "prompts"
+        prompt_dir.mkdir(parents=True, exist_ok=True)
+        prompt_filename = f"{stage}_{timestamp}.prompt.json"
+        prompt_packet_path = prompt_dir / prompt_filename
+        prompt_packet_payload = json.dumps(prompt_packet, ensure_ascii=False, indent=2, sort_keys=True)
+        prompt_packet_path.write_text(prompt_packet_payload, encoding="utf-8")
+        prompt_packet_file_sha256 = _sha256_text(prompt_packet_payload)
 
     # Build artifact file with metadata header
     header = yaml.safe_dump(
@@ -551,14 +735,21 @@ def save_artifact(
         manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8")) or {}
 
     entries = manifest.setdefault("artifacts", [])
-    entries.append({
+    entry: dict[str, Any] = {
         "path": filename,
         "stage": stage,
         "created": timestamp,
         "checksum_sha256": checksum,
         "evidence_class": metadata.get("evidence_class", "E2"),
         "confidence": metadata.get("confidence", "C2"),
-    })
+    }
+    if prompt_packet_path is not None:
+        entry["prompt_packet_path"] = str(prompt_packet_path.relative_to(artifacts_dir)).replace("\\", "/")
+    if metadata.get("prompt_packet_sha256"):
+        entry["prompt_packet_sha256"] = metadata.get("prompt_packet_sha256")
+    if prompt_packet_file_sha256 is not None:
+        entry["prompt_packet_file_sha256"] = prompt_packet_file_sha256
+    entries.append(entry)
     manifest["last_updated"] = timestamp
     manifest_path.write_text(
         yaml.safe_dump(manifest, sort_keys=False, allow_unicode=True),
@@ -591,6 +782,16 @@ def dispatch_agent(
     # Load problem context
     context = load_problem_context(problem_id)
 
+    workspace_contract = ensure_stage_workspace_contract(problem_id, stage, dry_run=dry_run, context=context)
+    if not workspace_contract.get("ok"):
+        return {
+            "success": False,
+            "role": role,
+            "stage": stage,
+            "error": workspace_contract.get("error", "Workspace contract check failed"),
+            "workspace_contract": workspace_contract,
+        }
+
     # Build prompts
     system_prompt = build_system_prompt(agent_def)
     user_prompt = build_user_prompt(stage, context, extra_instructions=extra_instructions)
@@ -599,6 +800,34 @@ def dispatch_agent(
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": user_prompt},
     ]
+
+    # Invoke LLM — use model router for profile-based routing when model is default
+    resolved_model = model
+    resolved_temp = temperature
+    max_tokens = ROLE_TOKEN_BUDGET.get(role, 4000)
+    resolved_backend = infer_backend_name(model)
+
+    if model == DEFAULT_MODEL:
+        triage = context.get("triage") or {}
+        tier = triage.get("tier", "default")
+        profile, backend = resolve_with_fallback(role, tier)
+        resolved_model = profile.model
+        resolved_temp = profile.temperature
+        max_tokens = profile.max_tokens
+        resolved_backend = backend.name
+
+    prompt_packet = build_prompt_packet(
+        problem_id=problem_id,
+        role=role,
+        stage=stage,
+        messages=messages,
+        requested_model=model,
+        resolved_model=resolved_model,
+        backend=resolved_backend,
+        temperature=resolved_temp,
+        max_tokens=max_tokens,
+    )
+    prompt_packet_sha256 = _sha256_text(_canonical_json(prompt_packet))
 
     if dry_run:
         return {
@@ -609,20 +838,13 @@ def dispatch_agent(
             "system_prompt": system_prompt,
             "user_prompt": user_prompt,
             "messages": messages,
+            "workspace_contract": workspace_contract,
+            "prompt_packet_sha256": prompt_packet_sha256,
+            "resolved_model": resolved_model,
+            "resolved_backend": resolved_backend,
+            "resolved_temperature": resolved_temp,
+            "resolved_max_tokens": max_tokens,
         }
-
-    # Invoke LLM — use model router for profile-based routing when model is default
-    resolved_model = model
-    resolved_temp = temperature
-    max_tokens = ROLE_TOKEN_BUDGET.get(role, 4000)
-
-    if model == DEFAULT_MODEL:
-        triage = context.get("triage") or {}
-        tier = triage.get("tier", "default")
-        profile, _backend = resolve_with_fallback(role, tier)
-        resolved_model = profile.model
-        resolved_temp = profile.temperature
-        max_tokens = profile.max_tokens
 
     llm_result = invoke_llm(
         messages,
@@ -638,16 +860,23 @@ def dispatch_agent(
 
     metadata = {
         "role": role,
-        "model": llm_result.get("model", model),
+        "model_requested": model,
+        "model_resolved": resolved_model,
+        "model_response": llm_result.get("model", model),
+        "backend": resolved_backend,
+        "temperature": resolved_temp,
+        "max_tokens": max_tokens,
         "evidence_class": yaml_meta.get("evidence_class", "E2"),
         "confidence": yaml_meta.get("confidence", "C2"),
         "prompt_tokens": llm_result.get("prompt_tokens", 0),
         "completion_tokens": llm_result.get("completion_tokens", 0),
         "duration_seconds": llm_result.get("duration_seconds", 0),
+        "prompt_packet_sha256": prompt_packet_sha256,
+        "workspace_autocreated_files": workspace_contract.get("created_files", []),
     }
 
     # Save artifact
-    artifact_path = save_artifact(problem_id, stage, content, metadata)
+    artifact_path = save_artifact(problem_id, stage, content, metadata, prompt_packet=prompt_packet)
 
     return {
         "success": True,
@@ -657,6 +886,7 @@ def dispatch_agent(
         "metadata": metadata,
         "yaml_block": yaml_meta,
         "content_length": len(content),
+        "workspace_contract": workspace_contract,
     }
 
 
