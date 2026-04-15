@@ -17,6 +17,7 @@ from __future__ import annotations
 import argparse
 import re
 import shutil
+import unicodedata
 import urllib.error
 import urllib.request
 from dataclasses import dataclass
@@ -96,6 +97,21 @@ def clean_metric(raw: str) -> str:
     return value.strip()
 
 
+def slugify_problem_name(name: str) -> str:
+    """Convert a plain-text problem name into a stable slug candidate."""
+    normalized = unicodedata.normalize("NFKD", name)
+    ascii_name = normalized.encode("ascii", "ignore").decode("ascii")
+    collapsed = re.sub(r"\s*\([^)]*\)", "", ascii_name)
+    slug = re.sub(r"[^a-z0-9]+", "-", collapsed.lower()).strip("-")
+    return re.sub(r"-{2,}", "-", slug)
+
+
+def normalize_problem_slug(raw_slug: str) -> str:
+    """Normalize README href/path slugs to OMEGA collection keys."""
+    slug = raw_slug.strip().split("?", 1)[0].split("#", 1)[0]
+    return slug.strip("/")
+
+
 def split_markdown_row(line: str) -> list[str]:
     row = line.strip()
     if not row.startswith("|"):
@@ -112,14 +128,43 @@ def is_separator_row(cells: list[str]) -> bool:
 
 
 def parse_problem_cell(cell: str) -> tuple[str, str] | None:
-    match = re.search(r"\[(?P<name>[^\]]+)\]\((?P<slug>[^)]+)\)", cell)
-    if not match:
+    cell_text = cell.strip()
+
+    markdown_match = re.search(r"\[(?P<name>[^\]]+)\]\((?P<slug>[^)]+)\)", cell_text)
+    if markdown_match:
+        name = markdown_match.group("name").strip()
+        slug = normalize_problem_slug(markdown_match.group("slug"))
+        if name and slug:
+            return name, slug
+
+    html_match = re.search(
+        r"<a\s+[^>]*href=[\"'](?P<slug>[^\"']+)[\"'][^>]*>(?P<name>.*?)</a>",
+        cell_text,
+        flags=re.IGNORECASE,
+    )
+    if html_match:
+        raw_name = re.sub(r"<[^>]+>", "", html_match.group("name"))
+        name = raw_name.strip()
+        slug = normalize_problem_slug(html_match.group("slug"))
+        if name and slug:
+            return name, slug
+
+    slug_hint_match = re.search(r"^(?P<name>.+?)\s*\((?P<slug>[a-z0-9][a-z0-9\-/]+)\)\s*$", cell_text, re.IGNORECASE)
+    if slug_hint_match:
+        name = slug_hint_match.group("name").strip()
+        slug = normalize_problem_slug(slug_hint_match.group("slug"))
+        if name and slug:
+            return name, slug
+
+    plain_name = re.sub(r"<[^>]+>", "", cell_text)
+    plain_name = plain_name.replace("**", "").replace("*", "").replace("`", "").strip()
+    if not plain_name:
         return None
-    name = match.group("name").strip()
-    slug = match.group("slug").strip().strip("/")
-    if not name or not slug:
-        return None
-    return name, slug
+
+    inferred_slug = slugify_problem_name(plain_name)
+    if inferred_slug:
+        return plain_name, inferred_slug
+    return None
 
 
 def load_aliases(aliases_file: Path | None = None) -> dict[str, str]:

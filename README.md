@@ -189,8 +189,10 @@ This repository is intentionally isolated from the main MicroPhoenix application
 23. Compute a fresh evidence bundle with `omega-verify-evidence compute erdos-straus` and verify it with `omega-verify-evidence verify erdos-straus`.
 24. Check LLM backend health with `omega-model-router health`, inspect routing profiles with `omega-model-router profiles`, and resolve a model for a role/tier with `omega-model-router resolve --role prover --tier T4-structural`.
 25. Import Einstein Arena benchmark table into OMEGA collections with `omega-import-einstein-arena --readme-file .benchmarks/einstein-arena-readme.md`.
-26. Import Einstein Arena table and copy benchmark constructions from a local donor clone with `omega-import-einstein-arena --readme-file .benchmarks/einstein-arena-readme.md --repo-dir ../EinsteinArena-new-SOTA`.
-27. Use the scheduled sync workflow `.github/workflows/sync-einstein-arena.yml` to auto-open a PR when EinsteinArena benchmark snapshots drift.
+26. Override slug-to-registry mapping without code edits using `omega-import-einstein-arena --aliases-file registry/collections/einstein-arena-aliases.yaml`.
+27. Import Einstein Arena table and copy benchmark constructions from a local donor clone with `omega-import-einstein-arena --readme-file .benchmarks/einstein-arena-readme.md --repo-dir ../EinsteinArena-new-SOTA`.
+28. Query Einstein Arena API with bounded retries and backoff using `omega-einstein-arena --timeout 45 --max-retries 3 --retry-backoff 1.0 <action> ...`.
+29. Use the scheduled sync workflow `.github/workflows/sync-einstein-arena.yml` to auto-open a PR when EinsteinArena benchmark snapshots drift.
 
 ## Структура проекта
 
@@ -210,6 +212,7 @@ math/
 │   ├── schema.json                    # JSON Schema для записи о проблеме
 │   ├── triage-matrix.yaml             # Приоритетная очередь по AI-доступности
 │   ├── collections/
+│   │   ├── einstein-arena-aliases.yaml
 │   │   ├── einstein-arena-benchmarks.yaml
 │   │   ├── hilbert-problems.yaml
 │   │   ├── landau-problems.yaml
@@ -236,6 +239,7 @@ math/
 │   ├── generate_index.py
 │   ├── generate_experiment_index.py
 │   ├── import_einstein_arena.py       # EinsteinArena README importer (+ optional solutions/ snapshot copy)
+│   ├── einstein_arena_adapter.py       # EinsteinArena API adapter (PoW, retries, discussion endpoints)
 │   ├── omega_runner.py
 │   ├── validate_registry.py
 │   ├── experiment_query.py            # Searchable experiment-history queries

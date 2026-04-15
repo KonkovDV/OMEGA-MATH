@@ -153,6 +153,27 @@ See:
 - `protocol/orchestrator-contract.md` for the full orchestrator specification
 - `protocol/agent-teams.md` §Orchestrator Integration for the stage-to-role mapping
 
+## 1.7 Einstein Arena Integration Hardening (April 2026)
+
+The Einstein Arena extraction and API surfaces are now treated as first-class bounded
+runtime contracts.
+
+Operational additions:
+
+1. `scripts/einstein_arena_adapter.py` now exposes bounded retry controls on all API actions:
+     - `--timeout`
+     - `--max-retries`
+     - `--retry-backoff`
+     and retries transient classes (`429`, `502`, `503`, `504`, plus retryable network timeouts).
+2. `scripts/import_einstein_arena.py` now uses header-driven table parsing, so README tables with reordered or extra columns continue to parse as long as required columns are present.
+3. Slug aliasing is externalized to `registry/collections/einstein-arena-aliases.yaml`, eliminating hardcoded registry mapping edits for every upstream rename.
+4. The parser now accepts multiple problem-cell formats (Markdown links, HTML anchors, and plain-text fallback slug inference) to reduce silent ingestion failure when upstream formatting drifts.
+
+Verification policy:
+
+- Keep importer and adapter contract tests green in `tests/test_import_einstein_arena.py` and `tests/test_einstein_arena_adapter.py`.
+- Do not treat benchmark extraction as canonical truth: canonical OMEGA records remain under `registry/domains/*.yaml`.
+
 ## 2. Problem Taxonomy
 
 ### 2.1 Domains (12 primary, from Wikipedia's master list)

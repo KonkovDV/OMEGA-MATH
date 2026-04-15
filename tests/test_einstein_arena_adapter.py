@@ -270,6 +270,30 @@ class EinsteinArenaAdapterTests(unittest.TestCase):
             _, kwargs_activity = mocked_request.call_args
             self.assertEqual(kwargs_activity.get("timeout_seconds"), 23)
 
+    def test_main_vote_forwards_timeout_and_endpoint(self) -> None:
+        with patch.object(adapter, "request_json", return_value={"ok": True}) as mocked_request:
+            stdout = io.StringIO()
+            with redirect_stdout(stdout):
+                exit_code = adapter.main(
+                    [
+                        "--timeout",
+                        "29",
+                        "vote",
+                        "--api-key",
+                        "ea_key",
+                        "--thread-id",
+                        "15",
+                        "--direction",
+                        "up",
+                    ]
+                )
+
+        self.assertEqual(exit_code, 0)
+        call_args = mocked_request.call_args
+        self.assertEqual(call_args.args[2], "/api/threads/15/upvote")
+        self.assertEqual(call_args.kwargs.get("api_key"), "ea_key")
+        self.assertEqual(call_args.kwargs.get("timeout_seconds"), 29)
+
 
 if __name__ == "__main__":
     unittest.main()

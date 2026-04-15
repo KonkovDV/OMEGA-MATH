@@ -65,6 +65,34 @@ class EinsteinArenaImportTests(unittest.TestCase):
         self.assertEqual(rows[1].slug, "prime-number-theorem")
         self.assertEqual(rows[1].our_result, "0.994179")
 
+    def test_parse_problem_rows_handles_reordered_required_columns(self) -> None:
+        readme = """
+| Previous Best | Problem | Notes | Objective | Improvement | Our Result |
+|---------------|---------|-------|-----------|-------------|------------|
+| 0.5134719 | [Tammes Problem (n = 50)](tammes-problem/) | verified | maximize | +0.0000002 | **0.5134721** |
+"""
+        rows = import_einstein_arena.parse_problem_rows(readme)
+
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0].slug, "tammes-problem")
+        self.assertEqual(rows[0].objective, "maximize")
+        self.assertEqual(rows[0].our_result, "0.5134721")
+        self.assertEqual(rows[0].previous_best, "0.5134719")
+
+    def test_parse_problem_rows_handles_non_markdown_problem_cells(self) -> None:
+        readme = """
+| Problem | Objective | Our Result | Previous Best | Improvement |
+|---------|-----------|-----------|---------------|-------------|
+| Tammes Problem (n = 50) | maximize | **0.5134721** | 0.5134719 | +0.0000002 |
+| <a href=\"second-autocorrelation/\">Second Autocorrelation Inequality</a> | maximize | **0.961206** | 0.962580 | -0.001374 |
+"""
+        rows = import_einstein_arena.parse_problem_rows(readme)
+
+        self.assertEqual(len(rows), 2)
+        self.assertEqual(rows[0].name, "Tammes Problem (n = 50)")
+        self.assertEqual(rows[0].slug, "tammes-problem")
+        self.assertEqual(rows[1].slug, "second-autocorrelation")
+
     def test_infer_registry_link_exact_and_alias(self) -> None:
         domain_ids = {"thomson-problem", "erdos-straus", "prime-number-theorem"}
 

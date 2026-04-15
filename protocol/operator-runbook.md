@@ -32,6 +32,28 @@ Collection files under `registry/collections/*.yaml` are quick-reference groupin
 3. Run the validator — it checks that every `registry_id` resolves to a canonical entry.
 4. Commit.
 
+## 2.1 Syncing Einstein Arena Overlay Safely
+
+When refreshing `registry/collections/einstein-arena-benchmarks.yaml`:
+
+1. Prefer a pinned local README snapshot when available:
+   ```bash
+   omega-import-einstein-arena --readme-file .benchmarks/einstein-arena-readme.md
+   ```
+2. Keep slug alias updates in `registry/collections/einstein-arena-aliases.yaml` instead of editing importer logic.
+3. If you need donor solution files, use:
+   ```bash
+   omega-import-einstein-arena --readme-file .benchmarks/einstein-arena-readme.md --repo-dir ../EinsteinArena-new-SOTA
+   ```
+4. Re-run contract tests after any importer or adapter change:
+   ```bash
+   python -m pytest tests/test_import_einstein_arena.py tests/test_einstein_arena_adapter.py -q
+   ```
+5. For live API interaction via `omega-einstein-arena`, use bounded retry settings:
+   ```bash
+   omega-einstein-arena --timeout 45 --max-retries 3 --retry-backoff 1.0 <action> ...
+   ```
+
 ## 3. Contesting a Problem Status
 
 If a problem's status (open, partially-resolved, resolved) needs updating:
