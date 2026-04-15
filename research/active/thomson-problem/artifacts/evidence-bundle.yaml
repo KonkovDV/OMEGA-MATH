@@ -1,0 +1,51 @@
+version: '1.0'
+problem_id: thomson-problem
+generated_at: '2026-04-09T10:02:00Z'
+summary:
+  total_runs: 2
+  total_artifacts: 2
+  total_bytes: 5534
+  by_type:
+    dataset: 2
+documents:
+- path: README.md
+  role: landing-page
+  exists: true
+  checksum: 14b4ddd5a6262f0cbbca165b4857133ad084f66ac3cb1620cf96479b547f6c4c
+  size_bytes: 71
+- path: reproducibility.md
+  role: reproducibility-manifest
+  exists: true
+  checksum: 5df81e76f2b7eafcfa9bc600367ce507301e348875f6d8e440d520fe01fdf85d
+  size_bytes: 384
+- path: input_files/proof_obligations.md
+  role: proof-obligations
+  exists: true
+  checksum: 4bbe2cf33b09e614a1ba2946fc3517e3bebd761cb287480ca770270c821dfcf7
+  size_bytes: 3427
+runs:
+- run_id: thomson-problem-20260408-001
+  route: experiment-first
+  agent: experimentalist
+  status: completed
+  verdict: inconclusive
+  started: '2026-04-08T17:40:13Z'
+  finished: '2026-04-08T17:49:13Z'
+  artifacts:
+  - path: artifacts/phase3_certify_11_12.json
+    type: dataset
+    checksum: 25f06755029429d33f1190952b006fe2b4a092001e78c317e64e70d6b4bf8a08
+    size_bytes: 3567
+- run_id: thomson-problem-20260409-001
+  route: experiment-first
+  agent: experimentalist
+  status: completed
+  verdict: inconclusive
+  started: '2026-04-09T10:00:00Z'
+  finished: '2026-04-09T10:02:00Z'
+  artifacts:
+  - path: artifacts/phase3_certify_13.json
+    type: dataset
+    checksum: 7d0908899d5ae306ffbe8cb6131923e9ab05567d7c66cff7b1755620732d4dc8
+    size_bytes: 1967
+bundle_path: artifacts/evidence-bundle.yaml

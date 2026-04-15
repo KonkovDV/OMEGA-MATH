@@ -1,0 +1,37 @@
+{
+  "meta": {
+    "max_n": 200,
+    "max_denom": 2000,
+    "hard_prime_count": 3,
+    "elapsed_sec": 0.0018448829650878906,
+    "unsolved_count": 2,
+    "unsolved_primes": [
+      97,
+      193
+    ]
+  },
+  "primes": {
+    "73": {
+      "prime": 73,
+      "solution_count": 1,
+      "first_solution": [
+        20,
+        292,
+        730
+      ],
+      "classification": "hard"
+    },
+    "97": {
+      "prime": 97,
+      "solution_count": 0,
+      "first_solution": null,
+      "classification": "hard"
+    },
+    "193": {
+      "prime": 193,
+      "solution_count": 0,
+      "first_solution": null,
+      "classification": "hard"
+    }
+  }
+}

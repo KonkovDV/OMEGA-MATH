@@ -41,16 +41,21 @@ This workspace seeds an OMEGA research surface for open mathematics:
     Role: judge-reliability warning surface for proof and benchmark evaluation
 13. Breakthrough milestone papers checked in this pass
     Role: historical grounding for 2024-2025 math closures and claims normalization (`2405.03599`, `2405.03648`, `2409.07051`, `2409.08670`, `2409.09856`, `2209.04736`, `2502.17655`, `2503.01800`)
+14. `togethercomputer/EinsteinArena-new-SOTA` (README snapshot, April 2026)
+   Role: benchmark donor for objective-aligned score tables, public baseline comparisons, and verifier-first notebook patterns
 
 ## What Was Extracted
 
 - domain-level registry files under math/registry/domains/
 - collection indexes for Millennium, Hilbert, Landau, and Smale problem families
+- Einstein Arena benchmark collection under `registry/collections/einstein-arena-benchmarks.yaml`
 - a global triage queue under math/registry/triage-matrix.yaml
 - a generated registry index under math/registry/index.yaml
 - protocol docs under math/protocol/
 - agent configuration files under math/agents/
 - maintenance scripts under math/scripts/
+- Einstein Arena importer script: `scripts/import_einstein_arena.py`
+- Optional Einstein solution snapshot extraction under `research/benchmarks/einstein-arena/<problem>/solutions/` when a local donor checkout is provided
 - a buildable Python packaging surface under `math/pyproject.toml`
 - a dated evidence report under `math/research/OMEGA_VIBE_PROVING_HYPERDEEP_REPORT_2026_04_04.md`
 
@@ -180,11 +185,11 @@ These are local contracts only. OMEGA still does not vendor external runtimes or
 1. ~~Split grouped domains into dedicated files~~ — ✅ Done (April 2026): computer-science, set-theory, probability-theory, game-theory, model-theory
 2. ~~Add collection indexes for Hilbert, Landau, and Smale problems~~ — ✅ Done (April 2026)
 3. ~~Introduce a registry index file with coverage statistics~~ — ✅ Done: registry/index.yaml (now generated)
-4. ~~Add a bounded local runner for experiment ledgers and prover-result artifacts~~ — ✅ Done: `scripts/omega_runner.py`, `scripts/omega-runner.py`, and `scripts/generate-experiment-index.py`
-5. Add local adapters for literature-graph capture and citation-evidence collation.
+4. ~~Add a bounded local runner for experiment ledgers and prover-result artifacts~~ — ✅ Done: `scripts/omega_runner.py` and `scripts/generate_experiment_index.py`
+5. ~~Add local adapters for literature-graph capture and citation-evidence collation~~ — ✅ Done: `scripts/literature_adapter.py` + `protocol/literature-adapter.md`
 6. Add export-grade research-object emitters built from the local evidence bundle.
 7. ~~Add a paper template, reproducibility manifest~~ — done: `templates/short-note.tex`, `templates/survey-memo.tex`, and `templates/reproducibility-manifest.md` exist; presentation-pack generator still needed.
-8. Add an Erdős problems collection (~50 problems, highest community activity) and notebook-style collections.
+8. Add an Erdős problems collection (~50 problems, highest community activity) and additional benchmark-oriented collections beyond Einstein Arena.
 9. Wire the Lean starter and prover-result contract into an actual proof runner or CAS closure lane for algebra-heavy `proof_obligations.md` workflows.
 10. Build the next Python-first layers: searchable experiment history, Lean/CAS execution adapters, and packaging-aware CLI distribution.
 

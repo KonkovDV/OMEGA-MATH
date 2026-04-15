@@ -10,11 +10,11 @@ Step-by-step procedures for registry maintenance, experiment management, and CI 
    - Use `ai_triage.tier` values: T1 (high amenability), T2 (medium), T3 (low), T4 (currently intractable).
 3. Run the validator:
    ```bash
-   python scripts/validate-registry.py
+   python scripts/validate_registry.py
    ```
 4. Regenerate the index:
    ```bash
-   python scripts/generate-index.py
+   python scripts/generate_index.py
    ```
 5. Update `registry/triage-matrix.yaml` if the problem should appear in the prioritized queue.
 6. Commit all changed files together.
@@ -61,8 +61,8 @@ When the GitHub Actions `validate.yml` workflow fails:
    - **Duplicate ID**: two entries share the same `id` → rename one.
 3. After fixing, run locally:
    ```bash
-   python scripts/validate-registry.py
-   python scripts/generate-index.py
+   python scripts/validate_registry.py
+   python scripts/generate_index.py
    ```
 4. Confirm both pass, then push.
 
@@ -71,7 +71,7 @@ When the GitHub Actions `validate.yml` workflow fails:
 Use the scaffolder to create a standard problem directory:
 
 ```bash
-python scripts/scaffold-problem.py <problem-id>
+python scripts/scaffold_problem.py <problem-id>
 ```
 
 This creates:
@@ -106,7 +106,7 @@ Fill in `data_description.md` from the registry entry before starting any resear
 After scaffolding a problem workspace, materialize the local control state from registry triage:
 
 ```bash
-python scripts/omega-workflow.py triage <problem-id>
+python scripts/omega_workflow.py triage <problem-id>
 ```
 
 This writes `research/active/<problem-id>/control/workflow-state.yaml` and records:
@@ -120,8 +120,8 @@ This writes `research/active/<problem-id>/control/workflow-state.yaml` and recor
 Use:
 
 ```bash
-python scripts/omega-workflow.py status <problem-id>
-python scripts/omega-workflow.py advance <problem-id> --outcome complete
+python scripts/omega_workflow.py status <problem-id>
+python scripts/omega_workflow.py advance <problem-id> --outcome complete
 ```
 
 Do not hand-edit the workflow state unless recovering from a broken run and the CLI cannot repair it.
@@ -133,12 +133,12 @@ See `protocol/experiment-ledger-spec.md` for the full schema.
 Quick steps:
 1. Open the run with the bounded local runner:
    ```bash
-   python scripts/omega-runner.py start <problem-id> --route experiment-first --agent experimentalist --description "bounded search"
+   python scripts/omega_runner.py start <problem-id> --route experiment-first --agent experimentalist --description "bounded search"
    ```
 2. Record the emitted `run_id`.
 3. After the run completes, close it through the same CLI:
    ```bash
-   python scripts/omega-runner.py finish <problem-id> <run-id> --status completed --verdict positive --artifact artifacts/search.log:log --notes "summary"
+   python scripts/omega_runner.py finish <problem-id> <run-id> --status completed --verdict positive --artifact artifacts/search.log:log --notes "summary"
    ```
 4. `start` and `finish` also synchronize `control/workflow-state.yaml`: opening a run moves the workflow into the route's execution stage, and closing it moves the workflow into `results` unless the operator has already advanced it further.
 5. The runner computes artifact checksums and refreshes `artifacts/evidence-bundle.yaml` automatically.
@@ -154,7 +154,7 @@ Quick steps:
 1. Keep proof attempts in `experiments/ledger.yaml` like any other run.
 2. When a proof-first run reaches a verifier-visible outcome, emit the prover result through the CLI:
    ```bash
-   python scripts/omega-runner.py proof-result <problem-id> <run-id> --claim-label "candidate theorem" --claim-class theorem --status draft --verifier lean4 --toolchain leanprover/lean4:v4.29.0 --verifier-command "lake env lean artifacts/candidate.lean" --source-entry artifacts/candidate.lean --artifact artifacts/candidate.lean:source
+   python scripts/omega_runner.py proof-result <problem-id> <run-id> --claim-label "candidate theorem" --claim-class theorem --status draft --verifier lean4 --toolchain leanprover/lean4:v4.29.0 --verifier-command "lake env lean artifacts/candidate.lean" --source-entry artifacts/candidate.lean --artifact artifacts/candidate.lean:source
    ```
 3. The CLI writes `research/active/<problem-id>/artifacts/prover-results/<run-id>.yaml` and links that artifact back into the ledger entry.
 4. The same command refreshes `artifacts/evidence-bundle.yaml` and stores the latest proof-result pointer in `control/workflow-state.yaml`.
@@ -165,7 +165,7 @@ Quick steps:
 The index file `registry/index.yaml` is generated, not hand-edited.
 
 ```bash
-python scripts/generate-index.py
+python scripts/generate_index.py
 ```
 
 Run this after any change to domain or collection files. The CI also runs it as a check.
@@ -175,10 +175,10 @@ Run this after any change to domain or collection files. The CI also runs it as 
 The active run-and-workflow summary file is generated, not hand-edited.
 
 ```bash
-python scripts/generate-experiment-index.py
+python scripts/generate_experiment_index.py
 ```
 
-`scripts/omega-runner.py start|finish|proof-result` already refresh this index automatically, but the standalone command is useful for recovery or bulk edits.
+`scripts/omega_runner.py start|finish|proof-result` already refresh this index automatically, but the standalone command is useful for recovery or bulk edits.
 
 The generated entries now include both run state and workflow state, so you can audit blocked workspaces or stage ownership without opening each folder manually. For example:
 
@@ -192,7 +192,7 @@ python scripts/experiment_query.py --global --stage plan --owner planner
 The per-problem evidence bundle is generated, not hand-edited.
 
 ```bash
-python scripts/omega-runner.py evidence-bundle <problem-id>
+python scripts/omega_runner.py evidence-bundle <problem-id>
 ```
 
 Use this after manual artifact repair, after restoring missing files, or when checking whether a claim-bearing workspace still has a coherent checksum surface.

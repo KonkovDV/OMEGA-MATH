@@ -102,7 +102,7 @@ problems:
       to the trivial presentation by Andrews–Curtis moves.
     tags: [combinatorial-group-theory, presentations]
     ai_triage:
-      tier: T1-computational
+      tier: T2-experimental
       amenability_score: 6
       approaches: [brute-force-search, heuristic-search, genetic-programming]
       notes: >

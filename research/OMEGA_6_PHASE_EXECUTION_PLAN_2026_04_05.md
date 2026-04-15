@@ -139,9 +139,9 @@ output:
 - `tests/test_literature_adapter.py`
 - Optional arXiv API supplement for fresh preprints
 
-**Academic basis**: Feng et al. (arXiv:2601.22401) showed that ~30% of "open" problems already
-had partial solutions that automated screening could detect. Literature collision is a first-class
-risk.
+**Academic basis**: Feng et al. (arXiv:2601.22401) showed that of 13 addressed "open" Erdős
+problems, 8 already had existing solutions in the literature (≈62%), detectable by automated
+screening. Literature collision is a first-class risk.
 
 #### 1.4 Orchestration → Real
 
@@ -347,8 +347,8 @@ evidence_class: R0+E1
 **Integration point**: `omega_workflow.py advance` at TRIAGE → PLAN transition must call
 novelty check. If novelty packet shows `confidence: C1` or worse, warn operator.
 
-**Academic basis**: Feng et al. (arXiv:2601.22401) — ~30% of screened "open" problems had
-existing partial/full solutions.
+**Academic basis**: Feng et al. (arXiv:2601.22401) — of 13 addressed Erdős problems, 8 had
+existing solutions in the literature (≈62%).
 
 ### Evidence Gate
 
@@ -588,11 +588,11 @@ This plan is grounded in the following primary sources:
 3. Song, P. et al. *Lean Copilot.* arXiv:2404.12534, NeuS 2025.
 4. Lu, S. et al. *Process Advantage Verifiers.* arXiv:2410.08146, 2024.
 5. Glazer, E. et al. *FrontierMath.* arXiv:2411.04872, 2024.
-6. Feng, J. et al. *Gemini on Erdős Problems.* arXiv:2601.22401, 2026.
-7. Verbeken, L. et al. *VUB Vibe-Proving.* arXiv:2602.18918, 2026.
+6. Feng, T. et al. *Semi-Autonomous Mathematics Discovery with Gemini.* arXiv:2601.22401, 2026.
+7. Verbeken, B. et al. *VUB Vibe-Proving.* arXiv:2602.18918, 2026.
 8. NIST. *FIPS 203/204/205 (PQC Standards).* 2024.
 9. Yang, K. et al. *LeanDojo.* arXiv:2306.15626, NeurIPS 2023.
-10. Feng, J. et al. *Aletheia.* arXiv:2602.10177, 2026.
+10. Feng, T. et al. *Towards Autonomous Mathematics Research.* arXiv:2602.10177, 2026.
 
 ---
 

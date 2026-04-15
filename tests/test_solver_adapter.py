@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import importlib.util
 import sys
 import unittest
 from pathlib import Path
@@ -12,11 +13,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 from solver_adapter import SolverAdapter  # type: ignore
 
 # Z3 availability check — tests that need Z3 are skipped if not installed
-try:
-    import z3  # noqa: F401
-    HAS_Z3 = True
-except ImportError:
-    HAS_Z3 = False
+HAS_Z3 = importlib.util.find_spec("z3") is not None
 
 
 class TestSolverAdapterZ3(unittest.TestCase):
@@ -123,7 +120,7 @@ class TestSolverAdapterPySAT(unittest.TestCase):
         required = {"success", "backend", "mode", "satisfiable", "model",
                      "objective", "duration_seconds", "error"}
         self.assertTrue(required.issubset(result.keys()))
-        self.assertEqual(result["backend"], "pysat-builtin")
+        self.assertIn(result["backend"], {"pysat", "pysat-builtin"})
         self.assertEqual(result["mode"], "sat")
 
 

@@ -140,7 +140,7 @@ problems:
       n − 1 plus the length of the shortest addition chain producing n.
     tags: [addition-chains]
     ai_triage:
-      tier: T1-computational
+      tier: T2-experimental
       amenability_score: 6
       approaches: [brute-force-search, heuristic-search]
 
@@ -168,7 +168,7 @@ problems:
       consensus: very-hard
       decades_open: 50
     ai_triage:
-      tier: T2-experimental
+      tier: T3-pattern
       amenability_score: 4
       approaches: [numerical-verification, counterexample-search]
       compute_profile: heavy
@@ -373,7 +373,7 @@ problems:
       decades_open: 28
     tags: [primes, additive, goldbach]
     ai_triage:
-      tier: T2-experimental
+      tier: T3-pattern
       amenability_score: 4
       approaches: [numerical-verification, pattern-recognition]
       compute_profile: heavy
@@ -449,7 +449,7 @@ problems:
     statement: Does every nonnegative integer appear in Recamán's sequence?
     tags: [sequences]
     ai_triage:
-      tier: T2-experimental
+      tier: T1-computational
       amenability_score: 7
       approaches: [numerical-verification, heuristic-search]
 
@@ -1000,7 +1000,7 @@ problems:
       organization: Andrew Beal
     tags: [fermat-generalization, powers]
     ai_triage:
-      tier: T2-experimental
+      tier: T3-pattern
       amenability_score: 4
       approaches: [counterexample-search, numerical-verification]
       compute_profile: heavy

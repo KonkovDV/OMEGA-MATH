@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """OMEGA Registry Validator — checks YAML consistency and cross-references.
 
-Usage: python scripts/validate-registry.py
+Usage: python scripts/validate_registry.py
 """
 
 from __future__ import annotations
@@ -35,6 +35,13 @@ DOMAINS_DIR = REPO_ROOT / "registry" / "domains"
 COLLECTIONS_DIR = REPO_ROOT / "registry" / "collections"
 TRIAGE_FILE = REPO_ROOT / "registry" / "triage-matrix.yaml"
 SCHEMA_FILE = REPO_ROOT / "registry" / "schema.json"
+TRIAGE_SECTION_TO_TIER = {
+    "tier_1_computational": "T1-computational",
+    "tier_2_experimental": "T2-experimental",
+    "tier_3_pattern": "T3-pattern",
+    "tier_4_structural": "T4-structural",
+    "tier_5_foundational": "T5-foundational",
+}
 
 VALID_STATUSES = {"open", "resolved", "partially-resolved", "claimed-resolved", "resolved-independent", "resolved-negative"}
 VALID_TIERS = {"T1-computational", "T2-experimental", "T3-pattern", "T4-structural", "T5-foundational"}
@@ -82,6 +89,18 @@ def load_schema() -> dict[str, Any] | None:
     return load_yaml(SCHEMA_FILE)
 
 
+def expected_tier_for_score(score: int) -> str:
+    if 7 <= score <= 10:
+        return "T1-computational"
+    if 5 <= score <= 6:
+        return "T2-experimental"
+    if 3 <= score <= 4:
+        return "T3-pattern"
+    if score == 2:
+        return "T4-structural"
+    return "T5-foundational"
+
+
 def extract_ids_regex(path: Path) -> list[str]:
     ids: list[str] = []
     text = path.read_text(encoding="utf-8")
@@ -90,8 +109,9 @@ def extract_ids_regex(path: Path) -> list[str]:
     return ids
 
 
-def validate_domain_files() -> tuple[list[str], Counter[str]]:
+def validate_domain_files() -> tuple[list[str], list[str], Counter[str]]:
     all_ids: list[str] = []
+    triaged_ids: list[str] = []
     domain_files = get_active_domain_files()
     schema = load_schema()
 
@@ -128,12 +148,19 @@ def validate_domain_files() -> tuple[list[str], Counter[str]]:
 
                 triage = problem.get("ai_triage")
                 if triage:
+                    triaged_ids.append(problem_id)
                     tier = triage.get("tier")
                     if tier and tier not in VALID_TIERS:
                         error(f"{domain_file.name}/{problem_id}: Invalid tier '{tier}'")
                     score = triage.get("amenability_score")
                     if score is not None and not (0 <= score <= 10):
                         error(f"{domain_file.name}/{problem_id}: amenability_score {score} out of range 0-10")
+                    elif tier and score is not None:
+                        expected_tier = expected_tier_for_score(score)
+                        if expected_tier != tier:
+                            error(
+                                f"{domain_file.name}/{problem_id}: amenability_score {score} requires tier '{expected_tier}', found '{tier}'"
+                            )
 
                 if schema is not None:
                     assert jsonschema_module is not None
@@ -153,18 +180,53 @@ def validate_domain_files() -> tuple[list[str], Counter[str]]:
         if count > 1:
             error(f"Duplicate problem ID '{problem_id}' appears {count} times across domain files")
 
-    return all_ids, id_counts
+    return all_ids, triaged_ids, id_counts
 
 
-def validate_triage_matrix(all_domain_ids: set[str]) -> None:
+def validate_triage_matrix(all_domain_ids: set[str], all_triaged_domain_ids: set[str]) -> None:
     if not TRIAGE_FILE.exists():
         error("triage-matrix.yaml not found")
         return
 
-    triage_ids = extract_ids_regex(TRIAGE_FILE)
-    for triage_id in triage_ids:
-        if triage_id not in all_domain_ids:
-            warn(f"triage-matrix.yaml: ID '{triage_id}' not found in any domain file")
+    triage_ids: list[str] = []
+    if has_yaml:
+        data = load_yaml(TRIAGE_FILE) or {}
+        if not isinstance(data, dict):
+            error("triage-matrix.yaml: Expected a YAML mapping at top level")
+            return
+
+        for section_name, expected_tier in TRIAGE_SECTION_TO_TIER.items():
+            for index, item in enumerate(data.get(section_name, []) or [], start=1):
+                triage_id = item.get("id") if isinstance(item, dict) else None
+                if not triage_id:
+                    error(f"triage-matrix.yaml:{section_name}[{index}]: Missing 'id'")
+                    continue
+                triage_ids.append(triage_id)
+
+                score = item.get("score") if isinstance(item, dict) else None
+                if score is not None and not isinstance(score, int):
+                    error(f"triage-matrix.yaml:{triage_id}: score must be an integer")
+                    continue
+                if isinstance(score, int):
+                    expected_for_score = expected_tier_for_score(score)
+                    if expected_for_score != expected_tier:
+                        error(
+                            f"triage-matrix.yaml:{triage_id}: score {score} belongs in '{expected_for_score}', not '{expected_tier}'"
+                        )
+    else:
+        triage_ids = extract_ids_regex(TRIAGE_FILE)
+
+    triage_counts = Counter(triage_ids)
+    for triage_id, count in triage_counts.items():
+        if count > 1:
+            error(f"triage-matrix.yaml: ID '{triage_id}' appears {count} times")
+
+    triage_id_set = set(triage_ids)
+    for triage_id in sorted(triage_id_set - all_domain_ids):
+        error(f"triage-matrix.yaml: ID '{triage_id}' not found in any domain file")
+
+    for triage_id in sorted(all_triaged_domain_ids - triage_id_set):
+        error(f"triage-matrix.yaml: Missing triaged domain ID '{triage_id}'")
 
 
 def validate_collections(all_domain_ids: set[str]) -> None:
@@ -225,9 +287,9 @@ def main(argv: list[str] | None = None) -> int:
         print(f"ERROR: Domains directory not found at {DOMAINS_DIR}", file=sys.stderr)
         return 1
 
-    all_ids, _ = validate_domain_files()
+    all_ids, triaged_ids, _ = validate_domain_files()
     domain_id_set = set(all_ids)
-    validate_triage_matrix(domain_id_set)
+    validate_triage_matrix(domain_id_set, set(triaged_ids))
     validate_collections(domain_id_set)
     print_summary(all_ids)
     return 1 if errors else 0

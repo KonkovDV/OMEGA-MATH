@@ -1,5 +1,5 @@
 # OMEGA Research Protocol
-# Version: 0.4.0 | Date: 2026-04-05
+# Version: 0.5.0 | Date: 2026-04-13
 
 ## 1. Overview
 
@@ -17,12 +17,13 @@ OMEGA is a **standalone repository**. It borrows reusable ideas from external sc
 
 ## 1.1 External Donor Extraction Baseline
 
-The current protocol is grounded in four externally verified sources:
+The current protocol is grounded in five externally verified sources:
 
 - **Denario (arXiv:2510.26887 + repo)**: modular research pipeline with separate idea, methods, results, paper, and referee modules; project-directory contract based on persisted markdown artifacts and plots
 - **OpenReview Agents4Science paper (`LENY7OWxmN`)**: evidence that at least one Denario-generated paper was accepted, while reviews still surfaced methodological weaknesses and reproducibility concerns
 - **CMBAgent repo + papers (`arXiv:2507.07257`, precursor `arXiv:2412.00431`)**: planning/control architecture with structured plan recording, explicit execution-control semantics, and a newer `deep_research` workflow with context carryover; use the repo for current operator guidance and `2507.07257` for paper-level citation
 - **LSST DESC AI/ML roadmap (arXiv:2601.14235)**: requirements for uncertainty quantification, validation, robustness, reproducibility, and scientific-software infrastructure at scale
+- **EinsteinArena-new-SOTA (`togethercomputer/EinsteinArena-new-SOTA`, README snapshot April 2026)**: benchmark donor for reproducible objective functions, baseline-vs-new score tables, and public verification notebook patterns for AI-discovered math constructions
 
 OMEGA uses these sources as **architectural donors**, not as permission to overclaim full autonomy or publication quality.
 
@@ -120,6 +121,37 @@ Operational consequences:
 3. Prioritize LeanCopilot ExternalGenerator API as the integration surface for proof search.
 4. Use Semantic Scholar API (free tier, 100 req/sec) for literature verification.
 5. Treat FrontierMath as a calibration surface, not a target.
+
+## 1.6 Orchestrator and Model Router (v0.5.0, April 2026)
+
+The v0.5.0 release closes the primary Phase 1 bottleneck — the absence of a repeatable
+execution loop — by adding three new infrastructure components:
+
+1. **Agent Orchestrator** (`scripts/agent_orchestrator.py`, CLI: `omega-orchestrate`):
+   8-stage pipeline dispatcher that loads agent definitions, assembles problem context,
+   constructs structured prompts, invokes LLM backends, parses YAML output artifacts,
+   and persists them with SHA-256 checksums.
+
+2. **Model Router** (`scripts/model_router.py`, CLI: `omega-model-router`):
+   Declarative routing layer mapping agent roles and problem tiers to specific LLM
+   backends (OpenAI, DeepSeek, Anthropic, Ollama, vLLM, LM Studio) with fallback
+   chains and health checks. Designed for the two-level architecture where large
+   models decompose and small models solve.
+
+3. **Evidence Verification CLI** (`scripts/verify_evidence.py`, CLI: `omega-verify-evidence`):
+   Standalone SHA-256 evidence bundle compute/verify/status tool.
+
+The repeatable execution loop is now:
+```
+triage → workspace → experiment → evidence-bundle → writeup → review
+```
+
+All outputs are classified as evidence class E2 (LLM-assisted, requires verification)
+until a formal verification step upgrades them.
+
+See:
+- `protocol/orchestrator-contract.md` for the full orchestrator specification
+- `protocol/agent-teams.md` §Orchestrator Integration for the stage-to-role mapping
 
 ## 2. Problem Taxonomy
 
@@ -324,7 +356,7 @@ research/active/<problem-id>/
      └── prover-results/
 ```
 
-Use `python scripts/scaffold-problem.py <problem-id> --title "..."` to create this structure.
+Use `python scripts/scaffold_problem.py <problem-id> --title "..."` to create this structure.
 
 Proof-first lanes may additionally stage a versioned Lean project under `proof/lean/` by copying `templates/lean-starter/`; see `protocol/lean-bootstrap.md`.
 
@@ -335,12 +367,12 @@ OMEGA now ships a **bounded local runner CLI** for workspace hygiene. It does no
 Primary commands:
 
 ```bash
-python scripts/omega-runner.py start <problem-id> --route experiment-first --agent experimentalist --description "bounded search"
-python scripts/omega-runner.py finish <problem-id> <run-id> --status completed --verdict positive --artifact artifacts/search.log:log
-python scripts/omega-runner.py proof-result <problem-id> <run-id> --claim-label "candidate theorem" --claim-class theorem --status draft --verifier lean4 --toolchain leanprover/lean4:v4.29.0 --verifier-command "lake env lean artifacts/candidate.lean" --source-entry artifacts/candidate.lean --artifact artifacts/candidate.lean:source
-python scripts/omega-runner.py evidence-bundle <problem-id>
-python scripts/omega-runner.py bootstrap-lean <problem-id>
-python scripts/generate-experiment-index.py
+python scripts/omega_runner.py start <problem-id> --route experiment-first --agent experimentalist --description "bounded search"
+python scripts/omega_runner.py finish <problem-id> <run-id> --status completed --verdict positive --artifact artifacts/search.log:log
+python scripts/omega_runner.py proof-result <problem-id> <run-id> --claim-label "candidate theorem" --claim-class theorem --status draft --verifier lean4 --toolchain leanprover/lean4:v4.29.0 --verifier-command "lake env lean artifacts/candidate.lean" --source-entry artifacts/candidate.lean --artifact artifacts/candidate.lean:source
+python scripts/omega_runner.py evidence-bundle <problem-id>
+python scripts/omega_runner.py bootstrap-lean <problem-id>
+python scripts/generate_experiment_index.py
 ```
 
 This surface guarantees only:

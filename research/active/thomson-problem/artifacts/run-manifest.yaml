@@ -1,0 +1,17 @@
+problem_id: thomson-problem
+title: Thomson problem
+status: active
+route: experiment-first
+evidence_class: bounded-numerical-reproduction-and-certification-scaffold
+reproducibility: tracked
+workflow_state: control/workflow-state.yaml
+literature_graph: input_files/literature_graph.md
+citation_evidence: input_files/citation_evidence.md
+proof_obligations: input_files/proof_obligations.md
+experiment_ledger: experiments/ledger.yaml
+evidence_bundle: artifacts/evidence-bundle.yaml
+prover_results_dir: artifacts/prover-results/
+lean_starter_template: templates/lean-starter/
+presentation_pack: presentation/
+latest_completed_run: thomson-problem-20260408-001
+latest_certification_artifact: artifacts/phase3_certify_11_12.json

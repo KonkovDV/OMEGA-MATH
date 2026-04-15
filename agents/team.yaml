@@ -10,6 +10,17 @@ orchestration:
     - experimentalist_or_prover
     - writer
     - reviewer
+  pipeline_stages:
+    brief: planner
+    novelty: librarian
+    triage: planner
+    plan: planner
+    experiment: experimentalist
+    prove: prover
+    survey: analyst
+    results: analyst
+    paper: writer
+    referee: reviewer
   routing_rules:
     T1-computational: experimentalist
     T2-experimental: experimentalist

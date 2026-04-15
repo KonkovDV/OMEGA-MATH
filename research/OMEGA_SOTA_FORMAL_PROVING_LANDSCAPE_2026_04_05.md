@@ -81,7 +81,7 @@ DeepSeek-Prover-V2 introduces a recursive theorem-proving pipeline built on two 
 
 ### 1.2 Kimina-Prover
 
-**Source**: Wang, H. et al. *Kimina-Prover Preview: Towards Large Formal Reasoning Models
+**Source**: Wang, H., Unsal, M., Lin, X., Baksys, M., et al. *Kimina-Prover Preview: Towards Large Formal Reasoning Models
 with Reinforcement Learning.* arXiv:2504.11354 [cs.AI], April 2025. GitHub:
 `MoonshotAI/Kimina-Prover-Preview`.
 
@@ -379,7 +379,7 @@ LLM-based judging produces systematically biased assessments.
 
 ### 4.1 Aletheia
 
-**Source**: Feng, J. et al. arXiv:2602.10177, 2026.
+**Source**: Feng, T., Trinh, T.H., Bingham, G., Hwang, D., et al. *Towards Autonomous Mathematics Research.* arXiv:2602.10177, 2026.
 
 **Evidence class**: E1
 
@@ -388,12 +388,12 @@ agent contributions are equally autonomous or novel, and reporting should make t
 
 ### 4.2 Gemini on Erdős Problems
 
-**Source**: Feng, J. et al. arXiv:2601.22401, 2026.
+**Source**: Feng, T., Trinh, T., Bingham, G., Kang, J., et al. *Semi-Autonomous Mathematics Discovery with Gemini: A Case Study on the Erdős Problems.* arXiv:2601.22401, 2026.
 
 **Evidence class**: E1
 
-Semi-autonomous screening of 700+ open-problem records. ~30% of "open" problems already had
-partial or complete solutions in the literature. Main lesson: literature collision is a
+Semi-autonomous screening of 700 open-problem records. Of 13 addressed problems, 8 had
+existing solutions in the literature. Main lesson: literature collision is a
 first-class risk for any open-problem project.
 
 ### 4.3 Denario
@@ -425,7 +425,7 @@ This is OMEGA's strongest near-term applied wedge.
 
 ### 5.2 VUB Vibe-Proving Case Study
 
-**Source**: Verbeken, L. et al. arXiv:2602.18918, 2026.
+**Source**: Verbeken, B., Vagenende, B., Guerry, M.-A., Algaba, A., Ginis, V. *Early Evidence of Vibe-Proving with Consumer LLMs.* arXiv:2602.18918, 2026.
 
 **Evidence class**: E1
 
@@ -478,9 +478,9 @@ Based on the external landscape, OMEGA's realistic near-term targets are:
 5. Azerbayev, Z. et al. LLEMMA. arXiv:2310.10631, 2023.
 6. Lu, S. et al. Process Advantage Verifiers. arXiv:2410.08146, 2024.
 7. Glazer, E. et al. FrontierMath. arXiv:2411.04872, 2024.
-8. Verbeken, L. et al. VUB Vibe-Proving. arXiv:2602.18918, 2026.
-9. Feng, J. et al. Gemini on Erdős Problems. arXiv:2601.22401, 2026.
-10. Feng, J. et al. Aletheia. arXiv:2602.10177, 2026.
+8. Verbeken, B. et al. VUB Vibe-Proving. arXiv:2602.18918, 2026.
+9. Feng, T. et al. Semi-Autonomous Mathematics Discovery with Gemini. arXiv:2601.22401, 2026.
+10. Feng, T. et al. Towards Autonomous Mathematics Research. arXiv:2602.10177, 2026.
 11. Liu, T. et al. Numina-Lean-Agent. arXiv:2601.14027, 2026.
 12. Ballon, B. et al. Omni-MATH-2. arXiv:2601.19532, 2026.
 13. NIST. FIPS 203/204/205 (PQC Standards), 2024.

@@ -2,8 +2,8 @@ cff-version: 1.2.0
 message: "If you use OMEGA, please cite the repository and any derived research artifact."
 title: "OMEGA — Open Mathematics Exploration by Generative Agents"
 type: software
-version: 0.2.0
-date-released: 2026-04-04
+version: 0.5.0
+date-released: 2026-04-13
 license: MIT
 authors:
   - name: "MicroPhoenix open-source community"

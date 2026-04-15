@@ -49,7 +49,7 @@ OMEGA uses a three-tier evidence classification:
    - OMEGA role: dominant paradigm for formal proving; two-level architecture; workstation 7B variant
 
 2. **Kimina-Prover**
-   Wang, H., Zhu, H., Liu, E., Chou, Y., Li, T., Zheng, R., Cui, J., Zheng, J., Liang, D., Zhu, Y., Sun, M. *Kimina-Prover Preview: Towards Large Formal Reasoning Models with Reinforcement Learning.* arXiv:2504.11354 [cs.AI], April 2025.
+   Wang, H., Unsal, M., Lin, X., Baksys, M., Liu, J., Dos Santos, M., Sung, F., Vinyes, M., Ying, Z., et al. *Kimina-Prover Preview: Towards Large Formal Reasoning Models with Reinforcement Learning.* arXiv:2504.11354 [cs.AI], April 2025.
    - GitHub: [`MoonshotAI/Kimina-Prover-Preview`](https://github.com/MoonshotAI/Kimina-Prover-Preview)
    - Evidence class: E1
    - Key result: 80.7% MiniF2F pass@8192 (72B), open-weight distilled 1.5B/7B
@@ -116,7 +116,7 @@ OMEGA uses a three-tier evidence classification:
 ## 2. Research-Agent Systems
 
 9. **Denario**
-   Iyer, S., et al. *Denario: Modular Multi-Agent Framework for Scientific Research.* arXiv:2510.26887, 2025.
+   Villaescusa-Navarro, F., Bolliet, B., Villanueva-Domingo, P., Bayer, A.E., et al. *The Denario project: Deep knowledge AI agents for scientific discovery.* arXiv:2510.26887, 2025.
    - GitHub: [`AstroPilot-AI/Denario`](https://github.com/AstroPilot-AI/Denario)
    - Evidence class: E1
    - OMEGA role: architectural donor for modular pipeline (idea → novelty → methods → results → paper → referee)
@@ -127,7 +127,7 @@ OMEGA uses a three-tier evidence classification:
     - OMEGA role: confirms at least one Denario paper was accepted; reviews are mixed and substantive
 
 11. **CMBAgent**
-    Li, I., Dunkley, J., de Haan, T., Gatti, M. *CMBAgent: A Multi-Agent System for End-to-End Scientific Research.* arXiv:2507.07257, 2025. Precursor: arXiv:2412.00431, 2024.
+    Xu, L., Sarkar, M., Lonappan, A.I., Zubeldia, Í., Villanueva-Domingo, P., Casas, S., et al. *Open Source Planning & Control System with Language Agents for Autonomous Scientific Discovery.* arXiv:2507.07257, 2025. Precursor: arXiv:2412.00431, 2024.
     - GitHub: [`CMBAgents/cmbagent`](https://github.com/CMBAgents/cmbagent)
     - Evidence class: E1
     - OMEGA role: planning/control runtime donor; `deep_research` workflow with context carryover
@@ -138,15 +138,15 @@ OMEGA uses a three-tier evidence classification:
     - OMEGA role: requirements for uncertainty quantification, validation, robustness, reproducibility
 
 13. **Aletheia / Autonomous Math Research**
-    Feng, J., et al. *Aletheia: Towards Autonomous Mathematical Reasoning.* arXiv:2602.10177, 2026.
+    Feng, T., Trinh, T.H., Bingham, G., Hwang, D., et al. *Towards Autonomous Mathematics Research.* arXiv:2602.10177, 2026.
     - Evidence class: E1
     - Key contribution: autonomy and novelty gradation for math research agents
     - OMEGA role: reporting transparency; long-horizon research-agent architecture
 
 14. **Gemini on Erdős Problems**
-    Feng, J., et al. *Gemini on Erdős Problems.* arXiv:2601.22401, 2026.
+    Feng, T., Trinh, T., Bingham, G., Kang, J., et al. *Semi-Autonomous Mathematics Discovery with Gemini: A Case Study on the Erdős Problems.* arXiv:2601.22401, 2026.
     - Evidence class: E1
-    - Key finding: ~30% of screened "open" problems had existing solutions; literature collision is first-class risk
+    - Key finding: of 13 addressed problems, 8 had existing solutions in the literature; literature collision is first-class risk
     - OMEGA role: mandatory anti-rediscovery checking; novelty verification
 
 15. **Numina-Lean-Agent**
@@ -160,7 +160,7 @@ OMEGA uses a three-tier evidence classification:
 ## 3. Vibe-Proving and Proof Workflow
 
 16. **VUB Vibe-Proving Case Study**
-    Verbeken, L., Van der Jeugt, E. *Proving Theorems by Vibe-Checking.* arXiv:2602.18918, 2026.
+    Verbeken, B., Vagenende, B., Guerry, M.-A., Algaba, A., Ginis, V. *Early Evidence of Vibe-Proving with Consumer LLMs: A Case Study on Spectral Region Characterization with ChatGPT-5.2 (Thinking).* arXiv:2602.18918, 2026.
     - Evidence class: E1
     - Key contribution: consumer-LLM (ChatGPT) materially assisted human-verified proof; 7 shareable threads; 4 versioned drafts; explicit generate → referee → repair loop
     - OMEGA role: vibe-proving workflow donor; proves consumer LLMs are useful proposal engines within formally verified loops
@@ -185,7 +185,7 @@ OMEGA uses a three-tier evidence classification:
     - OMEGA reading: useful for T1-T2 tier calibration
 
 20. **FrontierMath**
-    Glazer, E., Erdil, E., Besiroglu, T., Chicharro, D., Chen, E., Barahona, A., Purdon, R., Mazet, E., Menou, N., Motwani, S. *FrontierMath: A Benchmark for Evaluating Advanced Mathematical Reasoning in AI.* arXiv:2411.04872 [cs.AI], November 2024 (v7 December 2025).
+    Glazer, E., Erdil, E., Besiroglu, T., Chicharro, D., Chen, E., Gunning, A., Falkman Olsson, C., Denain, J.-S., et al. *FrontierMath: A Benchmark for Evaluating Advanced Mathematical Reasoning in AI.* arXiv:2411.04872 [cs.AI], November 2024 (v7 December 2025).
     - Evidence class: E1
     - Key result: SOTA models solve **under 2%** of research-grade math problems
     - Tier structure: 1-3 (undergrad → early postdoc), 4 (research-level), Open Problems

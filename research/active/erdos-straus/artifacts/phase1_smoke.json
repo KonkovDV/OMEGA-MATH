@@ -1,0 +1,114 @@
+{
+  "_meta": {
+    "verify_count": 3,
+    "max_denom": 2000
+  },
+  "1": {
+    "residue": 1,
+    "modulus": 840,
+    "tested": 3,
+    "successes": 0,
+    "failures": [
+      2521,
+      3361,
+      4201
+    ],
+    "coverage": 0.0,
+    "formula_hits": {
+      "parametric": 0,
+      "brute": 0
+    },
+    "max_denom_needed": 0,
+    "note": "Mordell barrier: QR-based covering impossible for perfect square residues"
+  },
+  "121": {
+    "residue": 121,
+    "modulus": 840,
+    "tested": 3,
+    "successes": 0,
+    "failures": [
+      1801,
+      6841,
+      7681
+    ],
+    "coverage": 0.0,
+    "formula_hits": {
+      "parametric": 0,
+      "brute": 0
+    },
+    "max_denom_needed": 0,
+    "note": "Mordell barrier: QR-based covering impossible for perfect square residues"
+  },
+  "169": {
+    "residue": 169,
+    "modulus": 840,
+    "tested": 3,
+    "successes": 0,
+    "failures": [
+      1009,
+      2689,
+      3529
+    ],
+    "coverage": 0.0,
+    "formula_hits": {
+      "parametric": 0,
+      "brute": 0
+    },
+    "max_denom_needed": 0,
+    "note": "Mordell barrier: QR-based covering impossible for perfect square residues"
+  },
+  "289": {
+    "residue": 289,
+    "modulus": 840,
+    "tested": 3,
+    "successes": 0,
+    "failures": [
+      1129,
+      8689,
+      10369
+    ],
+    "coverage": 0.0,
+    "formula_hits": {
+      "parametric": 0,
+      "brute": 0
+    },
+    "max_denom_needed": 0,
+    "note": "Mordell barrier: QR-based covering impossible for perfect square residues"
+  },
+  "361": {
+    "residue": 361,
+    "modulus": 840,
+    "tested": 3,
+    "successes": 0,
+    "failures": [
+      1201,
+      4561,
+      8761
+    ],
+    "coverage": 0.0,
+    "formula_hits": {
+      "parametric": 0,
+      "brute": 0
+    },
+    "max_denom_needed": 0,
+    "note": "Mordell barrier: QR-based covering impossible for perfect square residues"
+  },
+  "529": {
+    "residue": 529,
+    "modulus": 840,
+    "tested": 3,
+    "successes": 0,
+    "failures": [
+      3049,
+      3889,
+      4729
+    ],
+    "coverage": 0.0,
+    "formula_hits": {
+      "parametric": 0,
+      "brute": 0
+    },
+    "max_denom_needed": 0,
+    "note": "Mordell barrier: QR-based covering impossible for perfect square residues"
+  }
+}

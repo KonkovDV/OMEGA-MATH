@@ -1,0 +1,11 @@
+version: "1.0"
+generated_at: null
+problem_id: erdos-straus
+bundle_path: artifacts/evidence-bundle.yaml
+summary:
+  total_runs: 0
+  total_artifacts: 0
+  total_bytes: 0
+  by_type: {}
+documents: []
+runs: []

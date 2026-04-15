@@ -129,3 +129,39 @@ Escalate to human review when:
 - a result appears novel but literature coverage is incomplete
 - computation required exceeds the configured budget
 - the Writer cannot cleanly separate theorem, evidence, and conjecture
+
+## Orchestrator Integration (v0.5.0)
+
+The `agent_orchestrator.py` script (`omega-orchestrate` CLI) implements the
+standard workflow above as an executable 8-stage pipeline with LLM dispatch:
+
+| Pipeline stage | Agent role | Primary output |
+|----------------|-----------|----------------|
+| `brief` | planner | data description, success criteria |
+| `novelty` | librarian | literature memo, known bounds |
+| `triage` | planner | amenability assessment, tier routing |
+| `plan` | planner | phased research plan |
+| `experiment` | experimentalist | experiment log, computational results |
+| `prove` | prover | proof sketch, obligations |
+| `paper` | writer | draft, claims table |
+| `referee` | reviewer | referee report, blocking issues |
+
+Stage-to-role mapping is also stored in `agents/team.yaml` under the
+`orchestration.pipeline_stages` key, and the orchestrator reads it at startup.
+
+### Tier-Based Routing
+
+For Tier 4 structural problems, the pipeline reorders to run `prove` before
+`experiment`. For all other tiers, `experiment` runs first. The routing rules
+in `team.yaml` determine which role handles the primary execution stage.
+
+### API Support
+
+Supported backends: OpenAI-compatible (OpenAI, DeepSeek, LM Studio, Ollama),
+Anthropic Claude, and LiteLLM universal router. The `--model` flag selects the
+model; the `--api` flag selects the backend (default: `openai`).
+
+### Dry-Run Mode
+
+Use `--dry-run` to preview the constructed prompt and skip the LLM API call.
+This produces a full `<yaml>` block with the prompt text instead of LLM output.

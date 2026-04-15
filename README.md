@@ -20,6 +20,7 @@ CMBAgent и LSST DESC AI roadmap как доноры проектных реше
 - 6-phase execution plan: `research/OMEGA_6_PHASE_EXECUTION_PLAN_2026_04_05.md`
 - SOTA formal proving landscape: `research/OMEGA_SOTA_FORMAL_PROVING_LANDSCAPE_2026_04_05.md`
 - SOTA bibliography: `research/OMEGA_SOTA_BIBLIOGRAPHY_2026_04_05.md`
+- SOTA landscape update (April 13): `research/OMEGA_SOTA_LANDSCAPE_UPDATE_2026_04_13.md`
 - Far-horizon speculative architecture: `research/OMEGA_HYPER_ARCHITECTURE_2076.md`
 - Local proving and workstation stack: `research/OMEGA_LOCAL_WORKSTATION_VIBE_PROVING_STACK_2026_04_04.md`
 - Formal assurance scope matrix: `research/OMEGA_ASSURANCE_SCOPE_MATRIX_2026_04_05.md`
@@ -41,6 +42,20 @@ workflow design, presentation packaging, and a verified local formal-math workst
 See `protocol/research-intelligence-stack.md` for the receiver mapping and artifact rules, and `research/OMEGA_LOCAL_WORKSTATION_VIBE_PROVING_STACK_2026_04_04.md` for the local-stack synthesis.
 
 > This list shows operationally promoted surfaces as of the April 2026 audit. For secondary and watchlist tools (Leanstral, ProofGym, etc.) and the reasoning behind each classification, see `research/OMEGA_LOCAL_WORKSTATION_VIBE_PROVING_STACK_2026_04_04.md`. Kimina-Prover was promoted to Tier-1 in the April 2026 SOTA update (see `research/OMEGA_SOTA_FORMAL_PROVING_LANDSCAPE_2026_04_05.md`).
+
+## Flagship Experimental Tracks
+
+OMEGA is now concretely prepared around three Tier-1 flagship workspaces under `research/active/`:
+
+| Problem | Current executable phase surface | Primary script |
+|---------|----------------------------------|----------------|
+| Erdős–Straus | Phase 1 covering analysis + Phase 2 parametric decomposition | `research/active/erdos-straus/experiments/phase1_covering.py`, `phase2_parametric.py` |
+| Kobon triangles | Phase 1 arrangement search | `research/active/kobon-triangles/experiments/phase1_pseudoline_enum.py` |
+| Thomson problem | Phase 1 multi-start optimization + Phase 2 basin-hopping + Phase 3 numerical certification scaffold | `research/active/thomson-problem/experiments/phase1_multistart.py`, `phase2_basin_hopping.py`, `phase3_certify.py` |
+
+Planned later phases remain documented in each problem's `planning/attack_plan.md`, but only the executable phase surface above should be treated as run-ready today.
+
+For VS Code / Copilot usage inside this standalone repo, use the workspace customizations under `.github/agents/`, `.github/prompts/`, and `.github/skills/`.
 
 ## Архитектура
 
@@ -122,10 +137,15 @@ What exists now:
 15. A deterministic local workflow controller (`omega-workflow`) that materializes per-problem control state from registry triage and advances bounded stages without hand-editing YAML
 
 What does not exist yet:
-1. A full autonomous orchestration loop across planner, librarian, prover, and writer roles
-2. Automated paper generation pipelines
-3. Local adapters for literature-graph, citation-evidence, and presentation-pack services
-4. LLM-backed proof search via LeanCopilot / DeepSeek-Prover integration (execution adapters are wired; model routing is not)
+1. Automated paper generation pipelines (templates exist; writer agent can draft, but no end-to-end LaTeX compilation)
+2. Local adapters for literature-graph, citation-evidence, and presentation-pack services
+3. LLM-backed proof search via LeanCopilot / DeepSeek-Prover integration (execution adapters and model routing are wired; the LeanCopilot ExternalGenerator bridge is not)
+
+Newly added in v0.5.0:
+1. LLM-backed agent orchestrator (`omega-orchestrate`) supporting 7-role dispatch, 8-stage pipeline execution, multi-API routing (OpenAI, Anthropic, LiteLLM, Ollama), and dry-run mode
+2. Standalone evidence verification CLI (`omega-verify-evidence`) for computing and auditing SHA-256 evidence bundles
+3. End-to-end integration test coverage for the full pipeline (brief → experiment → results → evidence bundle)
+4. Model router (`omega-model-router`) with declarative role-to-model profiles, tier-aware routing, fallback chains, and LLM backend health checks
 
 ## Registry Maturity
 
@@ -147,26 +167,40 @@ This repository is intentionally isolated from the main MicroPhoenix application
 1. Read `PROTOCOL.md` for the full operating model.
 2. Start from `registry/triage-matrix.yaml` to choose a first target.
 3. Read `protocol/research-intelligence-stack.md` before novelty-heavy work, proof-first investigations, or publication prep.
-4. Optionally install the local Python CLI surface with `python -m pip install -e .`.
-5. Create a Denario-compatible research workspace with `python scripts/scaffold-problem.py <problem-id> --title "..."` or `omega-scaffold-problem ...` after editable install.
-6. Materialize the local control state with `python scripts/omega-workflow.py triage <problem-id>` or `omega-workflow triage <problem-id>` after the workspace exists.
+4. Install the local Python CLI surface with `python -m pip install -e .` for registry-only or protocol work, or `python -m pip install -e .[all]` for the active research tracks and experiment scripts.
+5. Create a Denario-compatible research workspace with `python scripts/scaffold_problem.py <problem-id> --title "..."` or `omega-scaffold-problem ...` after editable install.
+6. Materialize the local control state with `python scripts/omega_workflow.py triage <problem-id>` or `omega-workflow triage <problem-id>` after the workspace exists.
 7. Inspect or advance the current workflow with `omega-workflow status <problem-id>` and `omega-workflow advance <problem-id> --outcome complete|block|resume|close`.
-8. Open and close experiment runs with `python scripts/omega-runner.py start ...` and `python scripts/omega-runner.py finish ...` instead of hand-editing the ledger; these lifecycle commands now auto-sync `control/workflow-state.yaml` into the execution and results phases.
-9. For proof-first work, start from `templates/lean-starter/` and `protocol/lean-bootstrap.md`, then persist verifier-visible outcomes with `python scripts/omega-runner.py proof-result ...`.
-10. Regenerate the checksummed evidence view with `python scripts/omega-runner.py evidence-bundle <problem-id>` when needed; `finish` and `proof-result` already refresh it automatically.
+8. Open and close experiment runs with `python scripts/omega_runner.py start ...` and `python scripts/omega_runner.py finish ...` instead of hand-editing the ledger; these lifecycle commands now auto-sync `control/workflow-state.yaml` into the execution and results phases.
+9. For proof-first work, start from `templates/lean-starter/` and `protocol/lean-bootstrap.md`, then persist verifier-visible outcomes with `python scripts/omega_runner.py proof-result ...`.
+10. Regenerate the checksummed evidence view with `python scripts/omega_runner.py evidence-bundle <problem-id>` when needed; `finish` and `proof-result` already refresh it automatically.
 11. Read `protocol/evidence-governance.md`, `protocol/research-object-packaging.md`, and `protocol/runtime-language-strategy.md` before extending the runtime or writing claim-bearing outputs.
-12. Regenerate the active workflow-and-run summary with `python scripts/generate-experiment-index.py` when needed, or query it directly with `omega-query --global --stage plan` / `omega-query --global --blocked-only --format table`.
+12. Regenerate the active workflow-and-run summary with `python scripts/generate_experiment_index.py` when needed, or query it directly with `omega-query --global --stage plan` / `omega-query --global --blocked-only --format table`.
 13. Use the files under `protocol/` to structure the investigation.
 14. Use the files under `agents/` as role specs for future orchestration.
 15. Query past experiment runs with `omega-query --problem <id>` or `omega-query --verdict positive` to find prior evidence before starting new work.
-16. Check Lean files with `omega-lean check-file <file.lean>`, build Lean projects with `omega-lean build-project <dir>`, or emit structured results with `omega-lean run-command "<cmd>"`.
-17. Solve SAT/SMT instances with `omega-solve smt "<z3-spec>"` or `omega-solve sat --clauses "[[1,2],[-1,3]]" --num-vars 3`.
-18. Run CAS computations with `omega-cas simplify <expr>`, `omega-cas solve <equation>`, `omega-cas series <expr>`, or `omega-cas custom "result = ..."`.
+16. Use the workspace agent `omega-math`, the prompts in `.github/prompts/`, and the reusable workflows in `.github/skills/` when running the flagship tracks from VS Code Copilot.
+17. Check Lean files with `omega-lean check-file <file.lean>`, build Lean projects with `omega-lean build-project <dir>`, or emit structured results with `omega-lean run-command "<cmd>"`.
+18. Solve SAT/SMT instances with `omega-solve smt "<z3-spec>"` or `omega-solve sat --clauses "[[1,2],[-1,3]]" --num-vars 3`.
+19. Run CAS computations with `omega-cas simplify <expr>`, `omega-cas solve <equation>`, `omega-cas series <expr>`, or `omega-cas custom "result = ..."`.
+20. Dispatch an agent for a specific problem and stage: `omega-orchestrate run erdos-straus --stage experiment --model deepseek-chat`.
+21. Run a full pipeline across multiple stages: `omega-orchestrate pipeline erdos-straus --from-stage plan --to-stage results`.
+22. Dry-run a stage to preview the LLM prompt without calling the API: `omega-orchestrate run erdos-straus --stage plan --dry-run`.
+23. Compute a fresh evidence bundle with `omega-verify-evidence compute erdos-straus` and verify it with `omega-verify-evidence verify erdos-straus`.
+24. Check LLM backend health with `omega-model-router health`, inspect routing profiles with `omega-model-router profiles`, and resolve a model for a role/tier with `omega-model-router resolve --role prover --tier T4-structural`.
+25. Import Einstein Arena benchmark table into OMEGA collections with `omega-import-einstein-arena --readme-file .benchmarks/einstein-arena-readme.md`.
+26. Import Einstein Arena table and copy benchmark constructions from a local donor clone with `omega-import-einstein-arena --readme-file .benchmarks/einstein-arena-readme.md --repo-dir ../EinsteinArena-new-SOTA`.
+27. Use the scheduled sync workflow `.github/workflows/sync-einstein-arena.yml` to auto-open a PR when EinsteinArena benchmark snapshots drift.
 
 ## Структура проекта
 
 ```
 math/
+├── .github/
+│   ├── agents/                       # VS Code custom agents for OMEGA workflows
+│   ├── prompts/                      # VS Code prompt files for flagship tracks
+│   └── skills/                       # Reusable experiment, referee, citation, and closure workflows
+│
 ├── README.md                          # Этот файл
 ├── PROTOCOL.md                        # Полный протокол исследования
 ├── EXTRACTION_REPORT.md               # Источники и правила начальной экстракции
@@ -176,6 +210,7 @@ math/
 │   ├── schema.json                    # JSON Schema для записи о проблеме
 │   ├── triage-matrix.yaml             # Приоритетная очередь по AI-доступности
 │   ├── collections/
+│   │   ├── einstein-arena-benchmarks.yaml
 │   │   ├── hilbert-problems.yaml
 │   │   ├── landau-problems.yaml
 │   │   ├── millennium-prize.yaml
@@ -197,21 +232,22 @@ math/
 │       └── topology.yaml
 │
 ├── scripts/                           # CLI tools and execution adapters
-│   ├── scaffold-problem.py
-│   ├── generate-index.py
-│   ├── generate-experiment-index.py
-│   ├── omega-runner.py
+│   ├── scaffold_problem.py
+│   ├── generate_index.py
+│   ├── generate_experiment_index.py
+│   ├── import_einstein_arena.py       # EinsteinArena README importer (+ optional solutions/ snapshot copy)
 │   ├── omega_runner.py
-│   ├── validate-registry.py
+│   ├── validate_registry.py
 │   ├── experiment_query.py            # Searchable experiment-history queries
+│   ├── literature_adapter.py          # Semantic Scholar + arXiv API adapter
 │   ├── lean_adapter.py                # Lean 4 CLI execution adapter
 │   ├── solver_adapter.py              # SAT/SMT (Z3/PySAT) execution adapter
 │   ├── cas_adapter.py                 # CAS (SymPy/SageMath) execution adapter
 │   ├── omega_workflow.py              # Deterministic workflow/FSM controller
-│   ├── query-experiments.py           # Wrapper → experiment_query.py
-│   ├── lean-check.py                  # Wrapper → lean_adapter.py
-│   ├── solve.py                       # Wrapper → solver_adapter.py
-│   └── omega-workflow.py              # Wrapper → omega_workflow.py
+│   ├── agent_orchestrator.py          # LLM-backed 7-role agent dispatch engine
+│   ├── verify_evidence.py             # SHA-256 evidence bundle compute/verify/status
+│   ├── model_router.py                # LLM backend routing, profiles, and health checks
+│   └── README-compatible entrypoints are provided through `pyproject.toml`
 │
 ├── tests/                             # Standalone Python test suite
 │   ├── test_omega_runner.py
@@ -220,7 +256,16 @@ math/
 │   ├── test_lean_adapter.py
 │   ├── test_solver_adapter.py
 │   ├── test_cas_adapter.py
-│   └── test_omega_workflow.py
+│   ├── test_omega_workflow.py
+│   ├── test_agent_orchestrator.py
+│   ├── test_verify_evidence.py
+│   ├── test_e2e_pipeline.py            # End-to-end integration tests
+│   ├── test_flagship_experiments.py     # Flagship problem experiment tests
+│   ├── test_literature_adapter.py
+│   ├── test_model_router.py            # Model router routing + health tests
+│   ├── test_import_einstein_arena.py   # EinsteinArena importer parser tests
+│   ├── test_registry_pipeline.py
+│   └── test_registry_e2e.py
 │
 ├── templates/                         # Публикационные и proving starter surfaces
 │   ├── reproducibility-manifest.md
@@ -246,6 +291,7 @@ math/
 │   ├── research-intelligence-stack.md
 │   ├── research-object-packaging.md
 │   ├── runtime-language-strategy.md
+│   ├── orchestrator-contract.md        # Agent orchestrator specification
 │   ├── solver-execution-adapter.md     # SAT/SMT adapter contract
 │   ├── triage-matrix.md
 │   └── verification-pipeline.md
@@ -279,6 +325,7 @@ math/
     ├── OMEGA_SOTA_FORMAL_PROVING_LANDSCAPE_2026_04_05.md
     ├── OMEGA_UNICORN_PITCH_DECK.md
     ├── OMEGA_VIBE_PROVING_HYPERDEEP_REPORT_2026_04_04.md
+    ├── OMEGA_SOTA_LANDSCAPE_UPDATE_2026_04_13.md
     ├── active/README.md
     └── completed/README.md
 ```
@@ -288,26 +335,27 @@ math/
 Likely next additions (aligned with the 6-Phase Execution Plan):
 
 ### Phase 1: Pipeline Closure (immediate priority)
-1. Connect `lean_adapter.py` to real `lake build` with pinned mathlib toolchain
-2. Write integration tests for `solver_adapter.py` with concrete problem instances (Erdős–Straus, Kobon triangles)
-3. Create `scripts/literature_adapter.py` with Semantic Scholar API retrieval (100 req/sec, free tier)
-4. Execute full lifecycle on 3 Tier 1 problems with real evidence bundles
+1. ~~Connect `lean_adapter.py` to real `lake build` with pinned mathlib toolchain~~ (Done: `lean_adapter.py` wired)
+2. ~~Write integration tests for `solver_adapter.py` with concrete problem instances~~ (Done: `test_solver_adapter.py` + `test_e2e_pipeline.py`)
+3. ~~Create `scripts/literature_adapter.py`~~ (Done: Semantic Scholar + arXiv API)
+4. Execute full lifecycle on 3 Tier 1 problems with real evidence bundles (pending real LLM API keys)
+5. ~~Create agent orchestrator with multi-API LLM dispatch~~ (Done: `agent_orchestrator.py`)
+6. ~~Add standalone evidence verification CLI~~ (Done: `verify_evidence.py`)
 
 ### Phase 2: LLM-Backed Proof Search
-5. Create `scripts/model_router.py` routing to Ollama + DeepSeek-Prover-V2-7B / LeanCopilot ExternalGenerator / vLLM
-6. Implement bounded proof-repair loop (generate → verify → enrich → retry, max 64 iterations)
-7. Implement two-level subgoal decomposition (72B+ decomposes → local 7B solves)
-8. Produce first neural-generated Lean 4 proof with zero remaining `sorry`
+7. Create `scripts/model_router.py` routing to Ollama + DeepSeek-Prover-V2-7B / LeanCopilot ExternalGenerator / vLLM
+8. Implement bounded proof-repair loop (generate → verify → enrich → retry, max 64 iterations)
+9. Implement two-level subgoal decomposition (72B+ decomposes → local 7B solves)
+10. Produce first neural-generated Lean 4 proof with zero remaining `sorry`
 
 ### Phase 3: Literature and Novelty Verification
-9. Add arXiv API supplement for fresh preprint search
-10. Add machine-readable novelty packet generator per problem
-11. Add mandatory anti-rediscovery gate at TRIAGE → PLAN workflow transition
+11. Add machine-readable novelty packet generator per problem
+12. Add mandatory anti-rediscovery gate at TRIAGE → PLAN workflow transition
 
-### Phase 4–6: Orchestration, Publication, Formal Assurance
-12. Multi-agent orchestration (Librarian → Analyst → Experimentalist → Prover → Writer → Reviewer)
+### Phase 4–6: Publication, Formal Assurance, Scaling
 13. LaTeX generation from stored artifacts with audit trail
-14. Post-quantum cryptography formal assurance wedge (NIST FIPS 203/204/205)
+14. Automated paper generation pipelines (Writer → Reviewer loop)
+15. Post-quantum cryptography formal assurance wedge (NIST FIPS 203/204/205)
 
 See `research/OMEGA_6_PHASE_EXECUTION_PLAN_2026_04_05.md` for complete task specifications with evidence gates and academic grounding.
 

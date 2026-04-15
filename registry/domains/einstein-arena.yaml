@@ -1,0 +1,290 @@
+# Einstein Arena Benchmarks — Canonical Domain Adaptation
+# Source-aligned benchmark records mapped into OMEGA registry format.
+# Primary snapshot source: togethercomputer/EinsteinArena-new-SOTA (Apr 2026)
+
+problems:
+
+  - id: erdos-min-overlap
+    name: Erdos' Minimum Overlap (Upper Bound)
+    subdomain: arena-benchmarks
+    status: open
+    statement: >
+      Find a bounded construction minimizing the overlap integral surrogate used in
+      Einstein Arena's erdos-min-overlap benchmark verifier.
+    tags: [einstein-arena, combinatorics, optimization, benchmark]
+    ai_triage:
+      tier: T1-computational
+      amenability_score: 8
+      approaches: [heuristic-search, numerical-verification, gradient-optimization]
+      compute_profile: moderate
+      notes: >
+        Direct evaluate(solution) objective. Rapid iteration loop and public leaderboard
+        make it suitable for bounded optimization campaigns.
+    known_bounds:
+      objective: minimize
+      snapshot_best: "0.380871"
+      previous_best_public: "0.380876"
+      improvement: "-0.000005"
+      snapshot_date: "2026-04-01"
+      source_collection_id: einstein-arena-erdos-minimum-overlap
+
+  - id: first-autocorrelation
+    name: First Autocorrelation Inequality
+    subdomain: arena-benchmarks
+    status: open
+    statement: >
+      Construct candidate functions minimizing Einstein Arena's first-autocorrelation
+      objective under verifier constraints.
+    tags: [einstein-arena, harmonic-analysis, optimization]
+    ai_triage:
+      tier: T1-computational
+      amenability_score: 7
+      approaches: [heuristic-search, numerical-verification, gradient-optimization]
+      compute_profile: moderate
+    known_bounds:
+      objective: minimize
+      snapshot_best: "1.50286286"
+      previous_best_public: "1.50286290"
+      improvement: "-0.00000004"
+      snapshot_date: "2026-04-01"
+      source_collection_id: einstein-arena-first-autocorrelation
+
+  - id: second-autocorrelation
+    name: Second Autocorrelation Inequality
+    subdomain: arena-benchmarks
+    status: open
+    statement: >
+      Construct candidate functions maximizing Einstein Arena's second-autocorrelation
+      benchmark objective.
+    tags: [einstein-arena, harmonic-analysis, optimization]
+    ai_triage:
+      tier: T2-experimental
+      amenability_score: 6
+      approaches: [heuristic-search, numerical-verification, gradient-optimization]
+      compute_profile: heavy
+      notes: >
+        Score landscape is narrow and includes unpublished stronger claims; useful for
+        empirical exploration and robustness checks.
+    known_bounds:
+      objective: maximize
+      snapshot_best: "0.961206"
+      previous_best_public: "0.962580"
+      improvement: "n/a"
+      snapshot_date: "2026-04-01"
+      source_collection_id: einstein-arena-second-autocorrelation
+
+  - id: third-autocorrelation
+    name: Third Autocorrelation Inequality
+    subdomain: arena-benchmarks
+    status: open
+    statement: >
+      Construct candidate functions minimizing Einstein Arena's third-autocorrelation
+      benchmark objective.
+    tags: [einstein-arena, harmonic-analysis, optimization]
+    ai_triage:
+      tier: T1-computational
+      amenability_score: 7
+      approaches: [heuristic-search, numerical-verification, gradient-optimization]
+      compute_profile: moderate
+    known_bounds:
+      objective: minimize
+      snapshot_best: "1.454555"
+      previous_best_public: "1.455643"
+      improvement: "-0.001088"
+      snapshot_date: "2026-04-01"
+      source_collection_id: einstein-arena-third-autocorrelation
+
+  - id: flat-polynomials
+    name: Flat Polynomials (degree 69)
+    subdomain: arena-benchmarks
+    status: open
+    statement: >
+      Optimize +/-1 coefficient vectors to minimize the flat-polynomials benchmark
+      verifier score on the unit circle.
+    tags: [einstein-arena, approximation, optimization]
+    ai_triage:
+      tier: T1-computational
+      amenability_score: 8
+      approaches: [heuristic-search, numerical-verification, reinforcement-learning]
+      compute_profile: moderate
+    known_bounds:
+      objective: minimize
+      snapshot_best: "1.280932"
+      previous_best_public: "1.340925"
+      improvement: "-0.059993"
+      snapshot_date: "2026-04-01"
+      source_collection_id: einstein-arena-flat-polynomials
+
+  - id: edges-vs-triangles
+    name: Edges vs Triangles (Minimal Triangle Density)
+    subdomain: arena-benchmarks
+    status: open
+    statement: >
+      Optimize constructive payloads to maximize Einstein Arena's edges-vs-triangles
+      score proxy for the extremal graph objective.
+    tags: [einstein-arena, extremal-combinatorics, optimization]
+    ai_triage:
+      tier: T1-computational
+      amenability_score: 7
+      approaches: [heuristic-search, numerical-verification, reinforcement-learning]
+      compute_profile: moderate
+    known_bounds:
+      objective: maximize
+      snapshot_best: "-0.712256"
+      previous_best_public: "-0.712494"
+      improvement: "+0.000238"
+      snapshot_date: "2026-04-01"
+      source_collection_id: einstein-arena-edges-vs-triangles
+
+  - id: tammes-problem
+    name: Tammes Problem (n = 50)
+    subdomain: arena-benchmarks
+    status: open
+    statement: >
+      Place 50 sphere points to maximize minimum pairwise distance under Einstein Arena's
+      tammes-problem verifier.
+    tags: [einstein-arena, geometry, sphere-packing, optimization]
+    related_problems: [thomson-problem]
+    ai_triage:
+      tier: T1-computational
+      amenability_score: 8
+      approaches: [heuristic-search, gradient-optimization, reinforcement-learning, numerical-verification]
+      compute_profile: moderate
+      notes: >
+        Directly aligned with OMEGA's thomson/tammes flagship optimization lane.
+    known_bounds:
+      objective: maximize
+      snapshot_best: "0.5134721"
+      previous_best_public: "0.5134719"
+      improvement: "+0.0000002"
+      snapshot_date: "2026-04-01"
+      source_collection_id: einstein-arena-tammes-problem
+
+  - id: hexagon-packing
+    name: Hexagon Packing in a Hexagon (n = 12)
+    subdomain: arena-benchmarks
+    status: open
+    statement: >
+      Minimize outer hexagon side length in the constrained hexagon-packing benchmark
+      used by Einstein Arena.
+    tags: [einstein-arena, packing, geometry, optimization]
+    ai_triage:
+      tier: T1-computational
+      amenability_score: 7
+      approaches: [heuristic-search, numerical-verification, gradient-optimization]
+      compute_profile: moderate
+    known_bounds:
+      objective: minimize
+      snapshot_best: "3.9416523"
+      previous_best_public: "3.9419123"
+      improvement: "-0.0002600"
+      snapshot_date: "2026-04-01"
+      source_collection_id: einstein-arena-hexagon-packing
+
+  - id: heilbronn-convex
+    name: Heilbronn Problem for Convex Regions (n = 14)
+    subdomain: arena-benchmarks
+    status: open
+    statement: >
+      Maximize normalized minimum triangle area under Einstein Arena's
+      heilbronn-convex verifier.
+    tags: [einstein-arena, geometry, optimization]
+    ai_triage:
+      tier: T1-computational
+      amenability_score: 7
+      approaches: [heuristic-search, numerical-verification, gradient-optimization]
+      compute_profile: moderate
+    known_bounds:
+      objective: maximize
+      snapshot_best: "0.0278355805"
+      previous_best_public: "0.0278355715"
+      improvement: "+0.0000000091"
+      snapshot_date: "2026-04-01"
+      source_collection_id: einstein-arena-heilbronn-convex
+
+  - id: circles-rectangle
+    name: Circles in a Rectangle (n = 21)
+    subdomain: arena-benchmarks
+    status: open
+    statement: >
+      Maximize total radii for 21 circles within perimeter constraint per
+      Einstein Arena circles-rectangle verifier.
+    tags: [einstein-arena, packing, geometry, optimization]
+    ai_triage:
+      tier: T1-computational
+      amenability_score: 7
+      approaches: [heuristic-search, numerical-verification, gradient-optimization]
+      compute_profile: moderate
+    known_bounds:
+      objective: maximize
+      snapshot_best: "2.3658323759"
+      previous_best_public: "2.3658321334"
+      improvement: "+0.0000002425"
+      snapshot_date: "2026-04-01"
+      source_collection_id: einstein-arena-circles-rectangle
+
+  - id: min-distance-ratio-2d
+    name: Min Distance Ratio (2D, n = 16)
+    subdomain: arena-benchmarks
+    status: open
+    statement: >
+      Minimize squared max/min pairwise distance ratio for 16 planar points under
+      Einstein Arena verifier.
+    tags: [einstein-arena, optimization, geometry]
+    ai_triage:
+      tier: T1-computational
+      amenability_score: 8
+      approaches: [heuristic-search, numerical-verification, gradient-optimization]
+      compute_profile: moderate
+    known_bounds:
+      objective: minimize
+      snapshot_best: "12.889230"
+      previous_best_public: "12.889266"
+      improvement: "-0.000036"
+      snapshot_date: "2026-04-01"
+      source_collection_id: einstein-arena-min-distance-ratio-2d
+
+  - id: uncertainty-inequality
+    name: Uncertainty Inequality
+    subdomain: arena-benchmarks
+    status: open
+    statement: >
+      Minimize Einstein Arena uncertainty-inequality benchmark construction score
+      under verifier constraints.
+    tags: [einstein-arena, analysis, optimization]
+    ai_triage:
+      tier: T2-experimental
+      amenability_score: 6
+      approaches: [heuristic-search, numerical-verification, symbolic-computation]
+      compute_profile: heavy
+    known_bounds:
+      objective: minimize
+      snapshot_best: "0.31885"
+      previous_best_public: "0.3102"
+      improvement: "n/a"
+      snapshot_date: "2026-04-01"
+      source_collection_id: einstein-arena-uncertainty-inequality
+
+  - id: prime-number-theorem
+    name: Prime Number Theorem (Construction Benchmark)
+    subdomain: arena-benchmarks
+    status: open
+    statement: >
+      Maximize Einstein Arena prime-number-theorem benchmark score via bounded
+      constructive certificate payloads.
+    tags: [einstein-arena, number-theory, optimization]
+    ai_triage:
+      tier: T2-experimental
+      amenability_score: 6
+      approaches: [heuristic-search, numerical-verification, symbolic-computation]
+      compute_profile: heavy
+      notes: >
+        Verifier is computationally expensive and Monte-Carlo-like; suitable for
+        bounded experiments with reproducibility constraints.
+    known_bounds:
+      objective: maximize
+      snapshot_best: "0.994179"
+      previous_best_public: "0.921292"
+      improvement: "+0.072887"
+      snapshot_date: "2026-04-01"
+      source_collection_id: einstein-arena-prime-number-theorem

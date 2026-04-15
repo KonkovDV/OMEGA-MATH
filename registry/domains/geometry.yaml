@@ -260,7 +260,7 @@ problems:
       than 1–8 and 24.
     tags: [lattices, sphere-packing]
     ai_triage:
-      tier: T1-computational
+      tier: T2-experimental
       amenability_score: 6
       approaches: [numerical-verification, heuristic-search]
 

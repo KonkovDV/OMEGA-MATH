@@ -1,0 +1,88 @@
+{
+  "meta": {
+    "n_min": 7,
+    "n_max": 12,
+    "restarts": 10,
+    "seed": 42
+  },
+  "runs": {
+    "7": {
+      "N": 7,
+      "best_energy": 14.452977414241564,
+      "known_energy": 14.452977414,
+      "delta": 2.4156499023320066e-10,
+      "classification": "reproduction",
+      "is_improvement": false,
+      "restarts": 10,
+      "energy_std": 7.365868832042311e-10,
+      "energy_min": 14.452977414241564,
+      "distinct_minima": 1,
+      "elapsed_sec": 0.09427499771118164
+    },
+    "8": {
+      "N": 8,
+      "best_energy": 19.675287861233308,
+      "known_energy": 19.675287861,
+      "delta": 2.333067072868289e-10,
+      "classification": "reproduction",
+      "is_improvement": false,
+      "restarts": 10,
+      "energy_std": 4.734488162837608e-11,
+      "energy_min": 19.675287861233308,
+      "distinct_minima": 1,
+      "elapsed_sec": 0.07826805114746094
+    },
+    "9": {
+      "N": 9,
+      "best_energy": 25.759986531272997,
+      "known_energy": 25.759986531,
+      "delta": 2.729976245063881e-10,
+      "classification": "reproduction",
+      "is_improvement": false,
+      "restarts": 10,
+      "energy_std": 1.582006954126294e-10,
+      "energy_min": 25.759986531272997,
+      "distinct_minima": 1,
+      "elapsed_sec": 0.09664630889892578
+    },
+    "10": {
+      "N": 10,
+      "best_energy": 32.71694946015486,
+      "known_energy": 32.71694946,
+      "delta": 1.5485568383155623e-10,
+      "classification": "reproduction",
+      "is_improvement": false,
+      "restarts": 10,
+      "energy_std": 4.7113827682925644e-11,
+      "energy_min": 32.71694946015486,
+      "distinct_minima": 1,
+      "elapsed_sec": 0.13105201721191406
+    },
+    "11": {
+      "N": 11,
+      "best_energy": 40.59645050821393,
+      "known_energy": 40.59645051,
+      "delta": -1.786069958598091e-09,
+      "classification": "reproduction",
+      "is_improvement": false,
+      "restarts": 10,
+      "energy_std": 1.6890991308696849e-10,
+      "energy_min": 40.59645050821393,
+      "distinct_minima": 1,
+      "elapsed_sec": 0.1650071144104004
+    },
+    "12": {
+      "N": 12,
+      "best_energy": 49.16525305763049,
+      "known_energy": 49.165253058,
+      "delta": -3.695106443046825e-10,
+      "classification": "reproduction",
+      "is_improvement": false,
+      "restarts": 10,
+      "energy_std": 7.019752892979621e-11,
+      "energy_min": 49.16525305763049,
+      "distinct_minima": 1,
+      "elapsed_sec": 0.1497201919555664
+    }
+  }
+}

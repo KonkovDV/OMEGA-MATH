@@ -1,0 +1,165 @@
+# Einstein Arena Benchmarks — Quick Reference
+# Auto-generated from togethercomputer/EinsteinArena-new-SOTA README table
+# Canonical OMEGA records remain in registry/domains/*.yaml
+collection: einstein-arena-benchmarks
+status: active
+source: https://raw.githubusercontent.com/togethercomputer/EinsteinArena-new-SOTA/main/README.md
+last_synced: '2026-04-15T08:43:51Z'
+problems:
+- id: einstein-arena-erdos-minimum-overlap
+  name: Erdős' Minimum Overlap
+  status: open
+  objective: minimize
+  our_result: '0.380871'
+  previous_best: '0.380876'
+  improvement: '-0.000005'
+  source_problem_path: erdos-minimum-overlap
+  source_repo: togethercomputer/EinsteinArena-new-SOTA
+  evidence_class: E1
+  note: Extracted from EinsteinArena-new-SOTA README table. Scores are benchmark snapshots
+    and may lag live leaderboard.
+- id: einstein-arena-first-autocorrelation
+  name: First Autocorrelation Inequality
+  status: open
+  objective: minimize
+  our_result: '1.50286286'
+  previous_best: '1.50286290'
+  improvement: '-0.00000004'
+  source_problem_path: first-autocorrelation
+  source_repo: togethercomputer/EinsteinArena-new-SOTA
+  evidence_class: E1
+  note: Extracted from EinsteinArena-new-SOTA README table. Scores are benchmark snapshots
+    and may lag live leaderboard.
+- id: einstein-arena-flat-polynomials
+  name: Flat Polynomials (degree 69)
+  status: open
+  objective: minimize
+  our_result: '1.280932'
+  previous_best: '1.340925'
+  improvement: '-0.059993'
+  source_problem_path: flat-polynomials
+  source_repo: togethercomputer/EinsteinArena-new-SOTA
+  evidence_class: E1
+  note: Extracted from EinsteinArena-new-SOTA README table. Scores are benchmark snapshots
+    and may lag live leaderboard.
+- id: einstein-arena-edges-vs-triangles
+  name: Edges vs Triangles
+  status: open
+  objective: maximize
+  our_result: '-0.712256'
+  previous_best: '-0.712494'
+  improvement: '+0.000238'
+  source_problem_path: edges-vs-triangles
+  source_repo: togethercomputer/EinsteinArena-new-SOTA
+  evidence_class: E1
+  note: Extracted from EinsteinArena-new-SOTA README table. Scores are benchmark snapshots
+    and may lag live leaderboard.
+- id: einstein-arena-tammes-problem
+  name: Tammes Problem (n = 50)
+  status: open
+  objective: maximize
+  our_result: '0.5134721'
+  previous_best: '0.5134719'
+  improvement: '+0.0000002'
+  source_problem_path: tammes-problem
+  source_repo: togethercomputer/EinsteinArena-new-SOTA
+  evidence_class: E1
+  note: Extracted from EinsteinArena-new-SOTA README table. Scores are benchmark snapshots
+    and may lag live leaderboard.
+  registry_id: thomson-problem
+- id: einstein-arena-hexagon-packing
+  name: Hexagon Packing in a Hexagon (n = 12)
+  status: open
+  objective: minimize
+  our_result: '3.9416523'
+  previous_best: '3.9419123'
+  improvement: '-0.0002600'
+  source_problem_path: hexagon-packing
+  source_repo: togethercomputer/EinsteinArena-new-SOTA
+  evidence_class: E1
+  note: Extracted from EinsteinArena-new-SOTA README table. Scores are benchmark snapshots
+    and may lag live leaderboard.
+- id: einstein-arena-heilbronn-convex
+  name: Heilbronn Problem for Convex Regions (n = 14)
+  status: open
+  objective: maximize
+  our_result: '0.0278355805'
+  previous_best: '0.0278355715'
+  improvement: '+0.0000000091'
+  source_problem_path: heilbronn-convex
+  source_repo: togethercomputer/EinsteinArena-new-SOTA
+  evidence_class: E1
+  note: Extracted from EinsteinArena-new-SOTA README table. Scores are benchmark snapshots
+    and may lag live leaderboard.
+- id: einstein-arena-circles-rectangle
+  name: Circles in a Rectangle (n = 21)
+  status: open
+  objective: maximize
+  our_result: '2.3658323759'
+  previous_best: '2.3658321334'
+  improvement: '+0.0000002425'
+  source_problem_path: circles-rectangle
+  source_repo: togethercomputer/EinsteinArena-new-SOTA
+  evidence_class: E1
+  note: Extracted from EinsteinArena-new-SOTA README table. Scores are benchmark snapshots
+    and may lag live leaderboard.
+- id: einstein-arena-second-autocorrelation
+  name: Second Autocorrelation Inequality
+  status: open
+  objective: maximize
+  our_result: '0.961206'
+  previous_best: '0.962580'
+  improvement: n/a
+  source_problem_path: second-autocorrelation
+  source_repo: togethercomputer/EinsteinArena-new-SOTA
+  evidence_class: E1
+  note: Extracted from EinsteinArena-new-SOTA README table. Scores are benchmark snapshots
+    and may lag live leaderboard.
+- id: einstein-arena-third-autocorrelation
+  name: Third Autocorrelation Inequality
+  status: open
+  objective: minimize
+  our_result: '1.454555'
+  previous_best: '1.455643'
+  improvement: '-0.001088'
+  source_problem_path: third-autocorrelation
+  source_repo: togethercomputer/EinsteinArena-new-SOTA
+  evidence_class: E1
+  note: Extracted from EinsteinArena-new-SOTA README table. Scores are benchmark snapshots
+    and may lag live leaderboard.
+- id: einstein-arena-min-distance-ratio-2d
+  name: Min Distance Ratio (2D, n=16)
+  status: open
+  objective: minimize
+  our_result: '12.889230'
+  previous_best: '12.889266'
+  improvement: '-0.000036'
+  source_problem_path: min-distance-ratio-2d
+  source_repo: togethercomputer/EinsteinArena-new-SOTA
+  evidence_class: E1
+  note: Extracted from EinsteinArena-new-SOTA README table. Scores are benchmark snapshots
+    and may lag live leaderboard.
+- id: einstein-arena-uncertainty-inequality
+  name: Uncertainty Inequality
+  status: open
+  objective: minimize
+  our_result: '0.31885'
+  previous_best: '0.3102'
+  improvement: n/a
+  source_problem_path: uncertainty-inequality
+  source_repo: togethercomputer/EinsteinArena-new-SOTA
+  evidence_class: E1
+  note: Extracted from EinsteinArena-new-SOTA README table. Scores are benchmark snapshots
+    and may lag live leaderboard.
+- id: einstein-arena-prime-number-theorem
+  name: Prime Number Theorem
+  status: open
+  objective: maximize
+  our_result: '0.994179'
+  previous_best: '0.921292'
+  improvement: '+0.072887'
+  source_problem_path: prime-number-theorem
+  source_repo: togethercomputer/EinsteinArena-new-SOTA
+  evidence_class: E1
+  note: Extracted from EinsteinArena-new-SOTA README table. Scores are benchmark snapshots
+    and may lag live leaderboard.

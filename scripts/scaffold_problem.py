@@ -2,8 +2,8 @@
 """Create a Denario-compatible OMEGA research workspace for one problem.
 
 Usage:
-  python scripts/scaffold-problem.py riemann-hypothesis --title "Riemann hypothesis"
-  python scripts/scaffold-problem.py odd-perfect-numbers --title "Odd perfect numbers" --dry-run
+    python scripts/scaffold_problem.py riemann-hypothesis --title "Riemann hypothesis"
+    python scripts/scaffold_problem.py odd-perfect-numbers --title "Odd perfect numbers" --dry-run
 """
 
 from __future__ import annotations

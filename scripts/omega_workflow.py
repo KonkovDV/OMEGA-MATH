@@ -279,7 +279,7 @@ def load_workflow_state(repo_root: Path, problem_id: str) -> dict[str, Any]:
     path = workflow_state_path(problem_root)
     if not path.exists():
         raise FileNotFoundError(
-            f"Workflow state not found: {path}. Run python scripts/omega-workflow.py triage {problem_id} first."
+            f"Workflow state not found: {path}. Run python scripts/omega_workflow.py triage {problem_id} first."
         )
     data = load_yaml_file(path)
     if not isinstance(data, dict):

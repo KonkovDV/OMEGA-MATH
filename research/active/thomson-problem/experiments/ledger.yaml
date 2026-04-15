@@ -1,0 +1,48 @@
+- run_id: thomson-problem-20260408-001
+  problem_id: thomson-problem
+  started: '2026-04-08T17:40:13Z'
+  finished: '2026-04-08T17:49:13Z'
+  route: experiment-first
+  agent: experimentalist
+  status: completed
+  verdict: inconclusive
+  parameters:
+    description: Phase 3 numerical certification scaffold on persisted Phase 2 minima
+      for N=11..12
+    bound: N=11..12, mp.dps=80, hessian-step=1e-5
+    model: mpmath 1.3 + finite-difference Hessian
+    hardware: CPU / Python 3.13.7
+  artifacts:
+  - path: artifacts/phase3_certify_11_12.json
+    type: dataset
+    checksum: 25f06755029429d33f1190952b006fe2b4a092001e78c317e64e70d6b4bf8a08
+    size_bytes: 3567
+  parent_run: null
+  notes: Higher-precision Phase 3 scaffold over artifacts/phase2_cpu_probe_11_13.json.
+    N=11 and N=12 remain reproductions and both classify as numerical-local-minimum-candidate
+    under the bounded finite-precision gate.
+
+- run_id: thomson-problem-20260409-001
+  problem_id: thomson-problem
+  started: '2026-04-09T10:00:00Z'
+  finished: '2026-04-09T10:02:00Z'
+  route: experiment-first
+  agent: experimentalist
+  status: completed
+  verdict: inconclusive
+  parameters:
+    description: Phase 3 numerical certification scaffold on persisted Phase 2 minima
+      for N=13
+    bound: N=13, mp.dps=80, hessian-step=1e-5
+    model: mpmath 1.3 + finite-difference Hessian
+    hardware: CPU / Python 3.13.7
+  artifacts:
+  - path: artifacts/phase3_certify_13.json
+    type: dataset
+    checksum: 7d0908899d5ae306ffbe8cb6131923e9ab05567d7c66cff7b1755620732d4dc8
+    size_bytes: 1967
+  parent_run: thomson-problem-20260408-001
+  notes: Phase 3 scaffold extending the continuous certified range to N=7..13.
+    N=13 remains a reproduction and classifies as numerical-local-minimum-candidate
+    under the bounded finite-precision gate. delta_to_known approx -2.87e-10,
+    max_tangent_force_norm approx 4.57e-6, post_symmetry_min_eigenvalue approx 3.85e-2.

@@ -71,11 +71,21 @@ Is incremental progress publishable?
 
 | Total Score | Tier | Meaning |
 |-------------|------|---------|
-| 0–2 | T5-foundational | Essentially inaccessible to current AI |
-| 3–4 | T4-structural / T3-pattern | Possible pattern discovery; unlikely direct progress |
+| 0–1 | T5-foundational | Essentially inaccessible to current AI |
+| 2 | T4-structural | Primarily proof-strategy or formalization support |
+| 3–4 | T3-pattern | Possible pattern discovery; unlikely direct closure |
 | 5–6 | T2-experimental | Meaningful computational experiments possible |
-| 7–8 | T1-computational | Strong AI amenability; realistic research target |
-| 9–10 | T1-computational (top) | Ideal AI target; well-defined search + fast feedback |
+| 7–10 | T1-computational | Strong AI amenability; realistic direct research target |
+
+The score-to-tier mapping is now treated as deterministic runtime policy:
+
+- `7..10 -> T1-computational`
+- `5..6 -> T2-experimental`
+- `3..4 -> T3-pattern`
+- `2 -> T4-structural`
+- `0..1 -> T5-foundational`
+
+Registry validators and the triage matrix are expected to agree with this mapping exactly.
 
 ## Calibration Examples
 

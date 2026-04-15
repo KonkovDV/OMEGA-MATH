@@ -62,3 +62,32 @@ Before externalizing a result, confirm:
 1. the evidence bundle regenerates cleanly
 2. every listed artifact exists and matches its checksum
 3. the prose in the paper or deck matches the strongest stored evidence, not the operator's hope
+
+## Evidence Verification CLI (v0.5.0)
+
+The `verify_evidence.py` script (`omega-verify-evidence` CLI) provides machine-executable
+verification of evidence bundles:
+
+```
+omega-verify-evidence compute <problem-id>   # Recompute SHA-256 checksums for all workspace artifacts
+omega-verify-evidence verify <problem-id>     # Verify stored checksums against disk state
+omega-verify-evidence status <problem-id>     # Quick summary (artifact counts, last verification)
+```
+
+### Compute
+
+Walks the problem workspace (`research/active/<problem-id>/`) and produces
+`artifacts/manifest.yaml` with per-file SHA-256 checksums, discovery timestamps,
+and a generation date. This replaces the earlier `omega_runner.py evidence-bundle`
+surface with a standalone, auditable tool.
+
+### Verify
+
+Reads an existing `manifest.yaml`, re-hashes every referenced file, and reports
+`PASS`, `MISSING`, or `TAMPERED` per entry. Returns exit code 0 only when all
+entries match.
+
+### Status
+
+Shows a quick summary: total artifact count, last compute date, and any
+verification warnings.

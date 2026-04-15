@@ -10,6 +10,86 @@
 
 tier_1_computational:
 
+  - id: erdos-min-overlap
+    name: Erdos' Minimum Overlap benchmark
+    score: 8
+    domain: einstein-arena
+    approach: heuristic-search + numerical-verification
+    compute: moderate
+    rationale: Public evaluate(solution) loop with clear objective and tight benchmark delta.
+
+  - id: flat-polynomials
+    name: Flat Polynomials benchmark
+    score: 8
+    domain: einstein-arena
+    approach: heuristic-search + reinforcement-learning
+    compute: moderate
+    rationale: Discrete +/-1 construction space is well-suited for iterative search.
+
+  - id: tammes-problem
+    name: Tammes benchmark (n=50)
+    score: 8
+    domain: einstein-arena
+    approach: gradient-optimization + reinforcement-learning
+    compute: moderate
+    rationale: Geometry optimization with direct numeric feedback and known SOTA targets.
+
+  - id: min-distance-ratio-2d
+    name: Min Distance Ratio benchmark
+    score: 8
+    domain: einstein-arena
+    approach: heuristic-search + gradient-optimization
+    compute: moderate
+    rationale: Stable deterministic objective with fast verifier feedback.
+
+  - id: first-autocorrelation
+    name: First Autocorrelation benchmark
+    score: 7
+    domain: einstein-arena
+    approach: heuristic-search + numerical-verification
+    compute: moderate
+    rationale: Construction task with straightforward score-driven optimization.
+
+  - id: third-autocorrelation
+    name: Third Autocorrelation benchmark
+    score: 7
+    domain: einstein-arena
+    approach: heuristic-search + numerical-verification
+    compute: moderate
+    rationale: Public benchmark objective suitable for bounded optimization cycles.
+
+  - id: edges-vs-triangles
+    name: Edges vs Triangles benchmark
+    score: 7
+    domain: einstein-arena
+    approach: heuristic-search + numerical-verification
+    compute: moderate
+    rationale: Extremal combinatorics construction with leaderboard-aligned metric.
+
+  - id: hexagon-packing
+    name: Hexagon Packing benchmark
+    score: 7
+    domain: einstein-arena
+    approach: heuristic-search + gradient-optimization
+    compute: moderate
+    rationale: Continuous constrained optimization with explicit geometric penalties.
+
+  - id: heilbronn-convex
+    name: Heilbronn Convex benchmark
+    score: 7
+    domain: einstein-arena
+    approach: heuristic-search + numerical-verification
+    compute: moderate
+    rationale: Continuous geometry objective with clear improvement signal.
+
+  - id: circles-rectangle
+    name: Circles in Rectangle benchmark
+    score: 7
+    domain: einstein-arena
+    approach: heuristic-search + gradient-optimization
+    compute: moderate
+    rationale: Packing benchmark with direct quantitative score improvements.
+
   - id: erdos-straus
     name: Erdős–Straus conjecture (4/n = 1/x + 1/y + 1/z)
     score: 8
@@ -56,6 +136,16 @@ tier_1_computational:
     approach: search + SAT
     compute: moderate
     rationale: Small combinatorial search space. Known values for small n, gaps exist.
+
+  - id: sums-of-three-cubes
+    name: Sum of three cubes
+    score: 8
+    domain: number-theory
+    approach: brute-force-search + heuristic-search
+    compute: heavy
+    rationale: >
+      Booker and Sutherland showed that hard instances such as 33 and 42 can yield to
+      large-scale search. Remaining unknown values still form a concrete computational target.
 
   - id: hadamard-matrix
     name: Hadamard matrix conjecture (order 668)
@@ -153,35 +243,37 @@ tier_1_computational:
     compute: moderate
     rationale: Verified for small n. SAT-based approaches effective.
 
-  - id: hermite-constants-higher
-    name: Hermite constants for higher dimensions
-    score: 6
-    domain: geometry
-    approach: search + optimization
-    compute: heavy
-
-  - id: andrews-curtis
-    name: Andrews–Curtis conjecture
-    score: 6
-    domain: algebra
-    approach: search + genetic-programming
-    compute: moderate
-    rationale: Potential counterexample search via transformation sequences.
-
-  - id: scholz-conjecture
-    name: Scholz conjecture (addition chains)
-    score: 6
-    domain: number-theory
-    approach: search
-    compute: moderate
-
 # ═══════════════════════════════════════════════════════════
-# TIER 2 — EXPERIMENTAL (amenability 4–6)
+# TIER 2 — EXPERIMENTAL (amenability 5–6)
 # Numerical experiments, large-scale verification, statistical analysis.
 # Results = extended bounds, refined conjectures, pattern discoveries.
 # ═══════════════════════════════════════════════════════════
 
 tier_2_experimental:
+
+  - id: second-autocorrelation
+    name: Second Autocorrelation benchmark
+    score: 6
+    domain: einstein-arena
+    approach: numerical-verification + heuristic-search
+    compute: heavy
+    rationale: Useful for empirical campaigns despite narrow and contested public margins.
+
+  - id: uncertainty-inequality
+    name: Uncertainty Inequality benchmark
+    score: 6
+    domain: einstein-arena
+    approach: numerical-verification + symbolic-computation
+    compute: heavy
+    rationale: Strongly experimental surface where bounded campaigns can refine constructions.
+
+  - id: prime-number-theorem
+    name: Prime Number Theorem benchmark
+    score: 6
+    domain: einstein-arena
+    approach: numerical-verification + symbolic-computation
+    compute: heavy
+    rationale: Expensive verifier favors controlled experiment loops with reproducibility tracking.
 
   - id: ulam-numbers-density
     name: Density of Ulam numbers
@@ -226,6 +318,34 @@ tier_2_experimental:
     score: 6
     approach: numerical-simulation
     rationale: Large-scale simulation providing evidence.
+
+  - id: hermite-constants-higher
+    name: Hermite constants for higher dimensions
+    score: 6
+    domain: geometry
+    approach: search + optimization
+    compute: heavy
+    rationale: >
+      Numerical lattice search can improve candidate bounds, but exact closure still
+      depends on deeper structural arguments.
+
+  - id: andrews-curtis
+    name: Andrews–Curtis conjecture
+    score: 6
+    domain: algebra
+    approach: search + genetic-programming
+    compute: moderate
+    rationale: Potential counterexample search via transformation sequences.
+
+  - id: scholz-conjecture
+    name: Scholz conjecture (addition chains)
+    score: 6
+    domain: number-theory
+    approach: search
+    compute: moderate
+    rationale: >
+      Exhaustive addition-chain search yields exact bounded data and can expose
+      structural patterns even before a full proof.
 
   - id: lonely-runner
     name: Lonely runner conjecture
@@ -272,29 +392,16 @@ tier_2_experimental:
     score: 5
     approach: numerical-verification + symbolic-computation
 
-  - id: beal-conjecture
-    name: Beal's conjecture ($1M prize)
-    score: 4
-    approach: counterexample-search
-    compute: heavy
+  - id: chomp-winning-strategy
+    name: Chomp winning strategy
+    score: 5
+    approach: RL + pattern-recognition
     rationale: >
-      $1M prize. Systematic search for counterexamples.
-      Proof likely requires deep algebra.
-
-  - id: goldbach-conjecture
-    name: Goldbach's conjecture
-    score: 4
-    approach: numerical-verification + statistics
-    rationale: Extending verification bound and analyzing representation counts.
-
-  - id: odd-perfect-numbers
-    name: Odd perfect numbers
-    score: 4
-    approach: numerical-constraint-search
-    rationale: Improving lower bounds on hypothetical odd perfect numbers.
+      Small-board search and policy synthesis can generate reusable strategy motifs,
+      even if the general rectangular-board theorem remains open.
 
 # ═══════════════════════════════════════════════════════════
-# TIER 3 — PATTERN RECOGNITION (amenability 2–4)
+# TIER 3 — PATTERN RECOGNITION (amenability 3–4)
 # Cross-domain insights, conjecture refinement, literature synthesis.
 # ═══════════════════════════════════════════════════════════
 
@@ -320,10 +427,40 @@ tier_3_pattern:
     score: 4
     approach: neural-methods + heuristic-search
 
-  - id: chomp-winning-strategy
-    name: Chomp winning strategy
-    score: 5
-    approach: RL + pattern-recognition
+  - id: beal-conjecture
+    name: Beal's conjecture ($1M prize)
+    score: 4
+    approach: counterexample-search
+    compute: heavy
+    rationale: >
+      Counterexample search is still useful, but theorem-level closure likely needs a deeper
+      structural route than raw computation alone.
+
+  - id: goldbach-conjecture
+    name: Goldbach's conjecture
+    score: 4
+    approach: numerical-verification + statistics
+    rationale: >
+      Verification records and representation statistics are valuable, but the main
+      open core is now strategy and synthesis rather than straightforward queue throughput.
+
+  - id: odd-perfect-numbers
+    name: Odd perfect numbers
+    score: 4
+    approach: numerical-constraint-search
+    rationale: >
+      Constraint search keeps improving lower bounds, but the search space remains too
+      extreme for direct closure under current budgets.
+
+  - id: chess-first-move
+    name: Solving chess
+    score: 3
+    domain: game-theory
+    approach: heuristic-search + RL + endgame-tablebases
+    compute: infeasible
+    rationale: >
+      Global closure is computationally out of reach, but AI can still extract reusable
+      strategic structure and scoped subgame insights.
 
   - id: vamos-matroid
     name: Algebraic matroid decidability
@@ -335,7 +472,7 @@ tier_3_pattern:
     approach: symbolic-computation
 
 # ═══════════════════════════════════════════════════════════
-# TIER 4 — STRUCTURAL (amenability 1–2)
+# TIER 4 — STRUCTURAL (amenability 2)
 # Deep algebraic/topological reasoning required.
 # AI role: formalization, proof-strategy exploration.
 # ═══════════════════════════════════════════════════════════
@@ -361,6 +498,16 @@ tier_4_structural:
     name: Irrationality of Euler's constant
     score: 2
     approach: symbolic-computation + formalization
+
+  - id: go-first-move
+    name: Optimal play in Go
+    score: 2
+    domain: game-theory
+    approach: strategy-synthesis + formalization
+    compute: infeasible
+    rationale: >
+      Whole-game perfect-play closure is beyond current search budgets, so AI's useful
+      role is limited to structured analysis of reduced boards and proof-obligation scaffolding.
 
 # ═══════════════════════════════════════════════════════════
 # TIER 5 — FOUNDATIONAL (amenability 0–1)

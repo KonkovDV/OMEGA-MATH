@@ -1,0 +1,51 @@
+version: '1.0'
+problem_id: thomson-problem
+title: Thomson problem
+domain: geometry
+tier: T1-computational
+amenability_score: 8
+triage_source: canonical-record
+approach: optimization + monte-carlo + RL
+compute: moderate
+controller: planner
+execution_role: experimentalist
+recommended_route: experiment-first
+active_route: experiment-first
+current_stage: results
+current_owner: experimentalist
+stage_status: ready
+active_run_id: null
+active_run_status: null
+active_run_agent: null
+last_run_id: thomson-problem-20260408-001
+last_run_status: completed
+last_verdict: inconclusive
+last_proof_result_path: null
+last_proof_status: null
+stages:
+- brief
+- novelty
+- triage
+- plan
+- experiment
+- results
+- paper
+- referee
+- closed
+last_updated: '2026-04-08T17:49:13Z'
+history:
+- at: '2026-04-08T17:40:13Z'
+  event: triaged
+  from_stage: null
+  to_stage: brief
+  notes: manual override -> experiment-first
+- at: '2026-04-08T17:40:13Z'
+  event: run-started
+  from_stage: brief
+  to_stage: experiment
+  notes: experimentalist -> experiment-first (thomson-problem-20260408-001)
+- at: '2026-04-08T17:49:13Z'
+  event: run-finished
+  from_stage: experiment
+  to_stage: results
+  notes: completed / inconclusive (thomson-problem-20260408-001)

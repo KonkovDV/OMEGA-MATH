@@ -32,9 +32,11 @@ class OmegaPythonSurfaceTests(unittest.TestCase):
         self.assertEqual(scripts["omega-runner"], "omega_runner:main")
         self.assertEqual(scripts["omega-generate-index"], "generate_index:main")
         self.assertEqual(scripts["omega-generate-experiment-index"], "generate_experiment_index:main")
+        self.assertEqual(scripts["omega-import-einstein-arena"], "import_einstein_arena:main")
         self.assertEqual(scripts["omega-scaffold-problem"], "scaffold_problem:main")
         self.assertEqual(scripts["omega-validate-registry"], "validate_registry:main")
         self.assertEqual(scripts["omega-query"], "experiment_query:main")
+        self.assertEqual(scripts["omega-literature"], "literature_adapter:main")
         self.assertEqual(scripts["omega-lean"], "lean_adapter:main")
         self.assertEqual(scripts["omega-solve"], "solver_adapter:main")
         self.assertEqual(scripts["omega-cas"], "cas_adapter:main")
@@ -45,9 +47,11 @@ class OmegaPythonSurfaceTests(unittest.TestCase):
             "omega_runner",
             "generate_index",
             "generate_experiment_index",
+            "import_einstein_arena",
             "scaffold_problem",
             "validate_registry",
             "experiment_query",
+            "literature_adapter",
             "lean_adapter",
             "solver_adapter",
             "cas_adapter",

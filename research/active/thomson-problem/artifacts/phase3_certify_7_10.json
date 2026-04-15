@@ -1,0 +1,155 @@
+{
+  "meta": {
+    "source_artifact": "C:\\plans\\math\\research\\active\\thomson-problem\\artifacts\\phase2_cpu_probe_7_10.json",
+    "n_min": 7,
+    "n_max": 10,
+    "mp_dps": 80,
+    "hessian_step": 1e-05,
+    "force_tolerance": 1e-05,
+    "eigen_tolerance": 1e-07,
+    "zero_tolerance": 5e-05,
+    "skip_hessian": false
+  },
+  "runs": {
+    "7": {
+      "N": 7,
+      "source_artifact": "C:\\plans\\math\\research\\active\\thomson-problem\\artifacts\\phase2_cpu_probe_7_10.json",
+      "source_best_energy": 14.452977414223406,
+      "source_classification": "reproduction",
+      "known_energy": 14.452977414,
+      "high_precision_energy_mp": "14.45297741422340450214681713279731494148",
+      "high_precision_energy_float": 14.452977414223405,
+      "delta_to_known": 2.2340450214681714e-10,
+      "max_tangent_force_norm_mp": "1.3410808030303529684e-6",
+      "mean_tangent_force_norm_mp": "6.5708240730661786173e-7",
+      "tangent_dimension": 14,
+      "expected_rotational_zero_modes": 3,
+      "hessian_computed": true,
+      "smallest_eigenvalues": [
+        -1.2397321642221192e-05,
+        -3.2249672850519454e-06,
+        5.493568654015926e-07,
+        0.00919748580085802,
+        0.00919837966201326,
+        0.9631762464334376,
+        0.9631788302887769,
+        2.3864787175204354
+      ],
+      "zero_like_eigenvalues": 3,
+      "negative_eigenvalues_excluding_symmetry": 0,
+      "post_symmetry_min_eigenvalue": 0.00919748580085802,
+      "certification_status": "numerical-local-minimum-candidate",
+      "notes": [
+        "Numerical certification scaffold only; this artifact is not a rigorous proof.",
+        "The tangent-force residual is measured at higher precision using mpmath.",
+        "When computed, the Hessian is a tangent-space finite-difference approximation with three rotational symmetry modes expected near zero."
+      ],
+      "elapsed_sec": 0.1638658046722412
+    },
+    "8": {
+      "N": 8,
+      "source_artifact": "C:\\plans\\math\\research\\active\\thomson-problem\\artifacts\\phase2_cpu_probe_7_10.json",
+      "source_best_energy": 19.675287861233308,
+      "source_classification": "reproduction",
+      "known_energy": 19.675287861,
+      "high_precision_energy_mp": "19.67528786123330631796126958820461439217",
+      "high_precision_energy_float": 19.675287861233308,
+      "delta_to_known": 2.333063179612696e-10,
+      "max_tangent_force_norm_mp": "9.0797090192708017702e-7",
+      "mean_tangent_force_norm_mp": "5.6856778617093973175e-7",
+      "tangent_dimension": 16,
+      "expected_rotational_zero_modes": 3,
+      "hessian_computed": true,
+      "smallest_eigenvalues": [
+        -2.1193492085399828e-05,
+        -1.1760143386860132e-05,
+        -6.4181658027234644e-06,
+        0.19733539277037143,
+        0.19733920985412404,
+        0.41968156346357194,
+        1.6778912914287318,
+        1.6779015697418014
+      ],
+      "zero_like_eigenvalues": 3,
+      "negative_eigenvalues_excluding_symmetry": 0,
+      "post_symmetry_min_eigenvalue": 0.19733539277037143,
+      "certification_status": "numerical-local-minimum-candidate",
+      "notes": [
+        "Numerical certification scaffold only; this artifact is not a rigorous proof.",
+        "The tangent-force residual is measured at higher precision using mpmath.",
+        "When computed, the Hessian is a tangent-space finite-difference approximation with three rotational symmetry modes expected near zero."
+      ],
+      "elapsed_sec": 0.2666952610015869
+    },
+    "9": {
+      "N": 9,
+      "source_artifact": "C:\\plans\\math\\research\\active\\thomson-problem\\artifacts\\phase2_cpu_probe_7_10.json",
+      "source_best_energy": 25.75998653127194,
+      "source_classification": "reproduction",
+      "known_energy": 25.759986531,
+      "high_precision_energy_mp": "25.75998653127193952248783823946900439373",
+      "high_precision_energy_float": 25.759986531271938,
+      "delta_to_known": 2.7193952248783826e-10,
+      "max_tangent_force_norm_mp": "9.6576266931049086716e-7",
+      "mean_tangent_force_norm_mp": "6.6019549392801359803e-7",
+      "tangent_dimension": 18,
+      "expected_rotational_zero_modes": 3,
+      "hessian_computed": true,
+      "smallest_eigenvalues": [
+        1.5181415307601803e-06,
+        5.62256657637166e-06,
+        2.6826161409525228e-05,
+        0.14393414886418304,
+        0.14395375045336212,
+        0.8259813774145611,
+        0.8259886299968513,
+        1.432125946298769
+      ],
+      "zero_like_eigenvalues": 3,
+      "negative_eigenvalues_excluding_symmetry": 0,
+      "post_symmetry_min_eigenvalue": 0.14393414886418304,
+      "certification_status": "numerical-local-minimum-candidate",
+      "notes": [
+        "Numerical certification scaffold only; this artifact is not a rigorous proof.",
+        "The tangent-force residual is measured at higher precision using mpmath.",
+        "When computed, the Hessian is a tangent-space finite-difference approximation with three rotational symmetry modes expected near zero."
+      ],
+      "elapsed_sec": 0.40724873542785645
+    },
+    "10": {
+      "N": 10,
+      "source_artifact": "C:\\plans\\math\\research\\active\\thomson-problem\\artifacts\\phase2_cpu_probe_7_10.json",
+      "source_best_energy": 32.716949460168806,
+      "source_classification": "reproduction",
+      "known_energy": 32.71694946,
+      "high_precision_energy_mp": "32.71694946016880522178444916904347068239",
+      "high_precision_energy_float": 32.716949460168806,
+      "delta_to_known": 1.6880522178444917e-10,
+      "max_tangent_force_norm_mp": "5.8745400530588153517e-6",
+      "mean_tangent_force_norm_mp": "2.4759192124764467572e-6",
+      "tangent_dimension": 20,
+      "expected_rotational_zero_modes": 3,
+      "hessian_computed": true,
+      "smallest_eigenvalues": [
+        -2.3557926669455486e-05,
+        -6.348812785840206e-06,
+        1.0865962263486087e-05,
+        0.09628960527812461,
+        0.09631451939804708,
+        0.9456877177686909,
+        0.9457203888575819,
+        1.6292502157989512
+      ],
+      "zero_like_eigenvalues": 3,
+      "negative_eigenvalues_excluding_symmetry": 0,
+      "post_symmetry_min_eigenvalue": 0.09628960527812461,
+      "certification_status": "numerical-local-minimum-candidate",
+      "notes": [
+        "Numerical certification scaffold only; this artifact is not a rigorous proof.",
+        "The tangent-force residual is measured at higher precision using mpmath.",
+        "When computed, the Hessian is a tangent-space finite-difference approximation with three rotational symmetry modes expected near zero."
+      ],
+      "elapsed_sec": 0.6123275756835938
+    }
+  }
+}

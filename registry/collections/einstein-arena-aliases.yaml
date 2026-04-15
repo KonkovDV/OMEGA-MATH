@@ -1,0 +1,4 @@
+# Einstein Arena slug aliases -> canonical OMEGA registry IDs
+# Extend this mapping when Einstein Arena introduces slugs that map to existing OMEGA canonical problems.
+aliases:
+  tammes-problem: thomson-problem

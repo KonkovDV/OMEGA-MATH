@@ -2,11 +2,11 @@
 """OMEGA local runner substrate for active research workspaces.
 
 Usage:
-  python scripts/omega-runner.py start <problem-id> --route experiment-first --agent experimentalist --description "..."
-  python scripts/omega-runner.py finish <problem-id> <run-id> --status completed --verdict positive --artifact artifacts/log.txt:log
-  python scripts/omega-runner.py proof-result <problem-id> <run-id> --claim-label "..." --claim-class theorem --status draft --verifier lean4 --toolchain leanprover/lean4:v4.29.0 --command "lake env lean ..."
-    python scripts/omega-runner.py evidence-bundle <problem-id>
-  python scripts/generate-experiment-index.py
+    python scripts/omega_runner.py start <problem-id> --route experiment-first --agent experimentalist --description "..."
+    python scripts/omega_runner.py finish <problem-id> <run-id> --status completed --verdict positive --artifact artifacts/log.txt:log
+    python scripts/omega_runner.py proof-result <problem-id> <run-id> --claim-label "..." --claim-class theorem --status draft --verifier lean4 --toolchain leanprover/lean4:v4.29.0 --verifier-command "lake env lean ..."
+    python scripts/omega_runner.py evidence-bundle <problem-id>
+    python scripts/generate_experiment_index.py
 """
 
 from __future__ import annotations
@@ -148,7 +148,7 @@ def get_problem_root(repo_root: Path, problem_id: str) -> Path:
     problem_root = repo_root / "research" / "active" / problem_id
     if not problem_root.exists() or not problem_root.is_dir():
         raise FileNotFoundError(
-            f"Problem workspace not found: {problem_root}. Run python scripts/scaffold-problem.py {problem_id} --title \"...\" first."
+            f"Problem workspace not found: {problem_root}. Run python scripts/scaffold_problem.py {problem_id} --title \"...\" first."
         )
     return problem_root
 

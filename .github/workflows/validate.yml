@@ -27,24 +27,44 @@ jobs:
 
     - name: Regenerate registry index
       run: |
-        python scripts/generate-index.py
+        python scripts/generate_index.py
 
     - name: Ensure generated files are committed
       run: |
         if ! git diff --quiet; then
           echo "Generated registry artifacts are out of date."
-          echo "Run: python scripts/generate-index.py"
+          echo "Run: python scripts/generate_index.py"
           git --no-pager diff -- registry/index.yaml
           exit 1
         fi
         
     - name: Run registry validator
       run: |
-        python scripts/validate-registry.py
+        python scripts/validate_registry.py
 
     - name: Run unit tests (core + adapters)
       run: |
         python -m pytest tests/ -v --tb=short
+
+    - name: Smoke-test model router profiles
+      run: |
+        python scripts/model_router.py profiles
+        python scripts/model_router.py backends
+
+    - name: Smoke-test Einstein importer (offline fixture)
+      run: |
+        cat > /tmp/einstein-readme.md <<'EOF'
+        # EinsteinArena state-of-the-art results
+
+        ## Problems (Last update: April 1, 2026)
+
+        | Problem | Objective | Our Result | Previous Best | Improvement |
+        |---------|-----------|-----------|---------------|-------------|
+        | [Tammes Problem (n = 50)](tammes-problem/) | maximize | **0.5134721** | 0.5134719 | +0.0000002 |
+        EOF
+
+        python scripts/import_einstein_arena.py --readme-file /tmp/einstein-readme.md --dry-run > /tmp/einstein-out.yaml
+        grep -q "einstein-arena-tammes-problem" /tmp/einstein-out.yaml
 
     - name: Build Python package
       run: |

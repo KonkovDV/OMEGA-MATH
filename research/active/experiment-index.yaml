@@ -1,1 +1,22 @@
-[]
+- problem_id: thomson-problem
+  title: Thomson problem
+  domain: geometry
+  tier: T1-computational
+  amenability_score: 8
+  latest_run: thomson-problem-20260408-001
+  latest_verdict: inconclusive
+  total_runs: 1
+  active_route: experiment-first
+  current_stage: results
+  current_owner: experimentalist
+  workflow_status: ready
+  execution_role: experimentalist
+  workflow_exists: true
+  blocked: false
+  active_run_id: null
+  active_run_status: null
+  last_run_id: thomson-problem-20260408-001
+  last_run_status: completed
+  last_proof_result_path: null
+  last_proof_status: null
+  last_updated: '2026-04-08T17:49:13Z'

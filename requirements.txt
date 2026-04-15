@@ -1,3 +1,5 @@
-# OMEGA Registry Python Dependencies
+# OMEGA baseline registry and validation dependencies.
+# For active research workspaces and flagship experiment scripts, install:
+#   python -m pip install -e .[all]
 PyYAML==6.0.1
 jsonschema==4.23.0

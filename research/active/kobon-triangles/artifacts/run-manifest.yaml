@@ -1,0 +1,15 @@
+problem_id: kobon-triangles
+title: Kobon triangles
+status: draft
+route: tbd
+evidence_class: tbd
+reproducibility: pending
+workflow_state: control/workflow-state.yaml
+literature_graph: input_files/literature_graph.md
+citation_evidence: input_files/citation_evidence.md
+proof_obligations: input_files/proof_obligations.md
+experiment_ledger: experiments/ledger.yaml
+evidence_bundle: artifacts/evidence-bundle.yaml
+prover_results_dir: artifacts/prover-results/
+lean_starter_template: templates/lean-starter/
+presentation_pack: presentation/
