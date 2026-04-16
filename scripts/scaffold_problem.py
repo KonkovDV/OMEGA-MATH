@@ -77,6 +77,14 @@ def render_templates(problem_id: str, title: str) -> dict[str, str]:
             "## Independent Patch Search\n\n"
             "## Deferred Risks\n"
         ),
+        "input_files/statement_spec.md": (
+            "# Statement Specification\n\n"
+            "## Claim Label\n\n"
+            "## Formal Statement Draft\n\n"
+            "## Assumptions\n\n"
+            "## Acceptance Rule\n"
+            "- the proof output must close against this statement without assumption drift\n"
+        ),
         "input_files/results.md": "# Results\n\n## Executed Steps\n\n## Findings\n\n## Negative Results\n\n## Limitations\n",
         "input_files/referee.md": "# Referee Report\n\n## Blocking Issues\n\n## Warnings\n\n## Publication Recommendation\n",
         "artifacts/run-manifest.yaml": (
@@ -90,9 +98,11 @@ def render_templates(problem_id: str, title: str) -> dict[str, str]:
             "literature_graph: input_files/literature_graph.md\n"
             "citation_evidence: input_files/citation_evidence.md\n"
             "proof_obligations: input_files/proof_obligations.md\n"
+            "statement_spec: input_files/statement_spec.md\n"
             "experiment_ledger: experiments/ledger.yaml\n"
             "evidence_bundle: artifacts/evidence-bundle.yaml\n"
             "prover_results_dir: artifacts/prover-results/\n"
+            "failure_channel: control/failure-patterns.jsonl\n"
             "lean_starter_template: templates/lean-starter/\n"
             "presentation_pack: presentation/\n"
         ),
@@ -123,6 +133,7 @@ def render_templates(problem_id: str, title: str) -> dict[str, str]:
             "# Append run records following protocol/experiment-ledger-spec.md\n"
             "[]\n"
         ),
+        "control/failure-patterns.jsonl": "",
         "artifacts/prover-results/.gitkeep": "",
         "planning/.gitkeep": "",
         "control/.gitkeep": "",

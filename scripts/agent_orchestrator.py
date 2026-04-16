@@ -55,6 +55,10 @@ STAGE_TO_ROLE: dict[str, str] = {
     "referee": "reviewer",
 }
 
+DEFAULT_PIPELINE_STAGES = ["brief", "novelty", "triage", "plan", "experiment", "results", "paper", "referee"]
+PROOF_FIRST_PIPELINE_STAGES = ["brief", "novelty", "triage", "plan", "prove", "results", "paper", "referee"]
+DUAL_LANE_PIPELINE_STAGES = ["brief", "novelty", "triage", "plan", "experiment", "prove", "results", "paper", "referee"]
+
 # Maximum output tokens per role (budget guardrails)
 ROLE_TOKEN_BUDGET: dict[str, int] = {
     "planner": 2000,
@@ -88,7 +92,7 @@ BASE_REQUIRED_WORKSPACE_FILES = {
 
 STAGE_REQUIRED_WORKSPACE_FILES: dict[str, set[str]] = {
     "novelty": {"input_files/literature.md", "input_files/citation_evidence.md"},
-    "prove": {"input_files/proof_obligations.md"},
+    "prove": {"input_files/proof_obligations.md", "input_files/statement_spec.md"},
     "results": {"input_files/literature.md", "input_files/citation_evidence.md"},
     "paper": {"input_files/literature.md", "input_files/citation_evidence.md"},
     "referee": {"input_files/literature.md", "input_files/citation_evidence.md"},
@@ -100,6 +104,14 @@ WORKSPACE_FILE_TEMPLATES: dict[str, str] = {
     "input_files/literature.md": "# Literature Packet\n\n## Seed Papers\n\n## Known Results\n",
     "input_files/citation_evidence.md": "# Citation Evidence\n\n## Supporting Citations\n\n## Contrasting Citations\n",
     "input_files/proof_obligations.md": "# Proof Obligations\n\n## Load-Bearing Claims\n\n## Deferred Risks\n",
+    "input_files/statement_spec.md": (
+        "# Statement Specification\n\n"
+        "## Claim Label\n\n"
+        "## Formal Statement Draft\n\n"
+        "## Assumptions\n\n"
+        "## Acceptance Rule\n"
+        "- proof must close against this statement without broadening assumptions\n"
+    ),
 }
 
 
@@ -223,6 +235,11 @@ def load_problem_context(problem_id: str) -> dict[str, Any]:
         if obligations_path.exists():
             context["proof_obligations"] = obligations_path.read_text(encoding="utf-8")
 
+        # Load statement specification for statement/proof split governance
+        statement_spec_path = workspace_root / "input_files" / "statement_spec.md"
+        if statement_spec_path.exists():
+            context["statement_spec"] = statement_spec_path.read_text(encoding="utf-8")
+
     # Load external benchmark snapshot (if available)
     context["benchmark"] = load_benchmark_snapshot(problem_id)
 
@@ -307,6 +324,9 @@ def build_user_prompt(
     if context.get("proof_obligations"):
         sections.append(f"\n## Proof Obligations\n{context['proof_obligations'][:1500]}")
 
+    if stage == "prove" and context.get("statement_spec"):
+        sections.append(f"\n## Statement Specification\n{context['statement_spec'][:1500]}")
+
     if benchmark:
         sections.append("\n## External Benchmark Snapshot (Einstein Arena)")
         sections.append(f"Objective: {benchmark.get('objective', 'unknown')}")
@@ -340,7 +360,11 @@ def build_user_prompt(
         "novelty": "Search literature for prior work on this problem. Identify known results, partial progress, and gaps. Produce a bibliography and prior-work memo.",
         "plan": "Create a detailed method plan: algorithm choice, parameter ranges, verification strategy, and expected outputs.",
         "experiment": "Design and describe the computational experiment. Specify: algorithm, parameters, stopping criteria, expected output format, and verification steps.",
-        "prove": "Outline a proof strategy. Identify key lemmas, required formalizations, potential Lean 4 tactics, and verification checkpoints.",
+        "prove": (
+            "Outline and execute a proof strategy that is strictly aligned with statement_spec.md. "
+            "Identify key lemmas, required formalizations, potential Lean 4 tactics, and verification checkpoints. "
+            "Do not broaden assumptions beyond statement_spec.md."
+        ),
         "survey": "Analyze the problem landscape: related problems, structural connections, and promising research directions.",
         "results": "Summarize experimental results: findings, evidence quality, statistical significance where applicable, and next steps.",
         "paper": "Draft a concise research note: abstract, introduction, methods, results, discussion. Use LaTeX for mathematics.",
@@ -935,21 +959,23 @@ def run_pipeline(
     model: str = DEFAULT_MODEL,
     temperature: float = DEFAULT_TEMPERATURE,
     prefer_local: bool = False,
+    dual_lane: bool = False,
     dry_run: bool = False,
 ) -> dict[str, Any]:
     """Run a sequence of stages from from_stage to to_stage.
 
     Advances the workflow state machine between stages.
     """
-    all_stages = ["brief", "novelty", "plan", "experiment", "results", "paper", "referee"]
-    # Handle alternative routes
+    all_stages = list(DEFAULT_PIPELINE_STAGES)
+    # Handle route defaults and explicit dual-lane execution.
     context = load_problem_context(problem_id)
     triage = context.get("triage") or {}
     tier = triage.get("tier", "T3-pattern")
 
-    if tier in ("T4-structural", "T5-foundational"):
-        # proof-first route
-        all_stages = ["brief", "novelty", "plan", "prove", "results", "paper", "referee"]
+    if dual_lane:
+        all_stages = list(DUAL_LANE_PIPELINE_STAGES)
+    elif tier in ("T4-structural", "T5-foundational"):
+        all_stages = list(PROOF_FIRST_PIPELINE_STAGES)
 
     try:
         start_idx = all_stages.index(from_stage)
@@ -988,6 +1014,7 @@ def run_pipeline(
     return {
         "success": True,
         "stages_run": stages_to_run,
+        "dual_lane": dual_lane,
         "stage_results": results,
     }
 
@@ -1029,6 +1056,7 @@ def main() -> None:
     pipe_parser.add_argument("--model", default=DEFAULT_MODEL)
     pipe_parser.add_argument("--temperature", type=float, default=DEFAULT_TEMPERATURE)
     pipe_parser.add_argument("--prefer-local", action="store_true", help="Prefer local model profiles when available")
+    pipe_parser.add_argument("--dual-lane", action="store_true", help="Run both informal (experiment) and formal (prove) lanes in one pipeline")
     pipe_parser.add_argument("--dry-run", action="store_true")
 
     args = parser.parse_args()
@@ -1061,6 +1089,7 @@ def main() -> None:
             model=args.model,
             temperature=args.temperature,
             prefer_local=args.prefer_local,
+            dual_lane=args.dual_lane,
             dry_run=args.dry_run,
         )
     else:

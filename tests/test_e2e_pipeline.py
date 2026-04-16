@@ -122,7 +122,7 @@ class EndToEndPipelineTest(unittest.TestCase):
     @patch("agent_orchestrator.invoke_llm", side_effect=_fake_invoke_llm)
     @patch("agent_orchestrator.REPO_ROOT")
     def test_full_pipeline_brief_to_results(self, mock_root: Any, mock_llm: Any) -> None:
-        """Run brief → novelty → plan → experiment → results with mocked LLM."""
+        """Run brief → novelty → triage → plan → experiment → results with mocked LLM."""
         mock_root.__truediv__ = self.tmp_root.__truediv__
         mock_root.__str__ = self.tmp_root.__str__
         mock_root.exists = self.tmp_root.exists
@@ -145,11 +145,11 @@ class EndToEndPipelineTest(unittest.TestCase):
             # Pipeline should succeed
             self.assertTrue(result["success"], f"Pipeline failed: {result}")
 
-            # Should run 5 stages: brief, novelty, plan, experiment, results
-            self.assertEqual(len(result["stages_run"]), 5)
+            # Should run 6 stages: brief, novelty, triage, plan, experiment, results
+            self.assertEqual(len(result["stages_run"]), 6)
             self.assertEqual(
                 result["stages_run"],
-                ["brief", "novelty", "plan", "experiment", "results"],
+                ["brief", "novelty", "triage", "plan", "experiment", "results"],
             )
 
             # All stage results should be successful
@@ -162,13 +162,13 @@ class EndToEndPipelineTest(unittest.TestCase):
             # Artifacts should exist on disk
             artifacts_dir = self.tmp_root / "research" / "active" / "erdos-straus" / "artifacts"
             artifact_files = list(artifacts_dir.glob("*.md"))
-            self.assertEqual(len(artifact_files), 5, f"Expected 5 artifacts, got {artifact_files}")
+            self.assertEqual(len(artifact_files), 6, f"Expected 6 artifacts, got {artifact_files}")
 
             # Manifest should have 5 entries with checksums
             manifest_path = artifacts_dir / "manifest.yaml"
             self.assertTrue(manifest_path.exists())
             manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
-            self.assertEqual(len(manifest["artifacts"]), 5)
+            self.assertEqual(len(manifest["artifacts"]), 6)
 
             for entry in manifest["artifacts"]:
                 self.assertIn("checksum_sha256", entry)
@@ -179,8 +179,8 @@ class EndToEndPipelineTest(unittest.TestCase):
                 self.assertIn("prompt_packet_sha256", entry)
                 self.assertIn("prompt_packet_file_sha256", entry)
 
-            # LLM was called 5 times (once per stage)
-            self.assertEqual(mock_llm.call_count, 5)
+            # LLM was called 6 times (once per stage)
+            self.assertEqual(mock_llm.call_count, 6)
 
             # Each call had system + user messages
             for call_args in mock_llm.call_args_list:
@@ -334,7 +334,7 @@ class EndToEndDryRunSmokeTest(unittest.TestCase):
         )
 
         self.assertTrue(result["success"])
-        self.assertEqual(result["stages_run"], ["brief", "novelty", "plan"])
+        self.assertEqual(result["stages_run"], ["brief", "novelty", "triage", "plan"])
 
         # All dry-run results should have prompts
         for sr in result["stage_results"]:

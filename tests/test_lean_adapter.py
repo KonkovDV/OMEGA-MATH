@@ -166,5 +166,35 @@ class TestLeanAdapterResultSchema(unittest.TestCase):
         self.assertIsInstance(result["warnings"], list)
 
 
+class TestLeanAdapterSandboxMode(unittest.TestCase):
+    """Tests for optional landrun sandbox integration."""
+
+    @patch("lean_adapter.subprocess.run")
+    @patch("lean_adapter.shutil.which")
+    def test_auto_mode_applies_landrun_when_available(self, mock_which: MagicMock, mock_run: MagicMock) -> None:
+        adapter = LeanAdapter(sandbox_mode="auto")
+        mock_which.return_value = "/usr/bin/landrun"
+        mock_run.return_value = MagicMock(returncode=0, stdout="", stderr="")
+
+        result = adapter.check_file(Path("test.lean"))
+
+        called_cmd = mock_run.call_args.args[0]
+        self.assertEqual(called_cmd[0], "/usr/bin/landrun")
+        self.assertEqual(called_cmd[1], "--")
+        self.assertTrue(result["sandbox_applied"])
+        self.assertEqual(result["sandbox_mode"], "auto")
+
+    @patch("lean_adapter.shutil.which")
+    def test_required_mode_fails_without_landrun(self, mock_which: MagicMock) -> None:
+        adapter = LeanAdapter(sandbox_mode="required")
+        mock_which.return_value = None
+
+        result = adapter.check_file(Path("test.lean"))
+
+        self.assertFalse(result["success"])
+        self.assertEqual(result["exit_code"], -2)
+        self.assertIn("Sandbox mode is 'required'", result["stderr"])
+
+
 if __name__ == "__main__":
     unittest.main()

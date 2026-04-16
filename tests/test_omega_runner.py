@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import shutil
 import sys
+import time
 import unittest
 from pathlib import Path
 
@@ -18,6 +19,7 @@ from omega_runner import (  # type: ignore  # RED phase: module added after test
     finish_run,
     generate_evidence_bundle,
     generate_experiment_index,
+    record_failure_pattern,
     start_run,
 )
 from omega_workflow import load_workflow_state  # type: ignore
@@ -65,10 +67,23 @@ class OmegaRunnerTests(unittest.TestCase):
             "# Proof Obligations\n\n## Load-Bearing Claims\n\n- obligation\n",
             encoding="utf-8",
         )
+        (self.problem_root / "input_files" / "statement_spec.md").write_text(
+            "# Statement Specification\n\n## Claim Label\n\n- candidate theorem\n",
+            encoding="utf-8",
+        )
 
     def tearDown(self) -> None:
         if self.repo_root.exists():
-            shutil.rmtree(self.repo_root)
+            last_error: Exception | None = None
+            for _ in range(5):
+                try:
+                    shutil.rmtree(self.repo_root)
+                    return
+                except PermissionError as exc:
+                    last_error = exc
+                    time.sleep(0.05)
+            if last_error is not None:
+                raise last_error
 
     def _ledger_path(self) -> Path:
         return self.problem_root / "experiments" / "ledger.yaml"
@@ -306,6 +321,10 @@ class OmegaRunnerTests(unittest.TestCase):
         self.assertEqual(result["problem_id"], self.problem_id)
         self.assertEqual(result["ledger_run_id"], run_id)
         self.assertEqual(result["claim_class"], "theorem")
+        self.assertEqual(result["statement_spec_path"], "input_files/statement_spec.md")
+        self.assertEqual(result["proof_result_status"], "draft")
+        self.assertEqual(result["promotion_gate"]["current_step"], "draft")
+        self.assertIn("formally-checked", result["promotion_gate"]["allowed_progression"])
         self.assertEqual(result["verifier"]["kind"], "lean4")
 
         ledger_entry = self._load_ledger()[0]
@@ -456,6 +475,37 @@ class OmegaRunnerTests(unittest.TestCase):
             first_bundle["runs"][0]["artifacts"][0]["checksum"],
             second_bundle["runs"][0]["artifacts"][0]["checksum"],
         )
+
+    def test_record_failure_pattern_appends_channel_and_links_ledger(self) -> None:
+        run_id = start_run(
+            repo_root=self.repo_root,
+            problem_id=self.problem_id,
+            route="experiment-first",
+            agent="experimentalist",
+            description="bounded search",
+        )
+
+        channel_path = record_failure_pattern(
+            repo_root=self.repo_root,
+            problem_id=self.problem_id,
+            run_id=run_id,
+            stage="experiment",
+            category="stagnation",
+            summary="no improving candidate in 3 retries",
+            details={"retries": 3},
+        )
+
+        self.assertTrue(channel_path.exists())
+        lines = channel_path.read_text(encoding="utf-8").strip().splitlines()
+        self.assertEqual(len(lines), 1)
+        event = yaml.safe_load(lines[0])
+        self.assertEqual(event["run_id"], run_id)
+        self.assertEqual(event["category"], "stagnation")
+
+        entry = self._load_ledger()[0]
+        linked = [a for a in entry["artifacts"] if a["type"] == "failure-pattern"]
+        self.assertEqual(len(linked), 1)
+        self.assertEqual(linked[0]["path"], "control/failure-patterns.jsonl")
 
 
 if __name__ == "__main__":

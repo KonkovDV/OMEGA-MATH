@@ -15,6 +15,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import tempfile
 from pathlib import Path
@@ -57,6 +58,14 @@ def parse_temperature_schedule(raw: str) -> list[float]:
         return [0.1]
     parsed = [float(value) for value in values]
     return parsed
+
+
+def _append_failure_event(path: Path | None, payload: dict[str, Any]) -> None:
+    if path is None:
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps(payload, ensure_ascii=False) + "\n")
 
 
 def _render_first_sorry_context(source: str, context_lines: int = 8) -> str:
@@ -142,6 +151,10 @@ def run_proof_repair_loop(
     timeout_seconds: int,
     temperature_schedule: list[float],
     in_place: bool,
+    max_stagnant_iterations: int = 2,
+    problem_id: str | None = None,
+    run_id: str | None = None,
+    failure_channel_path: Path | None = None,
     adapter: LeanAdapter | None = None,
     candidate_provider: Callable[[str, str, int, float], list[str]] | None = None,
 ) -> dict[str, Any]:
@@ -154,6 +167,15 @@ def run_proof_repair_loop(
     current_sorries = count_sorries(current_source)
 
     if current_sorries == 0:
+        _append_failure_event(
+            failure_channel_path,
+            {
+                "event": "repair-skip-no-sorry",
+                "problem_id": problem_id,
+                "run_id": run_id,
+                "lean_file": str(lean_file),
+            },
+        )
         return {
             "success": False,
             "status": "no-sorry-found",
@@ -165,6 +187,7 @@ def run_proof_repair_loop(
 
     history: list[dict[str, Any]] = []
     best_error_count = 10_000
+    stagnant_iterations = 0
 
     for iteration in range(max_iterations):
         temp_index = min(iteration, len(temperature_schedule) - 1)
@@ -215,6 +238,16 @@ def run_proof_repair_loop(
             options = provider(goal_context, diagnostics, candidates, temp)
         except Exception as exc:  # pragma: no cover - runtime guard
             history.append({"iteration": iteration, "error": str(exc), "status": "candidate-generation-failed"})
+            _append_failure_event(
+                failure_channel_path,
+                {
+                    "event": "candidate-generation-failed",
+                    "problem_id": problem_id,
+                    "run_id": run_id,
+                    "iteration": iteration,
+                    "error": str(exc),
+                },
+            )
             break
 
         improved = False
@@ -257,12 +290,41 @@ def run_proof_repair_loop(
                 improved = True
 
         if not improved:
-            break
+            stagnant_iterations += 1
+            _append_failure_event(
+                failure_channel_path,
+                {
+                    "event": "repair-stagnation",
+                    "problem_id": problem_id,
+                    "run_id": run_id,
+                    "iteration": iteration,
+                    "stagnant_iterations": stagnant_iterations,
+                    "max_stagnant_iterations": max_stagnant_iterations,
+                    "diagnostics": diagnostics,
+                },
+            )
+            if stagnant_iterations >= max_stagnant_iterations:
+                break
+            continue
+
+        stagnant_iterations = 0
 
         current_source = best_source
 
     output_path = lean_file if in_place else lean_file.with_suffix(".repaired.lean")
     output_path.write_text(current_source, encoding="utf-8")
+    _append_failure_event(
+        failure_channel_path,
+        {
+            "event": "repair-exhausted",
+            "problem_id": problem_id,
+            "run_id": run_id,
+            "lean_file": str(lean_file),
+            "final_sorries": count_sorries(current_source),
+            "best_error_count": best_error_count,
+            "iterations": max_iterations,
+        },
+    )
     return {
         "success": False,
         "status": "exhausted",
@@ -285,9 +347,13 @@ def build_parser() -> argparse.ArgumentParser:
     repair.add_argument("--base-url", default=DEFAULT_BASE_URL)
     repair.add_argument("--api-key", default="")
     repair.add_argument("--max-iterations", type=int, default=DEFAULT_MAX_ITERATIONS)
+    repair.add_argument("--max-stagnant-iterations", type=int, default=2)
     repair.add_argument("--candidates", type=int, default=DEFAULT_CANDIDATES)
     repair.add_argument("--timeout", type=int, default=DEFAULT_TIMEOUT_SECONDS)
     repair.add_argument("--temperature-schedule", default=DEFAULT_TEMPERATURE_SCHEDULE)
+    repair.add_argument("--problem-id", default="")
+    repair.add_argument("--run-id", default="")
+    repair.add_argument("--failure-channel", default="")
     repair.add_argument("--in-place", action="store_true")
     return parser
 
@@ -301,16 +367,21 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     schedule = parse_temperature_schedule(args.temperature_schedule)
+    failure_channel_path = Path(args.failure_channel) if args.failure_channel else None
     result = run_proof_repair_loop(
         args.lean_file,
         model=args.model,
         base_url=args.base_url,
         api_key=args.api_key,
         max_iterations=args.max_iterations,
+        max_stagnant_iterations=args.max_stagnant_iterations,
         candidates=args.candidates,
         timeout_seconds=args.timeout,
         temperature_schedule=schedule,
         in_place=args.in_place,
+        problem_id=args.problem_id or None,
+        run_id=args.run_id or None,
+        failure_channel_path=failure_channel_path,
     )
     print(yaml.safe_dump(result, sort_keys=False, allow_unicode=True))
     return 0 if result.get("success") else 1

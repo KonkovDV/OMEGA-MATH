@@ -96,6 +96,41 @@ class ProofRepairLoopTests(unittest.TestCase):
             self.assertFalse(result["success"])
             self.assertEqual(result["status"], "no-sorry-found")
 
+    def test_run_loop_records_failure_channel_on_stagnation(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            lean_file = Path(tmpdir) / "Stagnant.lean"
+            lean_file.write_text("theorem t : True := by\n  sorry\n", encoding="utf-8")
+            failure_path = Path(tmpdir) / "failure-patterns.jsonl"
+
+            def provider(_context: str, _diagnostics: str, _n: int, _temp: float):
+                return ["sorry"]
+
+            result = repair.run_proof_repair_loop(
+                lean_file,
+                model="mock",
+                base_url="http://localhost:8000/v1",
+                api_key="",
+                max_iterations=5,
+                candidates=1,
+                timeout_seconds=10,
+                temperature_schedule=[0.1],
+                in_place=False,
+                max_stagnant_iterations=1,
+                problem_id="p1",
+                run_id="r1",
+                failure_channel_path=failure_path,
+                adapter=_FakeLeanAdapter(),
+                candidate_provider=provider,
+            )
+
+            self.assertFalse(result["success"])
+            self.assertEqual(result["status"], "exhausted")
+            self.assertTrue(failure_path.exists())
+            lines = [line for line in failure_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+            self.assertGreaterEqual(len(lines), 2)
+            self.assertIn("repair-stagnation", lines[0])
+            self.assertIn("repair-exhausted", lines[-1])
+
 
 if __name__ == "__main__":
     unittest.main()

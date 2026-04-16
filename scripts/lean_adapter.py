@@ -13,7 +13,10 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import os
 import re
+import shlex
+import shutil
 import subprocess
 import time
 from pathlib import Path
@@ -49,9 +52,42 @@ def parse_lean_diagnostics(output: str) -> list[dict[str, Any]]:
 class LeanAdapter:
     """Execution adapter for Lean 4 CLI interactions."""
 
-    def __init__(self, lean_bin: str = "lean", lake_bin: str = "lake") -> None:
+    def __init__(
+        self,
+        lean_bin: str = "lean",
+        lake_bin: str = "lake",
+        sandbox_mode: str | None = None,
+        sandbox_tool: str = "landrun",
+    ) -> None:
         self._lean = lean_bin
         self._lake = lake_bin
+        raw_mode = (sandbox_mode or os.environ.get("OMEGA_LEAN_SANDBOX", "auto")).strip().lower()
+        if raw_mode not in {"off", "auto", "required"}:
+            raise ValueError("sandbox_mode must be one of: off, auto, required")
+        self._sandbox_mode = raw_mode
+        self._sandbox_tool = sandbox_tool
+
+    def _resolve_command(self, cmd: list[str]) -> tuple[list[str], dict[str, Any]]:
+        sandbox_meta: dict[str, Any] = {
+            "sandbox_mode": self._sandbox_mode,
+            "sandbox_applied": False,
+            "sandbox_tool": None,
+        }
+
+        if self._sandbox_mode == "off":
+            return cmd, sandbox_meta
+
+        tool_path = shutil.which(self._sandbox_tool)
+        if tool_path:
+            sandbox_meta.update({"sandbox_applied": True, "sandbox_tool": self._sandbox_tool})
+            return [tool_path, "--", *cmd], sandbox_meta
+
+        if self._sandbox_mode == "required":
+            raise RuntimeError(
+                f"Sandbox mode is 'required' but '{self._sandbox_tool}' is not available on PATH"
+            )
+
+        return cmd, sandbox_meta
 
     def _run(
         self,
@@ -64,8 +100,9 @@ class LeanAdapter:
         """Run a subprocess and capture output."""
         start = time.monotonic()
         try:
+            resolved_cmd, sandbox_meta = self._resolve_command(cmd)
             proc = subprocess.run(
-                cmd,
+                resolved_cmd,
                 cwd=str(cwd) if cwd else None,
                 capture_output=True,
                 text=True,
@@ -79,6 +116,19 @@ class LeanAdapter:
                 "stderr": proc.stderr,
                 "duration_seconds": round(duration, 3),
                 "timed_out": False,
+                **sandbox_meta,
+            }
+        except RuntimeError as exc:
+            duration = time.monotonic() - start
+            return {
+                "exit_code": -2,
+                "stdout": "",
+                "stderr": str(exc),
+                "duration_seconds": round(duration, 3),
+                "timed_out": False,
+                "sandbox_mode": self._sandbox_mode,
+                "sandbox_applied": False,
+                "sandbox_tool": None,
             }
         except subprocess.TimeoutExpired:
             duration = time.monotonic() - start
@@ -88,6 +138,9 @@ class LeanAdapter:
                 "stderr": "",
                 "duration_seconds": round(duration, 3),
                 "timed_out": True,
+                "sandbox_mode": self._sandbox_mode,
+                "sandbox_applied": False,
+                "sandbox_tool": None,
             }
 
     def _build_result(
@@ -112,6 +165,9 @@ class LeanAdapter:
             "duration_seconds": raw["duration_seconds"],
             "errors": errors,
             "warnings": warnings,
+            "sandbox_mode": raw.get("sandbox_mode", "off"),
+            "sandbox_applied": bool(raw.get("sandbox_applied", False)),
+            "sandbox_tool": raw.get("sandbox_tool"),
         }
 
     def check_file(
@@ -154,7 +210,6 @@ class LeanAdapter:
         env: dict[str, str] | None = None,
     ) -> dict[str, Any]:
         """Run an arbitrary lean/lake shell command and return structured result."""
-        import shlex
         parts = shlex.split(command)
         raw = self._run(
             parts,
@@ -175,17 +230,20 @@ def main() -> None:
     check = sub.add_parser("check-file", help="Check a single Lean file")
     check.add_argument("file", type=Path, help="Path to .lean file")
     check.add_argument("--timeout", type=int, default=120, help="Timeout in seconds")
+    check.add_argument("--sandbox", choices=["off", "auto", "required"], default=None, help="Sandbox mode")
 
     build = sub.add_parser("build-project", help="Build a Lake project")
     build.add_argument("dir", type=Path, help="Path to Lake project root")
     build.add_argument("--timeout", type=int, default=300, help="Timeout in seconds")
+    build.add_argument("--sandbox", choices=["off", "auto", "required"], default=None, help="Sandbox mode")
 
     run = sub.add_parser("run-command", help="Run an arbitrary lean/lake command")
     run.add_argument("command", help="Command string to execute")
     run.add_argument("--timeout", type=int, default=120, help="Timeout in seconds")
+    run.add_argument("--sandbox", choices=["off", "auto", "required"], default=None, help="Sandbox mode")
 
     args = parser.parse_args()
-    adapter = LeanAdapter()
+    adapter = LeanAdapter(sandbox_mode=getattr(args, "sandbox", None))
 
     if args.action == "check-file":
         result = adapter.check_file(args.file, timeout_seconds=args.timeout)

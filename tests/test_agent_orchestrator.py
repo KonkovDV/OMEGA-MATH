@@ -401,6 +401,40 @@ class TestWorkspaceContract(unittest.TestCase):
             self.assertTrue((workspace / "input_files" / "literature.md").exists())
             self.assertTrue((workspace / "input_files" / "citation_evidence.md").exists())
 
+    @patch("agent_orchestrator.invoke_llm")
+    def test_prove_stage_autocreates_statement_spec(self, mock_invoke_llm: Any) -> None:
+        from agent_orchestrator import dispatch_agent
+        import tempfile
+
+        mock_invoke_llm.return_value = {
+            "content": "analysis\n```yaml\nartifact_type: prove\n```",
+            "model": "mock-model",
+            "prompt_tokens": 10,
+            "completion_tokens": 10,
+            "duration_seconds": 0.1,
+        }
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp_path = Path(tmpdir)
+            self._seed_agents(tmp_path)
+            workspace = tmp_path / "research" / "active" / "test-problem"
+            workspace.mkdir(parents=True)
+
+            with patch("agent_orchestrator.REPO_ROOT", tmp_path):
+                result = dispatch_agent(
+                    "test-problem",
+                    role="prover",
+                    stage="prove",
+                    model="mock",
+                    dry_run=False,
+                )
+
+            self.assertTrue(result["success"])
+            created = result["workspace_contract"].get("created_files", [])
+            self.assertIn("input_files/proof_obligations.md", created)
+            self.assertIn("input_files/statement_spec.md", created)
+            self.assertTrue((workspace / "input_files" / "statement_spec.md").exists())
+
 
 class TestPipelineDryRun(unittest.TestCase):
     """Test pipeline execution in dry-run mode."""
@@ -415,8 +449,23 @@ class TestPipelineDryRun(unittest.TestCase):
             dry_run=True,
         )
         self.assertTrue(result["success"])
-        self.assertEqual(result["stages_run"], ["brief", "novelty", "plan"])
-        self.assertEqual(len(result["stage_results"]), 3)
+        self.assertEqual(result["stages_run"], ["brief", "novelty", "triage", "plan"])
+        self.assertEqual(len(result["stage_results"]), 4)
+
+    def test_pipeline_dual_lane_includes_experiment_and_prove(self) -> None:
+        from agent_orchestrator import run_pipeline
+
+        result = run_pipeline(
+            "erdos-straus",
+            from_stage="plan",
+            to_stage="results",
+            dual_lane=True,
+            dry_run=True,
+        )
+
+        self.assertTrue(result["success"])
+        self.assertEqual(result["stages_run"], ["plan", "experiment", "prove", "results"])
+        self.assertTrue(result["dual_lane"])
 
     def test_pipeline_invalid_stage_order_fails(self) -> None:
         from agent_orchestrator import run_pipeline

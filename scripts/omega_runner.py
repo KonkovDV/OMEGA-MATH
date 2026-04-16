@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import json
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -22,12 +23,21 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 VALID_ROUTES = {"experiment-first", "proof-first", "survey-first"}
 VALID_RUN_STATUSES = {"running", "completed", "failed", "abandoned"}
 VALID_VERDICTS = {"positive", "negative", "inconclusive"}
-VALID_PROOF_STATUSES = {"draft", "partial", "verified", "rejected", "needs-human-review"}
+VALID_PROOF_STATUSES = {
+    "draft",
+    "verifier-checked",
+    "formally-checked",
+    "partial",
+    "verified",
+    "rejected",
+    "needs-human-review",
+}
 VALID_CLAIM_CLASSES = {"lemma", "theorem", "structural-claim", "counterexample-cert"}
 VALID_VERIFIER_KINDS = {"lean4", "coq", "isabelle", "cas", "human-line-check"}
-VALID_LEDGER_ARTIFACT_TYPES = {"log", "dataset", "proof-draft", "prover-result", "counterexample", "plot"}
+VALID_LEDGER_ARTIFACT_TYPES = {"log", "dataset", "proof-draft", "prover-result", "counterexample", "plot", "failure-pattern"}
 VALID_PROOF_ARTIFACT_TYPES = {"source", "log", "transcript", "proof-term", "report"}
 EVIDENCE_BUNDLE_PATH = "artifacts/evidence-bundle.yaml"
+FAILURE_CHANNEL_PATH = "control/failure-patterns.jsonl"
 EVIDENCE_DOCUMENTS = (
     ("README.md", "landing-page"),
     ("reproducibility.md", "reproducibility-manifest"),
@@ -184,6 +194,15 @@ def validate_artifacts(artifacts: list[dict] | None, valid_types: set[str]) -> l
 def resolve_workspace_path(problem_root: Path, path_value: str) -> tuple[str, Path]:
     normalized = ensure_relative_artifact_path(path_value)
     return normalized, problem_root / Path(normalized)
+
+
+def append_workspace_jsonl(problem_root: Path, path_value: str, payload: dict[str, Any]) -> str:
+    normalized, resolved = resolve_workspace_path(problem_root, path_value)
+    resolved.parent.mkdir(parents=True, exist_ok=True)
+    line = json.dumps(payload, ensure_ascii=False)
+    with resolved.open("a", encoding="utf-8") as handle:
+        handle.write(f"{line}\n")
+    return normalized
 
 
 def compute_artifact_checksum(artifact_path: Path) -> str:
@@ -555,6 +574,7 @@ def create_proof_result(
     command: str,
     source_entry: str,
     proof_obligations_path: str = "input_files/proof_obligations.md",
+    statement_spec_path: str = "input_files/statement_spec.md",
     artifacts: list[dict] | None = None,
     dependencies: list[str] | None = None,
     notes: str | None = None,
@@ -568,6 +588,7 @@ def create_proof_result(
     problem_root = get_problem_root(repo_root, problem_id)
     source_entry = ensure_workspace_file_exists(problem_root, source_entry, label="Source entry")
     proof_obligations_path = ensure_workspace_file_exists(problem_root, proof_obligations_path, label="Proof obligations")
+    statement_spec_path = ensure_workspace_file_exists(problem_root, statement_spec_path, label="Statement specification")
     normalized_artifacts = validate_artifacts(artifacts, VALID_PROOF_ARTIFACT_TYPES)
     enriched_artifacts = enrich_artifacts(problem_root, normalized_artifacts, valid_types=VALID_PROOF_ARTIFACT_TYPES)
     ledger = load_ledger(problem_root)
@@ -589,8 +610,14 @@ def create_proof_result(
         "claim_class": claim_class,
         "ledger_run_id": run_id,
         "proof_obligations_path": proof_obligations_path,
+        "statement_spec_path": statement_spec_path,
         "source_entry": source_entry,
         "status": status,
+        "proof_result_status": status,
+        "promotion_gate": {
+            "allowed_progression": ["draft", "verifier-checked", "formally-checked"],
+            "current_step": status if status in {"draft", "verifier-checked", "formally-checked"} else "post-gate",
+        },
         "verifier": {
             "kind": verifier_kind,
             "toolchain": toolchain,
@@ -631,6 +658,53 @@ def create_proof_result(
     generate_experiment_index(repo_root)
     generate_evidence_bundle(repo_root, problem_id)
     return result_path
+
+
+def record_failure_pattern(
+    *,
+    repo_root: Path,
+    problem_id: str,
+    run_id: str,
+    stage: str,
+    category: str,
+    summary: str,
+    details: dict[str, Any] | None = None,
+) -> Path:
+    problem_root = get_problem_root(repo_root, problem_id)
+    payload: dict[str, Any] = {
+        "at": utc_now_iso(),
+        "problem_id": problem_id,
+        "run_id": run_id,
+        "stage": stage,
+        "category": category,
+        "summary": summary,
+        "details": details or {},
+    }
+    relative_path = append_workspace_jsonl(problem_root, FAILURE_CHANNEL_PATH, payload)
+
+    ledger = load_ledger(problem_root)
+    for entry in ledger:
+        if entry.get("run_id") == run_id:
+            artifacts = entry.setdefault("artifacts", [])
+            already_linked = any(
+                artifact.get("path") == relative_path and artifact.get("type") == "failure-pattern"
+                for artifact in artifacts
+            )
+            if not already_linked:
+                described = describe_workspace_file(problem_root, relative_path)
+                artifacts.append(
+                    {
+                        "path": described["path"],
+                        "type": "failure-pattern",
+                        "checksum": described["checksum"],
+                        "size_bytes": described["size_bytes"],
+                    }
+                )
+            break
+    write_ledger(problem_root, ledger)
+    generate_experiment_index(repo_root)
+    generate_evidence_bundle(repo_root, problem_id)
+    return problem_root / relative_path
 
 
 def parse_artifact_args(values: list[str] | None) -> list[dict]:
@@ -677,9 +751,18 @@ def build_parser() -> argparse.ArgumentParser:
     proof_parser.add_argument("--verifier-command", required=True)
     proof_parser.add_argument("--source-entry", required=True)
     proof_parser.add_argument("--proof-obligations-path", default="input_files/proof_obligations.md")
+    proof_parser.add_argument("--statement-spec-path", default="input_files/statement_spec.md")
     proof_parser.add_argument("--artifact", action="append")
     proof_parser.add_argument("--dependency", action="append")
     proof_parser.add_argument("--notes")
+
+    failure_parser = subparsers.add_parser("failure-pattern", help="Append a run-level failure pattern event")
+    failure_parser.add_argument("problem_id")
+    failure_parser.add_argument("run_id")
+    failure_parser.add_argument("--stage", required=True)
+    failure_parser.add_argument("--category", required=True)
+    failure_parser.add_argument("--summary", required=True)
+    failure_parser.add_argument("--details", help="YAML/JSON scalar note for additional detail")
 
     subparsers.add_parser("generate-index", help="Regenerate the global experiment index")
 
@@ -736,11 +819,27 @@ def main(argv: list[str] | None = None) -> int:
                 command=args.verifier_command,
                 source_entry=args.source_entry,
                 proof_obligations_path=args.proof_obligations_path,
+                statement_spec_path=args.statement_spec_path,
                 artifacts=parse_artifact_args(args.artifact),
                 dependencies=args.dependency,
                 notes=args.notes,
             )
             print(result_path)
+            return 0
+        if args.command == "failure-pattern":
+            details: dict[str, Any] | None = None
+            if args.details:
+                details = {"note": args.details}
+            path = record_failure_pattern(
+                repo_root=REPO_ROOT,
+                problem_id=args.problem_id,
+                run_id=args.run_id,
+                stage=args.stage,
+                category=args.category,
+                summary=args.summary,
+                details=details,
+            )
+            print(path)
             return 0
         if args.command == "generate-index":
             generate_experiment_index(REPO_ROOT)
