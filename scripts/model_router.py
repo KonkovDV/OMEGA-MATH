@@ -18,7 +18,7 @@ Supported backends:
 - deepseek: DeepSeek API (deepseek-chat, deepseek-reasoner)
 - anthropic: Anthropic Claude API (claude-sonnet-4-20250514, claude-opus-4-20250514)
 - ollama:   Local Ollama server (llama3, deepseek-prover-v2:7b, etc.)
-- vllm:     Local vLLM server (any HuggingFace model)
+- vllm:     Local vLLM server (goedel-prover-v2-32b and other HuggingFace models)
 - lmstudio: Local LM Studio server
 
 Usage:
@@ -97,7 +97,7 @@ BACKENDS: dict[str, Backend] = {
         name="vllm",
         base_url=os.environ.get("VLLM_BASE_URL", "http://localhost:8000/v1"),
         api_key_env="VLLM_API_KEY",
-        models=["deepseek-prover-v2-7b"],
+        models=["goedel-prover-v2-32b", "deepseek-prover-v2-7b"],
     ),
     "lmstudio": Backend(
         name="lmstudio",
@@ -143,7 +143,14 @@ PROFILES: dict[str, dict[str, ModelProfile]] = {
     },
     "prover": {
         "default": ModelProfile("deepseek-reasoner", "deepseek", 6000, 0.1, "Proof search and formal reasoning", fallback="claude-opus-4-20250514"),
-        "local": ModelProfile("deepseek-prover-v2:7b", "ollama", 8000, 0.1, "Local 7B prover for subgoal solving"),
+        "local": ModelProfile(
+            "goedel-prover-v2-32b",
+            "vllm",
+            8000,
+            0.1,
+            "Primary local prover (Goedel-Prover-V2-32B)",
+            fallback="deepseek-prover-v2:7b",
+        ),
     },
     "writer": {
         "default": ModelProfile("deepseek-chat", "deepseek", 8000, 0.4, "Drafting research notes", fallback="claude-sonnet-4-20250514"),
@@ -237,6 +244,8 @@ def _infer_backend(model: str) -> str:
         if ":" in m:
             return "ollama"  # deepseek-prover-v2:7b is Ollama format
         return "deepseek"
+    if "goedel" in m:
+        return "vllm"
     if "gpt" in m or "o3" in m or "o1" in m:
         return "openai"
     if "llama" in m or "qwen" in m or "mistral" in m:

@@ -80,6 +80,7 @@ class TestModelProfiles:
     def test_prover_has_local_profile(self):
         assert "local" in PROFILES["prover"]
         assert PROFILES["prover"]["local"].backend in ("ollama", "vllm")
+        assert "goedel" in PROFILES["prover"]["local"].model.lower()
 
     def test_writer_has_highest_token_budget(self):
         writer_tokens = PROFILES["writer"]["default"].max_tokens
@@ -150,6 +151,7 @@ class TestInferBackend:
         ("deepseek-chat", "deepseek"),
         ("deepseek-reasoner", "deepseek"),
         ("deepseek-prover-v2:7b", "ollama"),
+        ("goedel-prover-v2-32b", "vllm"),
         ("gpt-4o", "openai"),
         ("gpt-4o-mini", "openai"),
         ("o3-mini", "openai"),

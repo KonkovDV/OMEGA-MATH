@@ -2,6 +2,30 @@
 
 > Изолированный standalone-репозиторий для мультиагентного исследования открытых математических проблем
 
+[![Validate OMEGA Registry](https://github.com/KonkovDV/OMEGA-MATH/actions/workflows/validate.yml/badge.svg)](https://github.com/KonkovDV/OMEGA-MATH/actions/workflows/validate.yml)
+![Python](https://img.shields.io/badge/python-3.12%2B-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+
+## TL;DR
+
+- **Что это:** local-first платформа для AI-assisted math research с реестром задач, triage, оркестрацией агентов и evidence governance.
+- **Что уже работает:** bounded execution pipeline, experiment ledgers, SHA-256 evidence bundles, Einstein Arena bridge, schema-валидация артефактов, тестовый контур `200+` тестов.
+- **Чего пока нет:** production-grade автономного закрытия proof-first цикла без оператора (формально верифицированные результаты требуют ручного/итеративного контроля).
+
+## Quick Start (10 Minutes)
+
+```bash
+git clone https://github.com/KonkovDV/OMEGA-MATH.git
+cd OMEGA-MATH
+python -m pip install -e .[all]
+python scripts/validate_registry.py
+python scripts/scaffold_problem.py erdos-straus --title "Erdos-Straus Conjecture"
+python scripts/omega_workflow.py triage erdos-straus
+python scripts/agent_orchestrator.py run erdos-straus --stage plan --dry-run
+```
+
+For live dispatches, set model credentials first (for example `DEEPSEEK_API_KEY`) and then run `omega-orchestrate` without `--dry-run`.
+
 ## Миссия
 
 Систематическое применение ИИ-агентов к тысячам нерешённых математических задач — от гипотезы Римана до проблемы усердного бобра — с целью:
@@ -13,6 +37,47 @@
 OMEGA не вендорит внешние исследовательские рантаймы напрямую. Репозиторий остаётся
 полностью изолированным, но использует проверенные архитектурные паттерны из Denario,
 CMBAgent и LSST DESC AI roadmap как доноры проектных решений.
+
+## Quick Start
+
+1. Install the runtime surface:
+
+```bash
+python -m pip install -e .[all]
+```
+
+2. Validate repository integrity (registry + workspace artifact contracts + release metadata sync):
+
+```bash
+omega-validate-registry
+omega-verify-version-sync
+```
+
+3. Initialize one problem workspace and deterministic workflow state:
+
+```bash
+omega-scaffold-problem erdos-straus --title "Erdos-Straus Conjecture"
+omega-workflow triage erdos-straus
+```
+
+4. Dry-run orchestrator prompts before live calls:
+
+```bash
+omega-orchestrate run erdos-straus --stage plan --dry-run
+```
+
+5. Prefer local prover routing (Goedel-Prover-V2-32B via vLLM profile):
+
+```bash
+omega-orchestrate run erdos-straus --stage prove --prefer-local
+```
+
+## Help and Support
+
+- Operator procedures: `protocol/operator-runbook.md`
+- Orchestrator runtime contract: `protocol/orchestrator-contract.md`
+- Lean bootstrap and proving workflow: `protocol/lean-bootstrap.md`
+- Evidence and claim policy: `protocol/evidence-governance.md`
 
 ## Canonical Planning Surfaces
 
@@ -135,6 +200,9 @@ What exists now:
 13. Execution adapters for Lean 4 (`omega-lean`), SAT/SMT solvers (`omega-solve`), and CAS (`omega-cas`)
 14. A searchable experiment-history query surface (`omega-query`) over ledger and experiment-index data
 15. A deterministic local workflow controller (`omega-workflow`) that materializes per-problem control state from registry triage and advances bounded stages without hand-editing YAML
+16. LeanCopilot-compatible external bridge server (`omega-leancop-bridge`) for BYOM tactic generation over OpenAI-compatible endpoints
+17. Verifier-guided proof repair loop (`omega-proof-repair`) with bounded iterative retries and Lean feedback incorporation
+18. Release metadata guard (`omega-verify-version-sync`) to enforce pyproject/CITATION/PROTOCOL version consistency
 
 What does not exist yet:
 1. Automated paper generation pipelines (templates exist; writer agent can draft, but no end-to-end LaTeX compilation)
@@ -151,6 +219,8 @@ Hardened in April 2026 updates:
 1. Orchestrator prompt-packet traceability: each non-dry dispatch now persists full prompt packets under `artifacts/prompts/*.prompt.json` and records `prompt_packet_sha256` in artifact metadata and manifest entries.
 2. Stage prerequisites are now enforced: all post-brief stages require an initialized workspace and auto-materialize baseline files (`README.md`, `input_files/data_description.md`) plus stage-specific literature/proof placeholders.
 3. Dispatch metadata now includes requested vs resolved model, backend, temperature, and token budget, so evidence bundles capture full routing context.
+4. Model router local prover profile now targets `goedel-prover-v2-32b` (vLLM) with fallback to `deepseek-prover-v2:7b`.
+5. Einstein Arena PoW registration path includes explicit timeout/progress controls (`--pow-timeout`, `--pow-progress-interval`).
 
 ## Registry Maturity
 
@@ -194,11 +264,14 @@ This repository is intentionally isolated from the main MicroPhoenix application
 23. Compute a fresh evidence bundle with `omega-verify-evidence compute erdos-straus` and verify it with `omega-verify-evidence verify erdos-straus`.
 24. Check LLM backend health with `omega-model-router health`, inspect routing profiles with `omega-model-router profiles`, and resolve a model for a role/tier with `omega-model-router resolve --role prover --tier T4-structural`.
 25. Validate registry and workspace artifact contracts (`experiments/ledger.yaml`, `evidence-bundle.yaml`) with `omega-validate-registry`.
-26. Import Einstein Arena benchmark table into OMEGA collections with `omega-import-einstein-arena --readme-file .benchmarks/einstein-arena-readme.md`.
-27. Override slug-to-registry mapping without code edits using `omega-import-einstein-arena --aliases-file registry/collections/einstein-arena-aliases.yaml`.
-28. Import Einstein Arena table and copy benchmark constructions from a local donor clone with `omega-import-einstein-arena --readme-file .benchmarks/einstein-arena-readme.md --repo-dir ../EinsteinArena-new-SOTA`.
-29. Query Einstein Arena API with bounded retries and backoff using `omega-einstein-arena --timeout 45 --max-retries 3 --retry-backoff 1.0 <action> ...`.
-30. Use the scheduled sync workflow `.github/workflows/sync-einstein-arena.yml` to auto-open a PR when EinsteinArena benchmark snapshots drift.
+26. Verify release metadata version sync (`pyproject.toml`, `CITATION.cff`, `PROTOCOL.md`) with `omega-verify-version-sync`.
+27. Start a LeanCopilot ExternalGenerator-compatible bridge with `omega-leancop-bridge --model goedel-prover-v2-32b --base-url http://localhost:8000/v1`.
+28. Run bounded verifier-guided proof repair on a Lean file with `omega-proof-repair repair proof/lean/OmegaWorkbench/Test.lean --in-place --max-iterations 32`.
+29. Import Einstein Arena benchmark table into OMEGA collections with `omega-import-einstein-arena --readme-file .benchmarks/einstein-arena-readme.md`.
+30. Override slug-to-registry mapping without code edits using `omega-import-einstein-arena --aliases-file registry/collections/einstein-arena-aliases.yaml`.
+31. Import Einstein Arena table and copy benchmark constructions from a local donor clone with `omega-import-einstein-arena --readme-file .benchmarks/einstein-arena-readme.md --repo-dir ../EinsteinArena-new-SOTA`.
+32. Query Einstein Arena API with bounded retries/backoff and PoW controls using `omega-einstein-arena --timeout 45 --max-retries 3 --retry-backoff 1.0 --pow-timeout 600 <action> ...`.
+33. Use the scheduled sync workflow `.github/workflows/sync-einstein-arena.yml` to auto-open a PR when EinsteinArena benchmark snapshots drift.
 
 ## Структура проекта
 
@@ -260,6 +333,9 @@ math/
 │   ├── agent_orchestrator.py          # LLM-backed 7-role agent dispatch engine
 │   ├── verify_evidence.py             # SHA-256 evidence bundle compute/verify/status
 │   ├── model_router.py                # LLM backend routing, profiles, and health checks
+│   ├── leancop_bridge.py              # LeanCopilot ExternalGenerator BYOM HTTP bridge
+│   ├── proof_repair_loop.py           # Verifier-guided Lean proof repair loop
+│   ├── verify_version_sync.py         # pyproject/CITATION/PROTOCOL version consistency check
 │   └── README-compatible entrypoints are provided through `pyproject.toml`
 │
 ├── tests/                             # Standalone Python test suite
@@ -278,7 +354,10 @@ math/
 │   ├── test_model_router.py            # Model router routing + health tests
 │   ├── test_import_einstein_arena.py   # EinsteinArena importer parser tests
 │   ├── test_registry_pipeline.py
-│   └── test_registry_e2e.py
+│   ├── test_registry_e2e.py
+│   ├── test_leancop_bridge.py
+│   ├── test_proof_repair_loop.py
+│   └── test_version_sync.py
 │
 ├── templates/                         # Публикационные и proving starter surfaces
 │   ├── reproducibility-manifest.md

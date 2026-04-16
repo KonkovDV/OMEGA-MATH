@@ -41,6 +41,8 @@ The orchestrator resolves LLM models automatically via `model_router.py`:
 - Tier-specific overrides exist (e.g., T4 planner uses reasoning model instead of chat)
 - Fallback chains are configured per profile (e.g., deepseek → gpt-4o)
 - An explicit `--model` CLI flag overrides automatic routing
+- `--prefer-local` forces local profile preference when a role exposes local routing
+	(notably prover → Goedel-Prover-V2-32B on vLLM)
 
 See `protocol/model-routing.md` (when created) for the full routing table.
 
@@ -118,6 +120,9 @@ Useful for:
 
 ### `omega-orchestrate run <problem-id> --stage <stage>`
 Single-stage execution. Resolves the agent role from stage, dispatches, saves artifact.
+
+### `omega-orchestrate run <problem-id> --stage <stage> --prefer-local`
+Single-stage execution with local profile preference (if defined for the selected role).
 
 ### `omega-orchestrate dispatch <problem-id> --role <role> --stage <stage>`
 Direct role dispatch. Bypasses stage-to-role mapping (for custom routing).

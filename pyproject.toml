@@ -51,6 +51,9 @@ omega-orchestrate = "agent_orchestrator:main"
 omega-verify-evidence = "verify_evidence:main"
 omega-model-router = "model_router:main"
 omega-einstein-arena = "einstein_arena_adapter:main"
+omega-leancop-bridge = "leancop_bridge:main"
+omega-proof-repair = "proof_repair_loop:main"
+omega-verify-version-sync = "verify_version_sync:main"
 
 [tool.setuptools]
 py-modules = [
@@ -70,6 +73,9 @@ py-modules = [
   "verify_evidence",
   "model_router",
   "einstein_arena_adapter",
+  "leancop_bridge",
+  "proof_repair_loop",
+  "verify_version_sync",
 ]
 
 [tool.setuptools.package-dir]

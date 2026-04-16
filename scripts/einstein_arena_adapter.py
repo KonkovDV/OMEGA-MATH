@@ -16,12 +16,13 @@ import argparse
 import hashlib
 import json
 import os
+import sys
 import time
 import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
-from typing import Any, cast
+from typing import Any, Callable, cast
 
 import yaml
 
@@ -29,6 +30,8 @@ DEFAULT_BASE_URL = os.getenv("EINSTEIN_ARENA_BASE_URL", "https://einsteinarena.c
 DEFAULT_TIMEOUT_SECONDS = 45
 DEFAULT_MAX_RETRIES = 3
 DEFAULT_RETRY_BACKOFF_SECONDS = 1.0
+DEFAULT_POW_TIMEOUT_SECONDS = 600.0
+DEFAULT_POW_PROGRESS_INTERVAL = 1_000_000
 USER_AGENT = "OMEGA-einstein-arena-adapter/0.1.0 (+https://github.com/KonkovDV/SynAPS)"
 RETRYABLE_HTTP_STATUS_CODES = {429, 500, 502, 503, 504}
 
@@ -45,11 +48,31 @@ def verify_pow(challenge: str, difficulty: int, nonce: int) -> bool:
     return True
 
 
-def solve_pow(challenge: str, difficulty: int, max_nonce: int = 200_000_000) -> int:
-    """Brute-force PoW nonce for Einstein Arena challenge."""
+def solve_pow(
+    challenge: str,
+    difficulty: int,
+    max_nonce: int = 200_000_000,
+    *,
+    max_seconds: float | None = DEFAULT_POW_TIMEOUT_SECONDS,
+    progress_interval: int = 0,
+    progress_callback: Callable[[int, float], None] | None = None,
+) -> int:
+    """Brute-force PoW nonce for Einstein Arena challenge with timeout controls."""
+    if max_seconds is not None and max_seconds <= 0:
+        raise RuntimeError(f"PoW timed out after {max_seconds:.2f}s")
+
+    started = time.monotonic()
     for nonce in range(max_nonce + 1):
         if verify_pow(challenge, difficulty, nonce):
             return nonce
+        elapsed = time.monotonic() - started
+        if max_seconds is not None and elapsed >= max_seconds:
+            raise RuntimeError(
+                f"PoW timed out after {elapsed:.2f}s at nonce={nonce}; "
+                f"consider increasing --pow-timeout or lowering difficulty"
+            )
+        if progress_interval > 0 and progress_callback is not None and nonce > 0 and nonce % progress_interval == 0:
+            progress_callback(nonce, elapsed)
     raise RuntimeError(f"Unable to solve PoW up to nonce={max_nonce}")
 
 
@@ -158,6 +181,8 @@ def register_agent(
     timeout_seconds: int = DEFAULT_TIMEOUT_SECONDS,
     max_retries: int = DEFAULT_MAX_RETRIES,
     retry_backoff_seconds: float = DEFAULT_RETRY_BACKOFF_SECONDS,
+    pow_timeout_seconds: float = DEFAULT_POW_TIMEOUT_SECONDS,
+    pow_progress_interval: int = DEFAULT_POW_PROGRESS_INTERVAL,
 ) -> dict[str, Any]:
     """Run challenge + PoW + register flow and return agent credentials."""
     challenge = request_json(
@@ -183,7 +208,23 @@ def register_agent(
 
     challenge_token = challenge_token_raw
     difficulty = int(difficulty_raw)
-    nonce = solve_pow(challenge_token, difficulty)
+    progress_callback = None
+    if pow_progress_interval > 0:
+        def _progress(nonce_value: int, elapsed: float) -> None:
+            print(
+                f"[pow] attempts={nonce_value} elapsed={elapsed:.1f}s difficulty={difficulty}",
+                file=sys.stderr,
+            )
+
+        progress_callback = _progress
+
+    nonce = solve_pow(
+        challenge_token,
+        difficulty,
+        max_seconds=pow_timeout_seconds,
+        progress_interval=pow_progress_interval,
+        progress_callback=progress_callback,
+    )
 
     registration = request_json(
         "POST",
@@ -251,6 +292,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--timeout", type=int, default=DEFAULT_TIMEOUT_SECONDS)
     parser.add_argument("--max-retries", type=int, default=DEFAULT_MAX_RETRIES)
     parser.add_argument("--retry-backoff", type=float, default=DEFAULT_RETRY_BACKOFF_SECONDS)
+    parser.add_argument("--pow-timeout", type=float, default=DEFAULT_POW_TIMEOUT_SECONDS)
+    parser.add_argument("--pow-progress-interval", type=int, default=DEFAULT_POW_PROGRESS_INTERVAL)
 
     subparsers = parser.add_subparsers(dest="action", required=True)
 
@@ -327,6 +370,8 @@ def main(argv: list[str] | None = None) -> int:
                 timeout_seconds=args.timeout,
                 max_retries=args.max_retries,
                 retry_backoff_seconds=args.retry_backoff,
+                pow_timeout_seconds=args.pow_timeout,
+                pow_progress_interval=args.pow_progress_interval,
             )
         elif args.action == "problems":
             payload = request_json(

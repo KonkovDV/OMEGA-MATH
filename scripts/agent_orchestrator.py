@@ -768,6 +768,7 @@ def dispatch_agent(
     stage: str,
     model: str = DEFAULT_MODEL,
     temperature: float = DEFAULT_TEMPERATURE,
+    prefer_local: bool = False,
     extra_instructions: str = "",
     dry_run: bool = False,
 ) -> dict[str, Any]:
@@ -810,7 +811,7 @@ def dispatch_agent(
     if model == DEFAULT_MODEL:
         triage = context.get("triage") or {}
         tier = triage.get("tier", "default")
-        profile, backend = resolve_with_fallback(role, tier)
+        profile, backend = resolve_with_fallback(role, tier, prefer_local=prefer_local)
         resolved_model = profile.model
         resolved_temp = profile.temperature
         max_tokens = profile.max_tokens
@@ -844,6 +845,7 @@ def dispatch_agent(
             "resolved_backend": resolved_backend,
             "resolved_temperature": resolved_temp,
             "resolved_max_tokens": max_tokens,
+            "prefer_local": prefer_local,
         }
 
     llm_result = invoke_llm(
@@ -873,6 +875,7 @@ def dispatch_agent(
         "duration_seconds": llm_result.get("duration_seconds", 0),
         "prompt_packet_sha256": prompt_packet_sha256,
         "workspace_autocreated_files": workspace_contract.get("created_files", []),
+        "prefer_local": prefer_local,
     }
 
     # Save artifact
@@ -896,6 +899,7 @@ def run_stage(
     stage: str,
     model: str = DEFAULT_MODEL,
     temperature: float = DEFAULT_TEMPERATURE,
+    prefer_local: bool = False,
     extra_instructions: str = "",
     dry_run: bool = False,
 ) -> dict[str, Any]:
@@ -917,6 +921,7 @@ def run_stage(
         stage=stage,
         model=model,
         temperature=temperature,
+        prefer_local=prefer_local,
         extra_instructions=extra_instructions,
         dry_run=dry_run,
     )
@@ -929,6 +934,7 @@ def run_pipeline(
     to_stage: str,
     model: str = DEFAULT_MODEL,
     temperature: float = DEFAULT_TEMPERATURE,
+    prefer_local: bool = False,
     dry_run: bool = False,
 ) -> dict[str, Any]:
     """Run a sequence of stages from from_stage to to_stage.
@@ -967,6 +973,7 @@ def run_pipeline(
             stage=stage,
             model=model,
             temperature=temperature,
+            prefer_local=prefer_local,
             dry_run=dry_run,
         )
         results.append(result)
@@ -1000,6 +1007,7 @@ def main() -> None:
     run_parser.add_argument("--stage", required=True, help="Workflow stage to execute")
     run_parser.add_argument("--model", default=DEFAULT_MODEL, help="LLM model name")
     run_parser.add_argument("--temperature", type=float, default=DEFAULT_TEMPERATURE)
+    run_parser.add_argument("--prefer-local", action="store_true", help="Prefer local model profiles when available")
     run_parser.add_argument("--extra", default="", help="Extra instructions for the agent")
     run_parser.add_argument("--dry-run", action="store_true", help="Print prompts without calling LLM")
 
@@ -1010,6 +1018,7 @@ def main() -> None:
     dispatch_parser.add_argument("--stage", default="experiment", help="Stage context")
     dispatch_parser.add_argument("--model", default=DEFAULT_MODEL)
     dispatch_parser.add_argument("--temperature", type=float, default=DEFAULT_TEMPERATURE)
+    dispatch_parser.add_argument("--prefer-local", action="store_true", help="Prefer local model profiles when available")
     dispatch_parser.add_argument("--dry-run", action="store_true")
 
     # pipeline: multi-stage
@@ -1019,6 +1028,7 @@ def main() -> None:
     pipe_parser.add_argument("--to-stage", required=True, help="End stage (inclusive)")
     pipe_parser.add_argument("--model", default=DEFAULT_MODEL)
     pipe_parser.add_argument("--temperature", type=float, default=DEFAULT_TEMPERATURE)
+    pipe_parser.add_argument("--prefer-local", action="store_true", help="Prefer local model profiles when available")
     pipe_parser.add_argument("--dry-run", action="store_true")
 
     args = parser.parse_args()
@@ -1029,6 +1039,7 @@ def main() -> None:
             stage=args.stage,
             model=args.model,
             temperature=args.temperature,
+            prefer_local=args.prefer_local,
             extra_instructions=args.extra,
             dry_run=args.dry_run,
         )
@@ -1039,6 +1050,7 @@ def main() -> None:
             stage=args.stage,
             model=args.model,
             temperature=args.temperature,
+            prefer_local=args.prefer_local,
             dry_run=args.dry_run,
         )
     elif args.command == "pipeline":
@@ -1048,6 +1060,7 @@ def main() -> None:
             to_stage=args.to_stage,
             model=args.model,
             temperature=args.temperature,
+            prefer_local=args.prefer_local,
             dry_run=args.dry_run,
         )
     else:

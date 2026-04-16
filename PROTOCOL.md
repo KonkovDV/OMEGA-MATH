@@ -148,6 +148,13 @@ execution loop — by adding three new infrastructure components:
      `registry/schemas/experiment-ledger.schema.json` and
      `registry/schemas/evidence-bundle.schema.json`.
 
+5. **LeanCopilot Bridge + Proof Repair Runtime** (`scripts/leancop_bridge.py`, `scripts/proof_repair_loop.py`):
+     LeanCopilot-compatible ExternalGenerator bridge (`/generate`) plus bounded verifier-guided
+     proof repair loop (default 32 iterations) that feeds Lean diagnostics back into tactic generation.
+
+6. **Release Metadata Version Sync Guard** (`scripts/verify_version_sync.py`):
+     Enforces version consistency across `pyproject.toml`, `CITATION.cff`, and `PROTOCOL.md`.
+
 The repeatable execution loop is now:
 ```
 triage → workspace → experiment → evidence-bundle → writeup → review
@@ -166,6 +173,8 @@ Runtime guarantees added in April 2026 hardening:
      auto-materialized (`README.md`, `input_files/data_description.md`) with stage-specific
      additions for novelty/results/paper/referee (`literature.md`, `citation_evidence.md`)
      and prove (`proof_obligations.md`).
+4. Local-first proving can be selected via orchestrator `--prefer-local`; prover role now routes to
+     Goedel-Prover-V2-32B (vLLM profile) with fallback to DeepSeek-Prover-V2-7B.
 
 See:
 - `protocol/orchestrator-contract.md` for the full orchestrator specification
@@ -182,6 +191,8 @@ Operational additions:
      - `--timeout`
      - `--max-retries`
      - `--retry-backoff`
+     - `--pow-timeout`
+     - `--pow-progress-interval`
      and retries transient classes (`429`, `502`, `503`, `504`, plus retryable network timeouts).
 2. `scripts/import_einstein_arena.py` now uses header-driven table parsing, so README tables with reordered or extra columns continue to parse as long as required columns are present.
 3. Slug aliasing is externalized to `registry/collections/einstein-arena-aliases.yaml`, eliminating hardcoded registry mapping edits for every upstream rename.

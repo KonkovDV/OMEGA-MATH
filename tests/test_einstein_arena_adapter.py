@@ -25,6 +25,11 @@ class EinsteinArenaAdapterTests(unittest.TestCase):
         self.assertTrue(adapter.verify_pow(challenge, difficulty, nonce))
         self.assertFalse(adapter.verify_pow(challenge, difficulty, max(0, nonce - 1)))
 
+    def test_solve_pow_respects_timeout(self) -> None:
+        with patch.object(adapter, "verify_pow", return_value=False):
+            with self.assertRaisesRegex(RuntimeError, "PoW timed out"):
+                adapter.solve_pow("omega-timeout", difficulty=24, max_nonce=500_000, max_seconds=0.0)
+
     def test_parse_solution_payload_inline_json(self) -> None:
         payload = adapter.parse_solution_payload('{"values": [0.5, 0.25]}', None)
         self.assertEqual(payload["values"], [0.5, 0.25])
@@ -226,6 +231,10 @@ class EinsteinArenaAdapterTests(unittest.TestCase):
                         "6",
                         "--retry-backoff",
                         "0.25",
+                        "--pow-timeout",
+                        "7",
+                        "--pow-progress-interval",
+                        "250000",
                         "register",
                         "--name",
                         "OmegaAgent",
@@ -237,6 +246,8 @@ class EinsteinArenaAdapterTests(unittest.TestCase):
         self.assertEqual(kwargs.get("timeout_seconds"), 11)
         self.assertEqual(kwargs.get("max_retries"), 6)
         self.assertEqual(kwargs.get("retry_backoff_seconds"), 0.25)
+        self.assertEqual(kwargs.get("pow_timeout_seconds"), 7)
+        self.assertEqual(kwargs.get("pow_progress_interval"), 250000)
 
     def test_main_threads_and_activity_forward_timeout(self) -> None:
         with patch.object(adapter, "request_json", return_value={"ok": True}) as mocked_request:

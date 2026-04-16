@@ -138,6 +138,41 @@ lake build OmegaWorkbench
 lake env lean OmegaWorkbench/Test.lean
 ```
 
+## Step 5: Bridge LeanCopilot to a local/open model endpoint
+
+OMEGA now provides a LeanCopilot-compatible bridge server:
+
+```bash
+omega-leancop-bridge --model goedel-prover-v2-32b --base-url http://localhost:8000/v1
+```
+
+The bridge exposes:
+
+- `GET /health`
+- `POST /generate` (LeanCopilot ExternalGenerator contract)
+
+This is the recommended runtime surface for BYOM tactic generation.
+
+## Step 6: Run verifier-guided proof repair loop
+
+For Lean files containing `sorry`, run bounded iterative repair:
+
+```bash
+omega-proof-repair repair research/active/<problem-id>/proof/lean/OmegaWorkbench/Test.lean \
+  --model goedel-prover-v2-32b \
+  --base-url http://localhost:8000/v1 \
+  --max-iterations 32 \
+  --in-place
+```
+
+The loop applies verifier-guided self-correction:
+
+1. detect first unresolved `sorry`
+2. generate tactic candidates
+3. re-check with Lean
+4. keep only improving candidates
+5. stop on verified proof or exhausted budget
+
 ## OMEGA conventions on top of this stack
 
 1. **Proof obligations first**: every proof-first research run must populate `input_files/proof_obligations.md` before starting model-assisted search.

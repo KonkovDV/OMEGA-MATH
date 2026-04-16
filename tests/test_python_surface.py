@@ -41,6 +41,9 @@ class OmegaPythonSurfaceTests(unittest.TestCase):
         self.assertEqual(scripts["omega-solve"], "solver_adapter:main")
         self.assertEqual(scripts["omega-cas"], "cas_adapter:main")
         self.assertEqual(scripts["omega-workflow"], "omega_workflow:main")
+        self.assertEqual(scripts["omega-leancop-bridge"], "leancop_bridge:main")
+        self.assertEqual(scripts["omega-proof-repair"], "proof_repair_loop:main")
+        self.assertEqual(scripts["omega-verify-version-sync"], "verify_version_sync:main")
 
     def test_importable_cli_modules_exist(self) -> None:
         for module_name in (
@@ -56,6 +59,9 @@ class OmegaPythonSurfaceTests(unittest.TestCase):
             "solver_adapter",
             "cas_adapter",
             "omega_workflow",
+            "leancop_bridge",
+            "proof_repair_loop",
+            "verify_version_sync",
         ):
             module = importlib.import_module(module_name)
             self.assertTrue(callable(getattr(module, "main", None)), f"{module_name} should expose main()")

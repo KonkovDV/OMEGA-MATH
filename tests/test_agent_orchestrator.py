@@ -311,6 +311,28 @@ class TestDryRun(unittest.TestCase):
         self.assertIn("resolved_model", result)
         self.assertIn("resolved_backend", result)
 
+    @patch("agent_orchestrator.resolve_with_fallback")
+    def test_dispatch_agent_forwards_prefer_local(self, mock_resolve: Any) -> None:
+        from agent_orchestrator import dispatch_agent
+
+        mock_profile = MagicMock(model="goedel-prover-v2-32b", temperature=0.1, max_tokens=8000)
+        mock_backend = MagicMock(name="vllm")
+        mock_backend.name = "vllm"
+        mock_resolve.return_value = (mock_profile, mock_backend)
+
+        result = dispatch_agent(
+            "erdos-straus",
+            role="prover",
+            stage="brief",
+            prefer_local=True,
+            dry_run=True,
+        )
+
+        self.assertTrue(result["success"])
+        self.assertTrue(result.get("prefer_local"))
+        self.assertEqual(result.get("resolved_backend"), "vllm")
+        self.assertEqual(mock_resolve.call_args.kwargs.get("prefer_local"), True)
+
 
 class TestWorkspaceContract(unittest.TestCase):
     """Test workspace contract checks and auto-materialization of required files."""

@@ -42,6 +42,10 @@ jobs:
       run: |
         python scripts/validate_registry.py
 
+    - name: Verify release version sync
+      run: |
+        python scripts/verify_version_sync.py
+
     - name: Run unit tests (core + adapters)
       run: |
         python -m pytest tests/ -v --tb=short
@@ -50,6 +54,11 @@ jobs:
       run: |
         python scripts/model_router.py profiles
         python scripts/model_router.py backends
+
+    - name: Smoke-test Lean bridge and repair CLIs
+      run: |
+        python scripts/leancop_bridge.py --help
+        python scripts/proof_repair_loop.py --help
 
     - name: Smoke-test Einstein importer (offline fixture)
       run: |
