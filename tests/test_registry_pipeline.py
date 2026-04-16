@@ -117,6 +117,40 @@ class RegistryPipelineTests(unittest.TestCase):
         self.assertEqual(index["tier_distribution"]["T3-pattern"], 1)
         self.assertIn("scripts/generate_index.py", self.index_file.read_text(encoding="utf-8"))
 
+    def test_generate_index_uses_resolved_snapshot_date(self) -> None:
+        _write_yaml(
+            self.repo_root / "registry" / "domains" / "number-theory.yaml",
+            {
+                "problems": [
+                    {
+                        "id": "erdos-straus",
+                        "name": "Erdos-Straus",
+                        "status": "open",
+                        "statement": "4/n = 1/x + 1/y + 1/z",
+                        "tags": ["egyptian-fractions"],
+                        "ai_triage": {"tier": "T1-computational", "amenability_score": 8},
+                    }
+                ]
+            },
+        )
+        _write_yaml(
+            self.triage_file,
+            {
+                "tier_1_computational": [{"id": "erdos-straus", "score": 8}],
+                "tier_2_experimental": [],
+                "tier_3_pattern": [],
+                "tier_4_structural": [],
+                "tier_5_foundational": [],
+            },
+        )
+
+        with self._patch_generate_index(), patch.object(generate_index, "resolve_snapshot_date", return_value="2026-01-31"):
+            index = generate_index.build_index()
+            generate_index.write_index(index)
+
+        self.assertEqual(index["summary"]["last_updated"], "2026-01-31")
+        self.assertIn("# Auto-generated: 2026-01-31", self.index_file.read_text(encoding="utf-8"))
+
     def test_validate_registry_accepts_consistent_tiers_and_triage_parity(self) -> None:
         _write_yaml(
             self.repo_root / "registry" / "domains" / "geometry.yaml",
