@@ -1,5 +1,5 @@
 # OMEGA Research Protocol
-# Version: 0.5.0 | Date: 2026-04-13
+# Version: 0.6.0 | Date: 2026-04-16
 
 ## 1. Overview
 
@@ -202,6 +202,22 @@ Verification policy:
 
 - Keep importer and adapter contract tests green in `tests/test_import_einstein_arena.py` and `tests/test_einstein_arena_adapter.py`.
 - Do not treat benchmark extraction as canonical truth: canonical OMEGA records remain under `registry/domains/*.yaml`.
+
+## 1.8 Flagship Stability Remediation (v0.6.0, April 2026)
+
+The v0.6.0 release closes the operational regressions identified in the April 2026
+hyper-deep audit for the flagship execution tier.
+
+Remediation outcomes:
+
+1. `tests/test_flagship_experiments.py` is green.
+2. `tests/test_registry_e2e.py` is green.
+3. Full repository regression run is green (`pytest -q`).
+
+Operational implication:
+
+- OMEGA returns to a "green pipeline" state for Erdos-Straus, Kobon triangles,
+     Thomson workflows, and registry/schema validation in the standalone runtime.
 
 ## 2. Problem Taxonomy
 

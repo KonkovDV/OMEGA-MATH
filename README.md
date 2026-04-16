@@ -12,6 +12,12 @@
 - **Что уже работает:** bounded execution pipeline, experiment ledgers, SHA-256 evidence bundles, Einstein Arena bridge, schema-валидация артефактов, тестовый контур `200+` тестов.
 - **Чего пока нет:** production-grade автономного закрытия proof-first цикла без оператора (формально верифицированные результаты требуют ручного/итеративного контроля).
 
+## Release Status — v0.6.0 (2026-04-16)
+
+- Закрыт блокер из Hyper-Deep Audit: флагманский execution tier снова в зелёном статусе.
+- `tests/test_flagship_experiments.py` и `tests/test_registry_e2e.py` проходят без падений.
+- Полный тестовый прогон (`pytest -q`) проходит целиком.
+
 ## Quick Start (10 Minutes)
 
 ```bash
