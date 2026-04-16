@@ -56,6 +56,40 @@ def get_collection_files() -> list[Path]:
     return sorted(COLLECTIONS_DIR.glob("*.yaml"))
 
 
+def read_existing_snapshot_date() -> str | None:
+    """Read snapshot date from existing registry index when available.
+
+    This fallback keeps generated output deterministic in shallow CI clones where
+    path-filtered git history may be unavailable.
+    """
+    if not INDEX_FILE.exists():
+        return None
+
+    text = INDEX_FILE.read_text(encoding="utf-8")
+    for line in text.splitlines()[:10]:
+        match = re.match(r"^#\s*Auto-generated:\s*(\d{4}-\d{2}-\d{2})\s*$", line.strip())
+        if match:
+            return match.group(1)
+
+    try:
+        payload = yaml.safe_load(text) or {}
+    except yaml.YAMLError:
+        return None
+
+    if not isinstance(payload, dict):
+        return None
+
+    summary = payload.get("summary")
+    if not isinstance(summary, dict):
+        return None
+
+    last_updated = summary.get("last_updated")
+    if isinstance(last_updated, str) and re.fullmatch(r"\d{4}-\d{2}-\d{2}", last_updated.strip()):
+        return last_updated.strip()
+
+    return None
+
+
 def resolve_snapshot_date() -> str:
     """Resolve deterministic snapshot date for generated index.
 
@@ -82,6 +116,10 @@ def resolve_snapshot_date() -> str:
                 return candidate
         except OSError:
             pass
+
+    existing_snapshot = read_existing_snapshot_date()
+    if existing_snapshot:
+        return existing_snapshot
 
     return str(date.today())
 
