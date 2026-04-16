@@ -33,9 +33,17 @@ DEFAULT_OUTPUT = REPO_ROOT / "registry" / "collections" / "einstein-arena-benchm
 DEFAULT_LOCAL_README = REPO_ROOT / ".benchmarks" / "einstein-arena-readme.md"
 DEFAULT_SOLUTIONS_OUT = REPO_ROOT / "research" / "benchmarks" / "einstein-arena"
 DEFAULT_ALIASES_PATH = REPO_ROOT / "registry" / "collections" / "einstein-arena-aliases.yaml"
-DEFAULT_ALIASES = {
-    "tammes-problem": "thomson-problem",
+DEFAULT_ALIASES: dict[str, str] = {}
+
+HEADER_ALIASES: dict[str, tuple[str, ...]] = {
+    "problem": ("problem", "task", "challenge", "benchmark"),
+    "objective": ("objective", "goal", "direction", "optimize"),
+    "our_result": ("our result", "result", "our score", "score", "current result"),
+    "previous_best": ("previous best", "previous sota", "prior best", "baseline", "best prior"),
+    "improvement": ("improvement", "delta", "gain", "diff", "change"),
 }
+
+REQUIRED_HEADER_KEYS = ("problem", "objective", "our_result")
 
 
 @dataclass(frozen=True)
@@ -120,6 +128,35 @@ def split_markdown_row(line: str) -> list[str]:
     return cells
 
 
+def normalize_header_text(cell: str) -> str:
+    """Normalize markdown header labels for tolerant matching."""
+    value = re.sub(r"<[^>]+>", " ", cell)
+    value = value.replace("**", "").replace("`", "")
+    value = unicodedata.normalize("NFKD", value)
+    value = value.encode("ascii", "ignore").decode("ascii")
+    value = re.sub(r"[^a-zA-Z0-9]+", " ", value).strip().lower()
+    return re.sub(r"\s+", " ", value)
+
+
+def resolve_table_header_map(cells: list[str]) -> dict[str, int] | None:
+    normalized = [normalize_header_text(value) for value in cells]
+    resolved: dict[str, int] = {}
+
+    for key, aliases in HEADER_ALIASES.items():
+        match_index: int | None = None
+        for index, label in enumerate(normalized):
+            if label in aliases:
+                match_index = index
+                break
+        if match_index is not None:
+            resolved[key] = match_index
+
+    if not all(key in resolved for key in REQUIRED_HEADER_KEYS):
+        return None
+
+    return resolved
+
+
 def is_separator_row(cells: list[str]) -> bool:
     if not cells:
         return False
@@ -192,14 +229,6 @@ def load_aliases(aliases_file: Path | None = None) -> dict[str, str]:
 def parse_problem_rows(markdown: str) -> list[EinsteinRow]:
     """Parse EinsteinArena README table rows into structured records."""
     rows: list[EinsteinRow] = []
-    required_headers = {
-        "problem": "problem",
-        "objective": "objective",
-        "our result": "our_result",
-        "previous best": "previous_best",
-        "improvement": "improvement",
-    }
-
     header_map: dict[str, int] | None = None
     for line in markdown.splitlines():
         cells = split_markdown_row(line)
@@ -209,9 +238,7 @@ def parse_problem_rows(markdown: str) -> list[EinsteinRow]:
             continue
 
         if header_map is None:
-            normalized = {value.strip().lower(): idx for idx, value in enumerate(cells)}
-            if all(header in normalized for header in required_headers):
-                header_map = {key: normalized[header] for header, key in required_headers.items()}
+            header_map = resolve_table_header_map(cells)
             continue
 
         if is_separator_row(cells):
@@ -227,13 +254,23 @@ def parse_problem_rows(markdown: str) -> list[EinsteinRow]:
             continue
 
         name, slug = parsed_problem
+        previous_best = "n/a"
+        previous_best_index = header_map.get("previous_best")
+        if previous_best_index is not None and previous_best_index < len(cells):
+            previous_best = clean_metric(cells[previous_best_index])
+
+        improvement = "n/a"
+        improvement_index = header_map.get("improvement")
+        if improvement_index is not None and improvement_index < len(cells):
+            improvement = clean_metric(cells[improvement_index])
+
         row = EinsteinRow(
             name=name,
             slug=slug,
             objective=cells[header_map["objective"]].strip().lower(),
             our_result=clean_metric(cells[header_map["our_result"]]),
-            previous_best=clean_metric(cells[header_map["previous_best"]]),
-            improvement=clean_metric(cells[header_map["improvement"]]),
+            previous_best=previous_best,
+            improvement=improvement,
         )
         rows.append(row)
 

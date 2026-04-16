@@ -40,6 +40,7 @@ When refreshing `registry/collections/einstein-arena-benchmarks.yaml`:
    ```bash
    omega-import-einstein-arena --readme-file .benchmarks/einstein-arena-readme.md
    ```
+   The importer is header-driven and tolerant to extra/reordered columns, but pinned snapshots still keep benchmark diffs auditable.
 2. Keep slug alias updates in `registry/collections/einstein-arena-aliases.yaml` instead of editing importer logic.
 3. If you need donor solution files, use:
    ```bash
@@ -51,7 +52,7 @@ When refreshing `registry/collections/einstein-arena-benchmarks.yaml`:
    ```
 5. For live API interaction via `omega-einstein-arena`, use bounded retry settings:
    ```bash
-   omega-einstein-arena --timeout 45 --max-retries 3 --retry-backoff 1.0 <action> ...
+   omega-einstein-arena --timeout 45 --max-retries 3 --retry-backoff 1.0 --pow-timeout 600 --pow-progress-interval 1000000 <action> ...
    ```
 
 ## 3. Contesting a Problem Status

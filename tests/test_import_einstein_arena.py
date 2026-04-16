@@ -79,6 +79,32 @@ class EinsteinArenaImportTests(unittest.TestCase):
         self.assertEqual(rows[0].our_result, "0.5134721")
         self.assertEqual(rows[0].previous_best, "0.5134719")
 
+    def test_parse_problem_rows_handles_header_synonyms(self) -> None:
+        readme = """
+| Task | Direction | Our Score | Previous SOTA | Delta |
+|------|-----------|-----------|---------------|-------|
+| [Tammes Problem (n = 50)](tammes-problem/) | maximize | **0.5134721** | 0.5134719 | +0.0000002 |
+"""
+        rows = import_einstein_arena.parse_problem_rows(readme)
+
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0].slug, "tammes-problem")
+        self.assertEqual(rows[0].objective, "maximize")
+        self.assertEqual(rows[0].our_result, "0.5134721")
+        self.assertEqual(rows[0].previous_best, "0.5134719")
+        self.assertEqual(rows[0].improvement, "+0.0000002")
+
+    def test_parse_problem_rows_defaults_optional_metrics_to_na(self) -> None:
+        readme = """
+| Problem | Objective | Our Result |
+|---------|-----------|------------|
+| [Tammes Problem (n = 50)](tammes-problem/) | maximize | **0.5134721** |
+"""
+        rows = import_einstein_arena.parse_problem_rows(readme)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0].previous_best, "n/a")
+        self.assertEqual(rows[0].improvement, "n/a")
+
     def test_parse_problem_rows_handles_non_markdown_problem_cells(self) -> None:
         readme = """
 | Problem | Objective | Our Result | Previous Best | Improvement |
@@ -95,16 +121,17 @@ class EinsteinArenaImportTests(unittest.TestCase):
 
     def test_infer_registry_link_exact_and_alias(self) -> None:
         domain_ids = {"thomson-problem", "erdos-straus", "prime-number-theorem"}
+        alias_map = {"tammes-problem": "thomson-problem"}
 
         self.assertIsNone(import_einstein_arena.infer_registry_link("erdos-minimum-overlap", domain_ids))
-        self.assertEqual(import_einstein_arena.infer_registry_link("tammes-problem", domain_ids), "thomson-problem")
+        self.assertEqual(import_einstein_arena.infer_registry_link("tammes-problem", domain_ids, alias_map), "thomson-problem")
         self.assertEqual(import_einstein_arena.infer_registry_link("prime-number-theorem", domain_ids), "prime-number-theorem")
 
     def test_load_aliases_from_file_merges_with_defaults(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
             alias_file = Path(tmpdir) / "aliases.yaml"
             alias_file.write_text(
-                "aliases:\n  custom-problem: prime-number-theorem\n",
+                "aliases:\n  tammes-problem: thomson-problem\n  custom-problem: prime-number-theorem\n",
                 encoding="utf-8",
             )
 
