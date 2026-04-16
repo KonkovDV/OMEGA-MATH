@@ -90,6 +90,21 @@ def read_existing_snapshot_date() -> str | None:
     return None
 
 
+def is_shallow_repository() -> bool:
+    """Check whether current git repository is shallow."""
+    try:
+        proc = subprocess.run(
+            ["git", "rev-parse", "--is-shallow-repository"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        return proc.stdout.strip().lower() == "true"
+    except OSError:
+        return False
+
+
 def resolve_snapshot_date() -> str:
     """Resolve deterministic snapshot date for generated index.
 
@@ -100,6 +115,14 @@ def resolve_snapshot_date() -> str:
     source_files: list[Path] = [*get_active_domain_files(), *get_collection_files()]
     if TRIAGE_FILE.exists():
         source_files.append(TRIAGE_FILE)
+
+    # In shallow clones, path-limited git log can report HEAD date even when
+    # the path wasn't changed in the shallow history window. Prefer the
+    # already committed snapshot date to keep CI regeneration deterministic.
+    if is_shallow_repository():
+        existing_snapshot = read_existing_snapshot_date()
+        if existing_snapshot:
+            return existing_snapshot
 
     rel_paths = [path.relative_to(REPO_ROOT).as_posix() for path in source_files if path.exists()]
     if rel_paths:
