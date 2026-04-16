@@ -4,7 +4,7 @@ This reference maps the April 2026 research-intelligence pass onto OMEGA receive
 OMEGA stays standalone: these donors and services inform local workflow design, but they are
 not vendored as runtime dependencies by default.
 
-Last updated: 2026-04-05 (added neural theorem proving SOTA and execution plan references).
+Last updated: 2026-04-16 (added FrenzyMath conjecture-resolution donor extraction).
 
 ## Open-Source Workflow Donors
 
@@ -16,6 +16,18 @@ Last updated: 2026-04-05 (added neural theorem proving SOTA and execution plan r
 | autoresearch | fixed-budget keep or discard loop, branch-per-run isolation, experiment ledger discipline | plan, experiment, results |
 | Paper2Slides | staged paper-to-slides pipeline with source-linked outputs and fast or normal modes | publication, presentation pack |
 | create-llm | right-sized project templates, scaffold topology, generated starter surfaces | scaffold contract, workflow packaging |
+
+## Conjecture-Resolution Stack Donors (April 2026)
+
+| Donor | Verified reusable signal | OMEGA receiver surfaces |
+|-------|--------------------------|-------------------------|
+| arXiv:2604.03789 | dual-agent architecture linking informal proof search and formal verification | `experiment` -> `prove` stage contract, proof-first workflow |
+| `frenzymath/Rethlas` | markdown-problem -> blueprint -> strict verifier loop, run-local memory channels | bounded generation flow, failure trace artifacts, proof-repair loop discipline |
+| `frenzymath/Archon` | plan/prover/review staged orchestration for project-level Lean formalization | stage control logic, iterative proving workflow, audit-friendly state transitions |
+| `frenzymath/Anderson-Conjecture` | statement/proof separation (`Challenge` vs full formalization), comparator replay checks | theorem statement artifact + machine-check replay policy |
+| FrenzyMath conjecture post + CRC commentary | navigation and contextual framing only (secondary evidence) | source triage only; never primary claim authority |
+
+Extraction memo: `research/OMEGA_FRENZYMATH_EXTRACTION_2026_04_16.md`.
 
 ## Formal-Math and Vibe-Proving Evidence
 

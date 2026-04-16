@@ -31,8 +31,12 @@ The orchestrator supports 8 stages, each mapped to one agent role:
 | `referee` | reviewer | Reviewer report, blocking issues, verdict |
 
 Stage ordering is context-dependent:
-- Tier 1–3 problems (computational, experimental, pattern): brief → novelty → plan → experiment → results → paper → referee
-- Tier 4–5 problems (structural, foundational): brief → novelty → plan → prove → results → paper → referee
+- Tier 1–3 problems (computational, experimental, pattern): brief → novelty → triage → plan → experiment → results → paper → referee
+- Tier 4–5 problems (structural, foundational): brief → novelty → triage → plan → prove → results → paper → referee
+
+Optional dual-lane mode:
+- `--dual-lane` on pipeline runs executes both informal and formal lanes in one pass:
+	brief → novelty → triage → plan → experiment → prove → results → paper → referee
 
 ## Model Router Integration
 
@@ -105,7 +109,7 @@ Before dispatch, the orchestrator guarantees baseline workspace files exist; whe
 Stage-specific requirements:
 
 - `novelty`, `results`, `paper`, `referee`: `input_files/literature.md`, `input_files/citation_evidence.md`
-- `prove`: `input_files/proof_obligations.md`
+- `prove`: `input_files/proof_obligations.md`, `input_files/statement_spec.md`
 
 ## Dry-Run Mode
 

@@ -37,6 +37,7 @@ Examples:
 - conjecture disproved by explicit counterexample
 
 Required evidence:
+- explicit `statement_spec.md` defining the target statement and assumptions
 - explicit `proof_obligations.md` covering load-bearing claims, branch/sign/endpoint checks, and deferred risks
 - prover result artifact under `artifacts/prover-results/<run-id>.yaml` when the run reaches a verifier-visible outcome
 - machine-checkable or line-by-line proof artifact when possible
@@ -68,6 +69,7 @@ When proof work uses LLMs:
 4. Keep versioned drafts or equivalent dependency-visible notes whenever patching a load-bearing step.
 5. Offload algebraic expansions, inequality-domain checks, and similar bottlenecks to formal or symbolic tools whenever available.
 6. LLM-judge approval alone never upgrades a candidate argument into a proof claim.
+7. Proof-result progression should follow `draft -> verifier-checked -> formally-checked` before any theorem-level language.
 
 ## Literature-Positioning Requirements
 

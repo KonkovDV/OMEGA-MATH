@@ -1,9 +1,9 @@
 ---
 title: "OMEGA SOTA Bibliography"
 status: active
-version: "1.0.0"
-last_updated: "2026-04-05"
-date: "2026-04-05"
+version: "1.1.0"
+last_updated: "2026-04-16"
+date: "2026-04-16"
 role: reference
 audience: internal+academic
 tags: [omega, bibliography, SOTA, formal-proving, neural-theorem-proving, research-agents, benchmarks]
@@ -289,8 +289,49 @@ OMEGA uses a three-tier evidence classification:
 
 ---
 
+## 9. Conjecture-Resolution Case Study (April 2026)
+
+29. **Automated Conjecture Resolution with Formal Verification**
+    Ju, H., Gao, G., Jiang, J., Wu, B., Sun, Z., Chen, L., Wang, Y., Wang, Y., Wang, Z., He, W., Wu, P., Xiao, L., Liu, R., Dai, B., Dong, B. *Automated Conjecture Resolution with Formal Verification.* arXiv:2604.03789 [cs.LG], 2026.
+    - URL: https://arxiv.org/abs/2604.03789
+    - Evidence class: E1
+    - OMEGA role: dual-agent informal/formal architecture and theorem-retrieval-first conjecture workflow
+
+30. **Rethlas repository**
+    FrenzyMath. *Rethlas.* GitHub repository.
+    - URL: https://github.com/frenzymath/Rethlas
+    - Evidence class: E1
+    - OMEGA role: markdown problem to proof-blueprint loop, verifier-backed repair cycle, run-memory channeling
+
+31. **Archon repository**
+    FrenzyMath. *Archon.* GitHub repository.
+    - URL: https://github.com/frenzymath/Archon
+    - Evidence class: E1
+    - OMEGA role: project-scale Lean formalization orchestration with plan/prover/review stages
+
+32. **Anderson-Conjecture formalization repository**
+    FrenzyMath. *Anderson-Conjecture.* GitHub repository.
+    - URL: https://github.com/frenzymath/Anderson-Conjecture
+    - Evidence class: E1
+    - OMEGA role: reproducibility envelope for statement/proof separation and comparator-based replay verification
+
+33. **FrenzyMath conjecture technical post**
+    FrenzyMath. *Automated Conjecture Resolution with Formal Verification.* Blog post, 2026.
+    - URL: https://frenzymath.com/blog/conjecture/
+    - Evidence class: E2
+    - OMEGA role: implementation narrative and workflow exposition; claims must be cross-checked with arXiv and repos
+
+34. **CRC Substack commentary / translation**
+    China Research Collective. *A New Breakthrough in AI Solving Mathematical Conjectures*, 2026.
+    - URL: https://chinaresearchcollective.substack.com/p/a-new-breakthrough-in-ai-solving
+    - Evidence class: E2
+    - OMEGA role: contextual framing only; not a primary authority for technical claims
+
+---
+
 ## Version History
 
 | Version | Date | Change |
 |---------|------|--------|
+| 1.1.0 | 2026-04-16 | Added FrenzyMath conjecture-resolution extraction references (arXiv:2604.03789, Rethlas, Archon, Anderson-Conjecture, supporting web surfaces) |
 | 1.0.0 | 2026-04-05 | Initial consolidated bibliography from OMEGA April 2026 audit |

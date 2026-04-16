@@ -21,8 +21,13 @@ claim_label: "<theorem, lemma, conjecture variant, or counterexample certificate
 claim_class: "lemma | theorem | structural-claim | counterexample-cert"
 ledger_run_id: "<linked run_id from experiments/ledger.yaml>"
 proof_obligations_path: "input_files/proof_obligations.md"
+statement_spec_path: "input_files/statement_spec.md"
 source_entry: "<primary source file or draft location>"
-status: "draft | partial | verified | rejected | needs-human-review"
+status: "draft | verifier-checked | formally-checked | partial | verified | rejected | needs-human-review"
+proof_result_status: "<echo status>"
+promotion_gate:
+  allowed_progression: ["draft", "verifier-checked", "formally-checked"]
+  current_step: "draft | verifier-checked | formally-checked | post-gate"
 verifier:
   kind: "lean4 | coq | isabelle | cas | human-line-check"
   toolchain: "<versioned verifier surface>"
@@ -48,6 +53,8 @@ notes: "<free-text operator note>"
 | Status | Meaning |
 |--------|---------|
 | `draft` | A proof attempt exists, but the verifier outcome is not yet stable enough to report. |
+| `verifier-checked` | A verifier accepted the current draft under the stated command/toolchain, but broader formal closure is pending. |
+| `formally-checked` | A formal checker closed the claim under the recorded statement specification and verifier command. |
 | `partial` | Some subclaims or modules verify, but the top-level claim does not yet close. |
 | `verified` | The stated claim passes the named verifier or documented human line-by-line closure. |
 | `rejected` | The verifier or review process refuted the current claim or proof attempt. |
@@ -59,6 +66,7 @@ notes: "<free-text operator note>"
 2. `artifacts/prover-results/<run-id>.yaml` tracks claim status.
 3. A `positive` ledger verdict does not automatically imply `verified` proof status.
 4. One ledger run may produce multiple prover results if it tests multiple claims.
+5. `statement_spec_path` is mandatory for claim-bearing prover results to enforce statement/proof separation.
 
 ## Minimal Artifact Rule
 

@@ -1,7 +1,7 @@
 # OMEGA Extraction Report
 
-Date: 2026-04-04
-Status: seed + research-intelligence expansion complete
+Date: 2026-04-16
+Status: seed + research-intelligence expansion + FrenzyMath extraction complete
 
 ## Scope
 
@@ -43,6 +43,16 @@ This workspace seeds an OMEGA research surface for open mathematics:
     Role: historical grounding for 2024-2025 math closures and claims normalization (`2405.03599`, `2405.03648`, `2409.07051`, `2409.08670`, `2409.09856`, `2209.04736`, `2502.17655`, `2503.01800`)
 14. `togethercomputer/EinsteinArena-new-SOTA` (README snapshot, April 2026)
    Role: benchmark donor for objective-aligned score tables, public baseline comparisons, and verifier-first notebook patterns
+15. Ju et al., arXiv:2604.03789
+   Role: primary evidence for dual-agent conjecture-resolution with formal verification (`Rethlas + Archon`)
+16. `frenzymath/Rethlas`
+   Role: informal-generation and verifier-loop donor (problem markdown -> blueprint -> verification contract)
+17. `frenzymath/Archon`
+   Role: project-scale formalization orchestrator donor (plan/prover/review staging with Lean workflow controls)
+18. `frenzymath/Anderson-Conjecture`
+   Role: reproducibility donor for statement/proof separation and comparator-based verification envelope
+19. FrenzyMath conjecture post + CRC Substack commentary
+   Role: secondary narrative/context surfaces; not used as primary authority over paper/repo evidence
 
 ## What Was Extracted
 
@@ -58,6 +68,7 @@ This workspace seeds an OMEGA research surface for open mathematics:
 - Optional Einstein solution snapshot extraction under `research/benchmarks/einstein-arena/<problem>/solutions/` when a local donor checkout is provided
 - a buildable Python packaging surface under `math/pyproject.toml`
 - a dated evidence report under `math/research/OMEGA_VIBE_PROVING_HYPERDEEP_REPORT_2026_04_04.md`
+- a dated FrenzyMath extraction report under `math/research/OMEGA_FRENZYMATH_EXTRACTION_2026_04_16.md`
 
 ## Current Coverage Level
 
@@ -170,6 +181,27 @@ These are local contracts only. OMEGA still does not vendor external runtimes or
 - **Adopt**: explicit proof obligations, versioned drafts, bounded referee passes, parallel patch search, and Lamport-style dependency exposure.
 - **Extend**: local `proof_obligations.md` receiver surface plus future autonomy/novelty metadata in manifests.
 - **Reject**: press-release autonomy phrasing, judge-only proof verification, and unverified ecosystem claims that cannot be backed by primary sources.
+
+## FrenzyMath Conjecture-Resolution Extraction (April 2026)
+
+### Verified donor package
+
+- `arXiv:2604.03789` (primary paper)
+- `frenzymath/Rethlas` (informal reasoning + verification loop implementation)
+- `frenzymath/Archon` (project-level Lean formalization orchestrator)
+- `frenzymath/Anderson-Conjecture` (open formalization artifact and comparator verification contract)
+- FrenzyMath/CRC pages as secondary explanatory surfaces
+
+### Extraction decisions
+
+- **Adopt**: informal/formal lane split, strict verifier verdict contract, statement/proof trust separation.
+- **Extend**: run-scoped memory channels and stage observability in OMEGA artifacts.
+- **Build**: optional independent-kernel cross-check lane for high-assurance proof outputs.
+- **Reject**: unsafe unattended execution defaults and commentary-only capability claims.
+
+Detailed mapping is recorded in:
+
+- `research/OMEGA_FRENZYMATH_EXTRACTION_2026_04_16.md`
 
 ## Known Gaps
 

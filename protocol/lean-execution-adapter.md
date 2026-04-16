@@ -34,6 +34,7 @@ command: "<arbitrary lean/lake command, for run-command>"
 timeout_seconds: 120
 toolchain: "leanprover/lean4:v4.29.0"  # optional override
 env: {}  # optional environment variables
+sandbox_mode: "off | auto | required"
 ```
 
 ### Output: `LeanResult`
@@ -47,6 +48,9 @@ stderr: "<captured stderr>"
 duration_seconds: 1.23
 errors: []        # list of parsed error objects
 warnings: []      # list of parsed warning objects
+sandbox_mode: "off | auto | required"
+sandbox_applied: true | false
+sandbox_tool: "landrun | null"
 lean_version: "4.29.0"
 ```
 
@@ -98,6 +102,9 @@ errors:
   - severity: error
     message: "Lean process timed out after 120 seconds"
 ```
+
+  If `sandbox_mode: required` and no sandbox runner is available, the adapter returns a non-success result with
+  `exit_code: -2` and a descriptive sandbox error.
 
 ## Integration Points
 
