@@ -66,3 +66,10 @@ research/active/**/control/data/
 research/active/**/control/*.log
 research/active/**/artifacts/runtime/
 research/active/**/logs/
+
+# Local temporary scratch artifacts (root-level run outputs)
+/_flagship*_utf8.txt
+/_omega_thomson_*.txt
+/_phase*_utf8.txt
+/_pytest_flagship.txt
+/_patch_results_md.py
