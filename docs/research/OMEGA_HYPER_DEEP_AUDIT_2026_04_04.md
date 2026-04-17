@@ -11,30 +11,30 @@ tags: [omega, audit, research, startup, reproducibility]
 
 ## Scope
 
-Проверены:
+Checked:
 
-- текущий diff standalone-репозитория `math/`
-- protocol and registry surfaces
+- current diff of the standalone `math/` repository
+- protocol and registry documents
 - CI and validation scripts
-- research/startup surfaces в основном MicroPhoenix runtime
-- внешние best practices по citation, experiment tracking, theorem-prover onboarding и Python project metadata
+- research and startup documents around the main MicroPhoenix runtime
+- external best practices for citation, experiment tracking, theorem-prover onboarding, and Python project metadata
 
 ## Verified Findings
 
 ### Critical Before This Session
 
-1. `odd-perfect-numbers` имел заниженное `decades_open: 20`, хотя сама проблема известна намного дольше; это создавало semantic drift в canonical registry.
-2. `millennium-prize.yaml` был слабо связан с canonical registry: без `registry_id` validator не мог проверять cross-links для большинства записей.
-3. GitHub Actions validation rail падал на drift generated files без нормального remediation message.
+1. `odd-perfect-numbers` had an understated `decades_open: 20`, although the problem has been known much longer; this created semantic drift in the canonical registry.
+2. `millennium-prize.yaml` was weakly linked to the canonical registry: without `registry_id`, the validator could not check most cross-links.
+3. The GitHub Actions validation rail failed on drift in generated files without a clear remediation message.
 
 ### Fixed In This Session
 
-1. Исправлена data-correctness ошибка для odd perfect numbers.
-2. Millennium collection теперь cross-referenceable через `registry_id` там, где canonical domain entry существует.
-3. CI теперь явно говорит, что нужно регенерировать `registry/index.yaml`, и показывает diff.
-4. Python dependencies для validator rail зафиксированы до точных версий.
-5. Добавлен `CITATION.cff` для GitHub-ready research citation surface.
-6. README и PROTOCOL теперь явно разводят canonical domain registry и quick-reference collection overlays.
+1. Fixed the data-correctness issue for odd perfect numbers.
+2. The Millennium collection is now cross-referenceable through `registry_id` where a canonical domain entry exists.
+3. CI now states explicitly that `registry/index.yaml` must be regenerated and shows the diff.
+4. Python dependencies for the validation rail are pinned to exact versions.
+5. Added `CITATION.cff` as a GitHub-ready citation surface for research software.
+6. README and PROTOCOL now distinguish the canonical domain registry from quick-reference collection overlays.
 
 ### Follow-On Implementation Delta (2026-04-05)
 
@@ -54,9 +54,9 @@ tags: [omega, audit, research, startup, reproducibility]
 
 ### Medium Value
 
-1. Triage coverage лишь `25.1%`, поэтому current queue хорош для приоритетного старта, но не для balanced exploration.
-2. Collection coverage всё ещё частичная: taxonomy шире, чем реально реализованные YAML overlays.
-3. Reproducibility manifests are scaffolded, but there is still no automatic population or verification of checksums/commands.
+1. Triage coverage is only `25.1%`, so the current queue is good for prioritized starts, not for balanced exploration.
+2. Collection coverage is still partial: the taxonomy is broader than the YAML overlays currently implemented.
+3. Reproducibility manifests are scaffolded, but there is still no automatic population or verification of checksums and commands.
 
 ## External Best-Practice Synthesis
 
