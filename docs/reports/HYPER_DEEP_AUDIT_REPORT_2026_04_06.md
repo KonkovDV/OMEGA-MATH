@@ -50,7 +50,7 @@ against the actual internet content as of April 6, 2026. This audit covers:
 
 ## 🔴 CRITICAL: Bibliography Hallucinated Authors & Titles
 
-File: `docs/research/OMEGA_SOTA_BIBLIOGRAPHY_2026_04_05.md`
+File: `research/OMEGA_SOTA_BIBLIOGRAPHY_2026_04_05.md`
 
 These errors are unacceptable in an academic-grade research document. Each was verified
 against the actual arXiv listing on April 6, 2026.

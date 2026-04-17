@@ -53,7 +53,7 @@ These tools do not change OMEGA's standalone execution boundary. They only justi
 receiver surfaces such as `literature_graph.md`, `citation_evidence.md`,
 `experiments/ledger.yaml`, `artifacts/prover-results/`, and `presentation/`.
 
-See `docs/protocol/research-intelligence-stack.md` for the donor and service mapping.
+See `protocol/research-intelligence-stack.md` for the donor and service mapping.
 
 ## 1.3 Vibe-Proving and Formal-Math Update (April 2026)
 
@@ -74,9 +74,9 @@ Operational consequences for OMEGA:
 
 Companion synthesis:
 
-- `docs/research/OMEGA_LOCAL_WORKSTATION_VIBE_PROVING_STACK_2026_04_04.md` records the verified local-stack findings for Lean 4, mathlib4, vscode-lean4, LLMLean, LeanCopilot, llmstep, LeanTool, UlamAI, Ollama, llama.cpp, vLLM, and the currently promoted open prover-model families.
+- `research/OMEGA_LOCAL_WORKSTATION_VIBE_PROVING_STACK_2026_04_04.md` records the verified local-stack findings for Lean 4, mathlib4, vscode-lean4, LLMLean, LeanCopilot, llmstep, LeanTool, UlamAI, Ollama, llama.cpp, vLLM, and the currently promoted open prover-model families.
 - OMEGA should treat that companion report as the authority surface for workstation deployability and setup heuristics, rather than relying on retail-price or throughput folklore.
-- `docs/protocol/lean-bootstrap.md` provides the step-by-step Lean 4 + proof-assistant + local model runtime bootstrap recipe, grounded in official docs.
+- `protocol/lean-bootstrap.md` provides the step-by-step Lean 4 + proof-assistant + local model runtime bootstrap recipe, grounded in official docs.
 
 ## 1.4 Neural Theorem Proving SOTA Update (April 2026)
 
@@ -98,17 +98,17 @@ Operational consequences:
 
 Companion reports:
 
-- `docs/research/OMEGA_SOTA_FORMAL_PROVING_LANDSCAPE_2026_04_05.md` — full SOTA landscape report with verified benchmarks, model comparisons, and capability gap analysis
-- `docs/research/OMEGA_6_PHASE_EXECUTION_PLAN_2026_04_05.md` — concrete execution plan grounded in this landscape analysis
+- `research/OMEGA_SOTA_FORMAL_PROVING_LANDSCAPE_2026_04_05.md` — full SOTA landscape report with verified benchmarks, model comparisons, and capability gap analysis
+- `research/OMEGA_6_PHASE_EXECUTION_PLAN_2026_04_05.md` — concrete execution plan grounded in this landscape analysis
 
 ## 1.5 Execution Plan and Roadmap Integration (April 2026)
 
 The April 2026 analysis produced four complementary planning documents:
 
-- **6-Phase Execution Plan** (`docs/research/OMEGA_6_PHASE_EXECUTION_PLAN_2026_04_05.md`): Phase 1 (Pipeline Closure) → Phase 2 (LLM Proof Search) → Phase 3 (Literature Verification) → Phase 4 (Multi-Agent Orchestration) → Phase 5 (Publication) → Phase 6 (Formal Assurance). Phase 1 is the sole blocking prerequisite for all subsequent work.
-- **Development Roadmap** (`docs/research/OMEGA_DEVELOPMENT_ROADMAP_2026_04_05.md`): 5-horizon strategy from Execution Bootstrap (2026-2027) through Continuous Discovery Grid (2055-2076).
-- **SOTA Landscape Report** (`docs/research/OMEGA_SOTA_FORMAL_PROVING_LANDSCAPE_2026_04_05.md`): evidence surface for external proving capability, benchmarks, integration surfaces, and capability gap analysis.
-- **SOTA Bibliography** (`docs/research/OMEGA_SOTA_BIBLIOGRAPHY_2026_04_05.md`): standalone academic reference with 25+ primary papers, 15+ maintained repositories, and 6 benchmark surfaces.
+- **6-Phase Execution Plan** (`research/OMEGA_6_PHASE_EXECUTION_PLAN_2026_04_05.md`): Phase 1 (Pipeline Closure) → Phase 2 (LLM Proof Search) → Phase 3 (Literature Verification) → Phase 4 (Multi-Agent Orchestration) → Phase 5 (Publication) → Phase 6 (Formal Assurance). Phase 1 is the sole blocking prerequisite for all subsequent work.
+- **Development Roadmap** (`research/OMEGA_DEVELOPMENT_ROADMAP_2026_04_05.md`): 5-horizon strategy from Execution Bootstrap (2026-2027) through Continuous Discovery Grid (2055-2076).
+- **SOTA Landscape Report** (`research/OMEGA_SOTA_FORMAL_PROVING_LANDSCAPE_2026_04_05.md`): evidence surface for external proving capability, benchmarks, integration surfaces, and capability gap analysis.
+- **SOTA Bibliography** (`research/OMEGA_SOTA_BIBLIOGRAPHY_2026_04_05.md`): standalone academic reference with 25+ primary papers, 15+ maintained repositories, and 6 benchmark surfaces.
 
 The strategic bottleneck identified across all four documents is consistent:
 
@@ -177,8 +177,8 @@ Runtime guarantees added in April 2026 hardening:
      Goedel-Prover-V2-32B (vLLM profile) with fallback to DeepSeek-Prover-V2-7B.
 
 See:
-- `docs/protocol/orchestrator-contract.md` for the full orchestrator specification
-- `docs/protocol/agent-teams.md` §Orchestrator Integration for the stage-to-role mapping
+- `protocol/orchestrator-contract.md` for the full orchestrator specification
+- `protocol/agent-teams.md` §Orchestrator Integration for the stage-to-role mapping
 
 ## 1.7 Einstein Arena Integration Hardening (April 2026)
 
@@ -424,7 +424,7 @@ research/active/<problem-id>/
 
 Use `python scripts/scaffold_problem.py <problem-id> --title "..."` to create this structure.
 
-Proof-first lanes may additionally stage a versioned Lean project under `proof/lean/` by copying `templates/lean-starter/`; see `docs/protocol/lean-bootstrap.md`.
+Proof-first lanes may additionally stage a versioned Lean project under `proof/lean/` by copying `templates/lean-starter/`; see `protocol/lean-bootstrap.md`.
 
 ### 4.6 Bounded Runner Surface
 
@@ -456,8 +456,8 @@ It does **not** yet provide a CAS bridge, Lean build orchestration, literature c
 
 Two protocol pages now govern claim-bearing outputs:
 
-- `docs/protocol/evidence-governance.md` defines OMEGA evidence classes, confidence labels, and downgrade rules.
-- `docs/protocol/research-object-packaging.md` defines the current local research-object contract and how it maps to future FAIR Signposting, RO-Crate, and DataCite export surfaces.
+- `protocol/evidence-governance.md` defines OMEGA evidence classes, confidence labels, and downgrade rules.
+- `protocol/research-object-packaging.md` defines the current local research-object contract and how it maps to future FAIR Signposting, RO-Crate, and DataCite export surfaces.
 
 The operative rule is simple: treat the local workspace as the canonical research object first; external packaging, decks, and publication claims must be generated from those stored artifacts, not from memory or hype.
 
@@ -470,7 +470,7 @@ OMEGA is an explicitly **Python-first runtime** with bounded polyglot edges.
 - Use TypeScript only when bridging back into parent MicroPhoenix MCP, UI, or governance surfaces.
 - Defer Rust until OMEGA measures a concrete bottleneck that Python cannot address cleanly.
 
-See `docs/protocol/runtime-language-strategy.md` for the active decision, evidence base, and phased roadmap.
+See `protocol/runtime-language-strategy.md` for the active decision, evidence base, and phased roadmap.
 
 ## 5. Publication Standards
 

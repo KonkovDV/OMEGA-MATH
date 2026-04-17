@@ -99,7 +99,7 @@ Use this when you already have a candidate title string and want the smallest hi
 
 ## Integration Points
 
-- `docs/research/OMEGA_SOTA_BIBLIOGRAPHY_2026_04_05.md` fact-check passes
+- `research/OMEGA_SOTA_BIBLIOGRAPHY_2026_04_05.md` fact-check passes
 - problem-local `input_files/literature.md`
 - problem-local `input_files/citation_evidence.md`
 - future novelty packet generation in the Phase 3 literature lane

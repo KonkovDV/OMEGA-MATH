@@ -52,7 +52,7 @@ Full project audit from scratch covering:
 
 ### GAP-002 — HIGH | Ghost directories `Docs/` and `protocol/` in project root
 
-**Symptom:** Migration commit `60abde5` correctly renamed `Docs/*.md → docs/reports/` and `protocol/*.md → docs/protocol/` using `git mv`. But the now-empty shell directories `Docs/` (3 empty subdirs) and `protocol/` (empty) remained on the filesystem.
+**Symptom:** Migration commit `60abde5` correctly renamed `Docs/*.md → docs/reports/` and `protocol/*.md → protocol/` using `git mv`. But the now-empty shell directories `Docs/` (3 empty subdirs) and `protocol/` (empty) remained on the filesystem.
 
 Git does not track empty directories, so these were not committed. They are filesystem-only artifacts that would appear in `ls` / `Get-ChildItem` output and cause confusion about the actual doc layout.
 

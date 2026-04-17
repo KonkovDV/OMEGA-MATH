@@ -41,7 +41,7 @@ tags: [omega, audit, research, startup, reproducibility]
 1. Добавлен bounded local runner для `experiment-first`, `proof-first` и `survey-first` run bookkeeping: `scripts/omega_runner.py` + thin CLI wrapper `scripts/omega-runner.py`.
 2. Добавлен `scripts/generate-experiment-index.py` и фактическая генерация `research/active/experiment-index.yaml` из per-problem ledgers.
 3. Добавлены standalone Python unit tests для runner substrate и CI шаг, который их запускает.
-4. `docs/protocol/operator-runbook.md` теперь отражает реальный CLI workflow, а не только ручное редактирование YAML.
+4. `protocol/operator-runbook.md` теперь отражает реальный CLI workflow, а не только ручное редактирование YAML.
 
 ## Remaining Gaps
 

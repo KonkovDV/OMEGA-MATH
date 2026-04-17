@@ -44,7 +44,7 @@ Extraction memo: `docs/research/OMEGA_FRENZYMATH_EXTRACTION_2026_04_16.md`.
 | StarExec-ARC | containerized ATP deployment and benchmarking infrastructure | future ATP runner infrastructure |
 | arXiv:2601.19532 (Omni-MATH-2) | judge-induced error can dominate evaluation when models outrun judges | verification policy, judge skepticism |
 
-See `docs/research/OMEGA_LOCAL_WORKSTATION_VIBE_PROVING_STACK_2026_04_04.md` for the detailed local-stack synthesis and deployment-tier guidance.
+See `research/OMEGA_LOCAL_WORKSTATION_VIBE_PROVING_STACK_2026_04_04.md` for the detailed local-stack synthesis and deployment-tier guidance.
 
 ## Neural Theorem Proving SOTA (April 2026)
 
@@ -66,10 +66,10 @@ are the strongest external signals for OMEGA's proof lane architecture and execu
 
 Companion reports:
 
-- `docs/research/OMEGA_SOTA_FORMAL_PROVING_LANDSCAPE_2026_04_05.md` — full landscape report with verified benchmarks, model comparisons, capability gap analysis, and bibliography
-- `docs/research/OMEGA_6_PHASE_EXECUTION_PLAN_2026_04_05.md` — concrete 6-phase execution plan grounded in this landscape
-- `docs/research/OMEGA_DEVELOPMENT_ROADMAP_2026_04_05.md` — 5-horizon development strategy (2026-2076)
-- `docs/research/OMEGA_SOTA_BIBLIOGRAPHY_2026_04_05.md` — standalone academic reference (25+ papers, 15+ repos, 6 benchmarks)
+- `research/OMEGA_SOTA_FORMAL_PROVING_LANDSCAPE_2026_04_05.md` — full landscape report with verified benchmarks, model comparisons, capability gap analysis, and bibliography
+- `research/OMEGA_6_PHASE_EXECUTION_PLAN_2026_04_05.md` — concrete 6-phase execution plan grounded in this landscape
+- `research/OMEGA_DEVELOPMENT_ROADMAP_2026_04_05.md` — 5-horizon development strategy (2026-2076)
+- `research/OMEGA_SOTA_BIBLIOGRAPHY_2026_04_05.md` — standalone academic reference (25+ papers, 15+ repos, 6 benchmarks)
 
 ## External Research Services
 

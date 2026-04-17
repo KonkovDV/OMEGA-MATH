@@ -135,7 +135,7 @@ output:
 
 **Deliverables**:
 - `scripts/literature_adapter.py` with Semantic Scholar API (100 req/sec, free tier)
-- `docs/protocol/literature-adapter.md` contract document
+- `protocol/literature-adapter.md` contract document
 - `tests/test_literature_adapter.py`
 - Optional arXiv API supplement for fresh preprints
 

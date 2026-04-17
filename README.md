@@ -78,22 +78,22 @@ omega-orchestrate run erdos-straus --stage prove --prefer-local
 
 ## Help and Support
 
-- Operator procedures: `docs/protocol/operator-runbook.md`
-- Orchestrator runtime contract: `docs/protocol/orchestrator-contract.md`
-- Lean bootstrap and proving workflow: `docs/protocol/lean-bootstrap.md`
-- Evidence and claim policy: `docs/protocol/evidence-governance.md`
+- Operator procedures: `protocol/operator-runbook.md`
+- Orchestrator runtime contract: `protocol/orchestrator-contract.md`
+- Lean bootstrap and proving workflow: `protocol/lean-bootstrap.md`
+- Evidence and claim policy: `protocol/evidence-governance.md`
 
 ## Canonical Planning Surfaces
 
-- Current canonical roadmap: `docs/research/OMEGA_DEVELOPMENT_ROADMAP_2026_04_05.md`
-- 6-phase execution plan: `docs/research/OMEGA_6_PHASE_EXECUTION_PLAN_2026_04_05.md`
-- SOTA formal proving landscape: `docs/research/OMEGA_SOTA_FORMAL_PROVING_LANDSCAPE_2026_04_05.md`
-- SOTA bibliography: `docs/research/OMEGA_SOTA_BIBLIOGRAPHY_2026_04_05.md`
-- SOTA landscape update (April 13): `docs/research/OMEGA_SOTA_LANDSCAPE_UPDATE_2026_04_13.md`
-- Far-horizon speculative architecture: `docs/research/OMEGA_HYPER_ARCHITECTURE_2076.md`
-- Local proving and workstation stack: `docs/research/OMEGA_LOCAL_WORKSTATION_VIBE_PROVING_STACK_2026_04_04.md`
-- Formal assurance scope matrix: `docs/research/OMEGA_ASSURANCE_SCOPE_MATRIX_2026_04_05.md`
-- Market and source ledger: `docs/research/OMEGA_MARKET_AND_SOURCE_LEDGER_2026_04_05.md`
+- Current canonical roadmap: `research/OMEGA_DEVELOPMENT_ROADMAP_2026_04_05.md`
+- 6-phase execution plan: `research/OMEGA_6_PHASE_EXECUTION_PLAN_2026_04_05.md`
+- SOTA formal proving landscape: `research/OMEGA_SOTA_FORMAL_PROVING_LANDSCAPE_2026_04_05.md`
+- SOTA bibliography: `research/OMEGA_SOTA_BIBLIOGRAPHY_2026_04_05.md`
+- SOTA landscape update (April 13): `research/OMEGA_SOTA_LANDSCAPE_UPDATE_2026_04_13.md`
+- Far-horizon speculative architecture: `research/OMEGA_HYPER_ARCHITECTURE_2076.md`
+- Local proving and workstation stack: `research/OMEGA_LOCAL_WORKSTATION_VIBE_PROVING_STACK_2026_04_04.md`
+- Formal assurance scope matrix: `research/OMEGA_ASSURANCE_SCOPE_MATRIX_2026_04_05.md`
+- Market and source ledger: `research/OMEGA_MARKET_AND_SOURCE_LEDGER_2026_04_05.md`
 
 ## Research Intelligence Stack
 
@@ -108,9 +108,9 @@ workflow design, presentation packaging, and a verified local formal-math workst
 - Tutor-only supplemental surfaces: MathGPT Pro / Mathos AI, Examful
 - Explicitly excluded: detector-bypass and AI-humanizer workflows
 
-See `docs/protocol/research-intelligence-stack.md` for the receiver mapping and artifact rules, and `docs/research/OMEGA_LOCAL_WORKSTATION_VIBE_PROVING_STACK_2026_04_04.md` for the local-stack synthesis.
+See `protocol/research-intelligence-stack.md` for the receiver mapping and artifact rules, and `research/OMEGA_LOCAL_WORKSTATION_VIBE_PROVING_STACK_2026_04_04.md` for the local-stack synthesis.
 
-> This list shows operationally promoted surfaces as of the April 2026 audit. For secondary and watchlist tools (Leanstral, ProofGym, etc.) and the reasoning behind each classification, see `docs/research/OMEGA_LOCAL_WORKSTATION_VIBE_PROVING_STACK_2026_04_04.md`. Kimina-Prover was promoted to Tier-1 in the April 2026 SOTA update (see `docs/research/OMEGA_SOTA_FORMAL_PROVING_LANDSCAPE_2026_04_05.md`).
+> This list shows operationally promoted surfaces as of the April 2026 audit. For secondary and watchlist tools (Leanstral, ProofGym, etc.) and the reasoning behind each classification, see `research/OMEGA_LOCAL_WORKSTATION_VIBE_PROVING_STACK_2026_04_04.md`. Kimina-Prover was promoted to Tier-1 in the April 2026 SOTA update (see `research/OMEGA_SOTA_FORMAL_PROVING_LANDSCAPE_2026_04_05.md`).
 
 ## Flagship Experimental Tracks
 
@@ -245,17 +245,17 @@ This repository is intentionally isolated from the main MicroPhoenix application
 
 1. Read `PROTOCOL.md` for the full operating model.
 2. Start from `registry/triage-matrix.yaml` to choose a first target.
-3. Read `docs/protocol/research-intelligence-stack.md` before novelty-heavy work, proof-first investigations, or publication prep.
+3. Read `protocol/research-intelligence-stack.md` before novelty-heavy work, proof-first investigations, or publication prep.
 4. Install the local Python CLI surface with `python -m pip install -e .` for registry-only or protocol work, or `python -m pip install -e .[all]` for the active research tracks and experiment scripts.
 5. Create a Denario-compatible research workspace with `python scripts/scaffold_problem.py <problem-id> --title "..."` or `omega-scaffold-problem ...` after editable install.
 6. Materialize the local control state with `python scripts/omega_workflow.py triage <problem-id>` or `omega-workflow triage <problem-id>` after the workspace exists.
 7. Inspect or advance the current workflow with `omega-workflow status <problem-id>` and `omega-workflow advance <problem-id> --outcome complete|block|resume|close`.
 8. Open and close experiment runs with `python scripts/omega_runner.py start ...` and `python scripts/omega_runner.py finish ...` instead of hand-editing the ledger; these lifecycle commands now auto-sync `control/workflow-state.yaml` into the execution and results phases.
-9. For proof-first work, start from `templates/lean-starter/` and `docs/protocol/lean-bootstrap.md`, then persist verifier-visible outcomes with `python scripts/omega_runner.py proof-result ...`.
+9. For proof-first work, start from `templates/lean-starter/` and `protocol/lean-bootstrap.md`, then persist verifier-visible outcomes with `python scripts/omega_runner.py proof-result ...`.
 10. Regenerate the checksummed evidence view with `python scripts/omega_runner.py evidence-bundle <problem-id>` when needed; `finish` and `proof-result` already refresh it automatically.
-11. Read `docs/protocol/evidence-governance.md`, `docs/protocol/research-object-packaging.md`, and `docs/protocol/runtime-language-strategy.md` before extending the runtime or writing claim-bearing outputs.
+11. Read `protocol/evidence-governance.md`, `protocol/research-object-packaging.md`, and `protocol/runtime-language-strategy.md` before extending the runtime or writing claim-bearing outputs.
 12. Regenerate the active workflow-and-run summary with `python scripts/generate_experiment_index.py` when needed, or query it directly with `omega-query --global --stage plan` / `omega-query --global --blocked-only --format table`.
-13. Use the files under `docs/protocol/` to structure the investigation.
+13. Use the files under `protocol/` to structure the investigation.
 14. Use the files under `agents/` as role specs for future orchestration.
 15. Query past experiment runs with `omega-query --problem <id>` or `omega-query --verdict positive` to find prior evidence before starting new work.
 16. Use the workspace agent `omega-math`, the prompts in `.github/prompts/`, and the reusable workflows in `.github/skills/` when running the flagship tracks from VS Code Copilot.
@@ -289,9 +289,10 @@ math/
 │
 ├── README.md                          # Этот файл
 ├── PROTOCOL.md                        # Полный протокол исследования
+├── protocol/                          # Ключевые операционные документы исследования
+├── research/                          # Core planning surfaces + active/completed workspaces
 ├── docs/
-│   ├── protocol/                      # Операционные документы исследования
-│   ├── research/                      # SOTA, roadmap, evidence packets, strategy notes
+│   ├── research/                      # Дополнительные research/evidence surfaces
 │   └── reports/                       # Audit/extraction reports
 ├── pyproject.toml                     # Python package surface for installable OMEGA CLI tools
 │
@@ -405,7 +406,7 @@ The current implementation is intentionally bounded. The next wave prioritizes a
 4. **Novelty control plane**: promote machine-readable novelty and collision checks into mandatory pre-publication gates.
 5. **Publication automation with safeguards**: generate reproducible paper artifacts while preserving reviewer-visible provenance and downgrade rules.
 
-See `docs/research/OMEGA_6_PHASE_EXECUTION_PLAN_2026_04_05.md` for full phase-level tasks and acceptance criteria.
+See `research/OMEGA_6_PHASE_EXECUTION_PLAN_2026_04_05.md` for full phase-level tasks and acceptance criteria.
 
 ## Лицензия
 

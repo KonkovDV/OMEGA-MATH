@@ -61,7 +61,7 @@ This workspace seeds an OMEGA research surface for open mathematics:
 - Einstein Arena benchmark collection under `registry/collections/einstein-arena-benchmarks.yaml`
 - a global triage queue under math/registry/triage-matrix.yaml
 - a generated registry index under math/registry/index.yaml
-- protocol docs under math/docs/protocol/
+- protocol docs under math/protocol/
 - agent configuration files under math/agents/
 - maintenance scripts under math/scripts/
 - Einstein Arena importer script: `scripts/import_einstein_arena.py`
@@ -218,7 +218,7 @@ Detailed mapping is recorded in:
 2. ~~Add collection indexes for Hilbert, Landau, and Smale problems~~ — ✅ Done (April 2026)
 3. ~~Introduce a registry index file with coverage statistics~~ — ✅ Done: registry/index.yaml (now generated)
 4. ~~Add a bounded local runner for experiment ledgers and prover-result artifacts~~ — ✅ Done: `scripts/omega_runner.py` and `scripts/generate_experiment_index.py`
-5. ~~Add local adapters for literature-graph capture and citation-evidence collation~~ — ✅ Done: `scripts/literature_adapter.py` + `docs/protocol/literature-adapter.md`
+5. ~~Add local adapters for literature-graph capture and citation-evidence collation~~ — ✅ Done: `scripts/literature_adapter.py` + `protocol/literature-adapter.md`
 6. Add export-grade research-object emitters built from the local evidence bundle.
 7. ~~Add a paper template, reproducibility manifest~~ — done: `templates/short-note.tex`, `templates/survey-memo.tex`, and `templates/reproducibility-manifest.md` exist; presentation-pack generator still needed.
 8. Add an Erdős problems collection (~50 problems, highest community activity) and additional benchmark-oriented collections beyond Einstein Arena.

@@ -77,7 +77,7 @@ All other fields are recommended but may be null for incomplete or abandoned run
 - **Reviewer**: cross-checks claims against ledger entries; a claim without a ledger run is flagged.
 - **Verification Pipeline**: `verification-pipeline.md` Stage 1 (Artifact check) confirms that
   every artifact listed in the ledger entry actually exists on disk.
-- **Proof-first runs**: the ledger records campaign execution, but verifier-visible claim status belongs in `artifacts/prover-results/<run-id>.yaml` per `docs/protocol/prover-result-contract.md`.
+- **Proof-first runs**: the ledger records campaign execution, but verifier-visible claim status belongs in `artifacts/prover-results/<run-id>.yaml` per `protocol/prover-result-contract.md`.
 
 ## Global Index
 
