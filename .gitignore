@@ -73,3 +73,13 @@ research/active/**/logs/
 /_phase*_utf8.txt
 /_pytest_flagship.txt
 /_patch_results_md.py
+
+# Root markdown policy: keep core docs in root, move secondary docs to Docs/
+/*.md
+!/README.md
+!/PROTOCOL.md
+!/SECURITY.md
+!/CONTRIBUTING.md
+!/CODE_OF_CONDUCT.md
+!/LICENSE
+!/Docs/**/*.md

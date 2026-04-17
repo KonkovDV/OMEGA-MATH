@@ -37,7 +37,7 @@ Deliverables:
 What to inspect first:
 - `README.md`
 - `PROTOCOL.md`
-- `EXTRACTION_REPORT.md`
+- `Docs/EXTRACTION_REPORT.md`
 - `registry/schema.json`
 - `registry/index.yaml`
 - `registry/domains/*.yaml`

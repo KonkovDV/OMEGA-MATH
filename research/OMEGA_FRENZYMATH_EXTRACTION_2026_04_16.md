@@ -106,7 +106,7 @@ maintained repositories. Commentary pages are treated as secondary context only.
 
 ## OMEGA Surfaces Updated by This Extraction
 
-- `EXTRACTION_REPORT.md`
+- `Docs/EXTRACTION_REPORT.md`
 - `protocol/research-intelligence-stack.md`
 - `research/OMEGA_SOTA_BIBLIOGRAPHY_2026_04_05.md`
 - `research/OMEGA_FRENZYMATH_EXTRACTION_2026_04_16.md` (this file)

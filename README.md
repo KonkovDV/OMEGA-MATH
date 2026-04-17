@@ -300,7 +300,9 @@ math/
 │
 ├── README.md                          # Этот файл
 ├── PROTOCOL.md                        # Полный протокол исследования
-├── EXTRACTION_REPORT.md               # Источники и правила начальной экстракции
+├── Docs/                              # Второстепенная документация и audit notes
+│   ├── EXTRACTION_REPORT.md
+│   └── HYPER_DEEP_AUDIT_REPORT_2026_04_06.md
 ├── pyproject.toml                     # Python package surface for installable OMEGA CLI tools
 │
 ├── registry/                          # Каталог открытых проблем
