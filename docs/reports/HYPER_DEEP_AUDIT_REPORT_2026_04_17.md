@@ -10,7 +10,7 @@ tags: [audit, fact-check, gaps, ci, registry, docs-governance]
 
 # OMEGA Hyper-Deep Audit Report — 2026-04-17
 
-## Audit Scope
+## Область аудита
 
 Full project audit from scratch covering:
 - Registry integrity and triage coverage
@@ -20,7 +20,7 @@ Full project audit from scratch covering:
 - `.gitignore` policy correctness
 - Test suite completeness and coverage
 
-## Verification Baseline
+## Базовая проверка
 
 | Check | Result | Evidence |
 |-------|--------|----------|
@@ -32,9 +32,9 @@ Full project audit from scratch covering:
 
 ---
 
-## Gap Matrix
+## Матрица пробелов
 
-### GAP-001 — CRITICAL | README triage coverage stale
+### GAP-001 — CRITICAL | В README были устаревшие triage-метрики
 
 **Symptom:** `README.md` line 233 claimed `60 / 239 problems (25.1%)`.
 
@@ -50,7 +50,7 @@ Full project audit from scratch covering:
 
 ---
 
-### GAP-002 — HIGH | Ghost directories `Docs/` and `protocol/` in project root
+### GAP-002 — HIGH | В корне оставались пустые служебные каталоги `Docs/` и `protocol/`
 
 **Symptom:** Migration commit `60abde5` correctly renamed `Docs/*.md → docs/reports/` and `protocol/*.md → protocol/` using `git mv`. But the now-empty shell directories `Docs/` (3 empty subdirs) and `protocol/` (empty) remained on the filesystem.
 
@@ -60,11 +60,11 @@ Git does not track empty directories, so these were not committed. They are file
 
 **Fix applied:**
 1. Removed empty `Docs/` and `protocol/` directories from the filesystem.
-2. Added `Docs/` and `protocol/` entries to `.gitignore` as a defence against accidental recreation.
+2. Did not keep `.gitignore` guards for these names, because on Windows the `Docs/` pattern also swallowed the live `docs/` tree case-insensitively.
 
 ---
 
-### GAP-003 — HIGH | `sync-einstein-arena.yml` missing `.[all]` install
+### GAP-003 — HIGH | В `sync-einstein-arena.yml` не хватало установки `.[all]`
 
 **Symptom:** The `sync-einstein-arena` workflow installed only `requirements.txt` + `build pytest`. The importer (`import_einstein_arena.py`) calls `omega_runner` and other OMEGA modules that are not importable without installing the editable package.
 
@@ -76,7 +76,7 @@ Git does not track empty directories, so these were not committed. They are file
 
 ---
 
-### GAP-004 — MEDIUM | CI Python version inconsistency
+### GAP-004 — MEDIUM | В CI использовались разные версии Python
 
 **Symptom:** `validate.yml` uses Python 3.12; `ci.yml` uses Python 3.13.
 
@@ -86,7 +86,7 @@ Git does not track empty directories, so these were not committed. They are file
 
 ---
 
-### GAP-005 — MEDIUM | CI duplication: `ci.yml` and `validate.yml` run similar checks on push
+### GAP-005 — MEDIUM | В CI дублировались близкие проверки в `ci.yml` и `validate.yml`
 
 **Symptom:** Both workflows trigger on `push` to `main` and both run `pytest`. `validate.yml` does more (regenerates index, smoke-tests CLI entrypoints). `ci.yml` is a subset.
 
@@ -96,7 +96,7 @@ Git does not track empty directories, so these were not committed. They are file
 
 ---
 
-### GAP-006 — LOW | `validate.yml` installs both `requirements.txt` and `.[all]`
+### GAP-006 — LOW | `validate.yml` устанавливает и `requirements.txt`, и `.[all]`
 
 **Symptom:** `requirements.txt` contains only `PyYAML==6.0.1` and `jsonschema==4.23.0`, which are already declared as core `dependencies` in `pyproject.toml`. Installing both is redundant.
 
@@ -106,7 +106,7 @@ Git does not track empty directories, so these were not committed. They are file
 
 ---
 
-### GAP-007 — LOW | `sync-einstein-arena.yml` doesn't open a PR after sync
+### GAP-007 — LOW | `sync-einstein-arena.yml` не открывает PR после синхронизации
 
 **Symptom:** The sync workflow runs `generate_index.py` and `validate_registry.py` but does not create or push a PR with the generated changes. If index drifts, the CI job silently succeeds without proposing a fix.
 
@@ -116,24 +116,24 @@ Git does not track empty directories, so these were not committed. They are file
 
 ---
 
-## Summary
+## Сводка
 
 | Gap | Severity | Status |
 |-----|----------|--------|
-| GAP-001: README triage stats stale | CRITICAL | ✅ Fixed |
-| GAP-002: Ghost dirs Docs/ + protocol/ | HIGH | ✅ Fixed |
-| GAP-003: sync-einstein-arena missing .[all] | HIGH | ✅ Fixed |
-| GAP-004: CI Python version inconsistency | MEDIUM | ✅ Documented |
-| GAP-005: CI duplication | MEDIUM | ✅ Documented |
-| GAP-006: Requirements.txt redundancy | LOW | ✅ Documented |
-| GAP-007: Sync workflow no auto-PR | LOW | 📋 Backlog |
+| GAP-001: устаревшие triage-метрики в README | CRITICAL | ✅ Fixed |
+| GAP-002: пустые `Docs/` и `protocol/` в корне | HIGH | ✅ Fixed |
+| GAP-003: в sync workflow не хватало `.[all]` | HIGH | ✅ Fixed |
+| GAP-004: разные версии Python в CI | MEDIUM | ✅ Documented |
+| GAP-005: дублирование CI-проверок | MEDIUM | ✅ Documented |
+| GAP-006: лишняя установка `requirements.txt` + `.[all]` | LOW | ✅ Documented |
+| GAP-007: sync workflow не открывает PR | LOW | 📋 Backlog |
 
-## Files Changed
+## Изменённые файлы
 
 | File | Change |
 |------|--------|
 | `README.md` | Triage coverage corrected: 60/239/25.1% → 73/252/29.0% |
-| `.gitignore` | Added `Docs/` and `protocol/` ghost-dir guards |
+| `.gitignore` | Ghost-dir guards не сохранены: паттерн `Docs/` на Windows конфликтовал с живым `docs/` |
 | `.github/workflows/sync-einstein-arena.yml` | Added `.[all]` install step |
 | `registry/index.yaml` | Regenerated (auto-generated) |
 | `Docs/` | Removed (empty ghost directory) |

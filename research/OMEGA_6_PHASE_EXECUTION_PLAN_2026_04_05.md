@@ -25,20 +25,20 @@ verification.
 ### Current State Summary
 
 OMEGA currently has:
-- **239 problems** in the machine-readable registry across 12 mathematical domains
-- **60 triaged records** with AI-amenability scoring (25.1% coverage)
-- **14 Tier 1 problems** (computationally accessible, amenability ≥ 7)
+- **252 problems** in the machine-readable registry across 13 active domains
+- **73 triaged records** with AI-amenability scoring (29.0% coverage)
+- **Tier 1 flagship workspaces** for Erdos-Straus, Kobon triangles, and Thomson problem
 - **Three execution adapters**: `lean_adapter.py`, `solver_adapter.py`, `cas_adapter.py`
 - **Workflow controller**: `omega_workflow.py` (triage, status, advance)
 - **Experiment runner**: `omega_runner.py` (start, finish, proof-result, evidence-bundle)
+- **Model routing and orchestration**: `model_router.py`, `agent_orchestrator.py`
 - **Protocol docs**: evidence governance, triage matrix, agent teams, lean bootstrap
 
 OMEGA does NOT have:
-- Real LLM integration in any adapter
-- Automated literature retrieval
-- Proof-repair loops (generate → verify → repair → retry)
-- Orchestrated multi-agent execution
-- A single end-to-end pipeline closure on any problem
+- end-to-end autonomous closure of theorem-level research claims
+- complete literature coverage across the full registry
+- guaranteed proof closure without human or formal verification
+- publication-grade closure across all problem classes
 
 ### Strategic Bottleneck
 
@@ -89,7 +89,7 @@ The first 3 Tier 1 problems complete the full lifecycle with real artifacts.
 - Pinned `lean-toolchain` to Lean 4 v4.29.0
 - `lake exe cache get` as part of reproducibility boundary
 
-**Files**: `scripts/lean_adapter.py`, `tests/test_lean_adapter_integration.py`
+**Files**: `scripts/lean_adapter.py`, `tests/test_lean_adapter.py`
 
 **Academic basis**: DeepSeek-Prover-V2 requires repeated Lean file checks for subgoal-level
 proving (arXiv:2504.21801). The adapter must support individual file checking, not just full
