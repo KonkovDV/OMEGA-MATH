@@ -9,7 +9,7 @@
 ## TL;DR
 
 - **Что это:** local-first платформа для AI-assisted math research с реестром задач, triage, оркестрацией агентов и evidence governance.
-- **Что уже работает:** bounded execution pipeline, experiment ledgers, SHA-256 evidence bundles, Einstein Arena bridge, schema-валидация артефактов, тестовый контур `200+` тестов.
+- **Что уже работает:** bounded execution pipeline, experiment ledgers, SHA-256 evidence bundles, Einstein Arena bridge, schema-валидация артефактов, тестовый контур `225` passing tests.
 - **Чего пока нет:** production-grade автономного закрытия proof-first цикла без оператора (формально верифицированные результаты требуют ручного/итеративного контроля).
 
 ## Release Status — v0.6.0 (2026-04-16)
@@ -17,6 +17,16 @@
 - Закрыт блокер из Hyper-Deep Audit: флагманский execution tier снова в зелёном статусе.
 - `tests/test_flagship_experiments.py` и `tests/test_registry_e2e.py` проходят без падений.
 - Полный тестовый прогон (`pytest -q`) проходит целиком.
+
+## Latest Update (2026-04-17)
+
+- Runtime: добавлен dual-lane маршрут `plan -> experiment -> prove -> results` в оркестраторе для совместного неформального и формального контуров.
+- Proof governance: для prove-стадий и claim-bearing prover results теперь обязательно используется `input_files/statement_spec.md` (жёсткое statement/proof separation).
+- Prover lifecycle: расширен статусный контракт `draft -> verifier-checked -> formally-checked` с явными promotion gates в prover-result артефактах.
+- Failure observability: добавлен run-level канал `control/failure-patterns.jsonl`, который фиксирует stagnation/repair события для bounded retry анализа.
+- Lean execution safety: адаптер поддерживает sandbox policy `off|auto|required` с явной фиксацией sandbox-метаданных в результатах.
+- Extraction/docs: интегрирован FrenzyMath donor package (`Rethlas`, `Archon`, `Anderson-Conjecture`, arXiv:2604.03789) с evidence-class mapping.
+- Validation snapshot: `pytest -q` = `225 passed`; `agent:preflight:code` = APPROVED.
 
 ## Quick Start (10 Minutes)
 
