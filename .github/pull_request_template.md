@@ -11,6 +11,6 @@ Describe what changed and why.
 ## Checklist
 
 - [ ] No secrets or private data included
-- [ ] Docs/metadata updated when required
+- [ ] docs/metadata updated when required
 - [ ] Backward compatibility considered
 - [ ] Release notes impact considered

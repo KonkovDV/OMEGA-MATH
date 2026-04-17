@@ -37,7 +37,7 @@ Deliverables:
 What to inspect first:
 - `README.md`
 - `PROTOCOL.md`
-- `Docs/EXTRACTION_REPORT.md`
+- `Docs/reports/EXTRACTION_REPORT.md`
 - `registry/schema.json`
 - `registry/index.yaml`
 - `registry/domains/*.yaml`
@@ -46,7 +46,7 @@ What to inspect first:
 - `scripts/generate-index.py`
 - `scripts/scaffold-problem.py`
 - `.github/workflows/validate.yml`
-- `research/OMEGA_HYPER_DEEP_AUDIT_2026_04_04.md`
+- `Docs/research/OMEGA_HYPER_DEEP_AUDIT_2026_04_04.md`
 
 What to use from the parent MicroPhoenix project:
 - Scientific Publication Protocol surfaces under `docs/scientific/**`

@@ -97,12 +97,12 @@ Outputs:
 2. Librarian returns a prior-work packet and novelty memo.
 3. Analyst defines tractable sub-questions and writes the first idea/method notes.
 4. Planner/Reviewer approve a bounded step plan.
-5. Experimentalist or Prover executes first, depending on tier; proof-first work should use a bounded `generate -> referee -> repair` loop and keep explicit proof obligations. Every run is logged in the experiment ledger (see `protocol/experiment-ledger-spec.md`), and proof-first runs that reach a verifier-visible state also emit a prover result artifact (see `protocol/prover-result-contract.md`).
+5. Experimentalist or Prover executes first, depending on tier; proof-first work should use a bounded `generate -> referee -> repair` loop and keep explicit proof obligations. Every run is logged in the experiment ledger (see `docs/protocol/experiment-ledger-spec.md`), and proof-first runs that reach a verifier-visible state also emit a prover result artifact (see `docs/protocol/prover-result-contract.md`).
 6. Writer drafts the artifact using a template from `templates/` and fills in `reproducibility.md` from `templates/reproducibility-manifest.md`.
 7. Reviewer challenges it and records `referee.md`.
 8. Planner either closes the cycle or schedules another pass.
 
-For step-by-step operator procedures, see `protocol/operator-runbook.md`.
+For step-by-step operator procedures, see `docs/protocol/operator-runbook.md`.
 
 ## Handoff Artifacts
 
@@ -114,7 +114,7 @@ Required artifacts:
 - input_files/methods.md
 - input_files/proof_obligations.md when proof work is involved
 - input_files/results.md
-- experiments/ledger.yaml (run records per `protocol/experiment-ledger-spec.md`)
+- experiments/ledger.yaml (run records per `docs/protocol/experiment-ledger-spec.md`)
 - artifacts/prover-results/<run-id>.yaml when proof work reaches a verifier-visible outcome
 - reproducibility.md (from `templates/reproducibility-manifest.md`)
 - assumptions list

@@ -9,7 +9,7 @@ Adapted from the parent MicroPhoenix verification program, OMEGA uses five evide
 | Class | Meaning | Typical OMEGA proof surfaces |
 |-------|---------|------------------------------|
 | `R0` | repo-local executable proof | `experiments/ledger.yaml`, `artifacts/evidence-bundle.yaml`, `artifacts/prover-results/*.yaml`, stored logs, rerunnable commands |
-| `R1` | active repo-local authority | `PROTOCOL.md`, `README.md`, active docs under `protocol/`, current scaffold outputs |
+| `R1` | active repo-local authority | `PROTOCOL.md`, `README.md`, active docs under `docs/protocol/`, current scaffold outputs |
 | `E1` | official external authority | official specs, primary papers, maintained vendor docs |
 | `E2` | qualified external comparison | competitor workflows, reproducible benchmarks, maintained reference repos |
 | `H` | hypothesis only | planned work, unverified intuition, future packaging ideas |

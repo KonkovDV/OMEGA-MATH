@@ -178,7 +178,7 @@ Do not hand-edit the workflow state unless recovering from a broken run and the 
 
 ## 7. Recording an Experiment Run
 
-See `protocol/experiment-ledger-spec.md` for the full schema.
+See `docs/protocol/experiment-ledger-spec.md` for the full schema.
 
 Quick steps:
 1. Open the run with the bounded local runner:
@@ -198,7 +198,7 @@ Manual ledger editing is still possible for recovery, but the CLI is the preferr
 
 ## 8. Recording a Proof Result
 
-See `protocol/prover-result-contract.md` for the full schema.
+See `docs/protocol/prover-result-contract.md` for the full schema.
 
 Quick steps:
 1. Keep proof attempts in `experiments/ledger.yaml` like any other run.

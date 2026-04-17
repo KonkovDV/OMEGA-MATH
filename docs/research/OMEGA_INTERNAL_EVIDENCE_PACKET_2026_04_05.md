@@ -32,7 +32,7 @@ This means OMEGA should currently be positioned as research software plus bounde
 
 ## Implemented Surfaces, C2
 
-Based on `math/README.md` and `math/research/OMEGA_HYPER_DEEP_AUDIT_2026_04_04.md`, the following surfaces exist now:
+Based on `math/README.md` and `math/docs/research/OMEGA_HYPER_DEEP_AUDIT_2026_04_04.md`, the following surfaces exist now:
 
 1. machine-readable open-problem registry
 2. triage matrix for prioritized exploration

@@ -73,7 +73,7 @@ The correct strategy is therefore staged:
 
 OMEGA is a standalone research-software repository with:
 - registry data under `registry/`
-- protocol contracts under `protocol/`
+- protocol contracts under `docs/protocol/`
 - role specifications under `agents/`
 - bounded execution and bookkeeping scripts under `scripts/`
 - Python tests under `tests/`

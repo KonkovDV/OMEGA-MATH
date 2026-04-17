@@ -48,7 +48,7 @@ The orchestrator resolves LLM models automatically via `model_router.py`:
 - `--prefer-local` forces local profile preference when a role exposes local routing
 	(notably prover → Goedel-Prover-V2-32B on vLLM)
 
-See `protocol/model-routing.md` (when created) for the full routing table.
+See `docs/protocol/model-routing.md` (when created) for the full routing table.
 
 ## Prompt Architecture
 

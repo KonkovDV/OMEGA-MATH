@@ -198,4 +198,4 @@ The loop applies verifier-guided self-correction:
 - Ollama: https://ollama.com/
 - llama.cpp: https://github.com/ggml-org/llama.cpp
 - vLLM: https://docs.vllm.ai/
-- OMEGA workstation stack report: `research/OMEGA_LOCAL_WORKSTATION_VIBE_PROVING_STACK_2026_04_04.md`
+- OMEGA workstation stack report: `docs/research/OMEGA_LOCAL_WORKSTATION_VIBE_PROVING_STACK_2026_04_04.md`
