@@ -142,6 +142,23 @@ class LeanAdapter:
                 "sandbox_applied": False,
                 "sandbox_tool": None,
             }
+        except FileNotFoundError as exc:
+            duration = time.monotonic() - start
+            missing = resolved_cmd[0] if "resolved_cmd" in locals() and resolved_cmd else cmd[0]
+            return {
+                "exit_code": -3,
+                "stdout": "",
+                "stderr": (
+                    f"Executable not found: '{missing}'. "
+                    "Install Lean/Lake toolchain or pass explicit binary path. "
+                    f"OS detail: {exc}"
+                ),
+                "duration_seconds": round(duration, 3),
+                "timed_out": False,
+                "sandbox_mode": self._sandbox_mode,
+                "sandbox_applied": False,
+                "sandbox_tool": None,
+            }
 
     def _build_result(
         self,

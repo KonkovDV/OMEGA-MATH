@@ -1,0 +1,41 @@
+version: '1.0'
+problem_id: kobon-triangles
+title: Kobon triangles
+domain: geometry
+tier: T1-computational
+amenability_score: 8
+triage_source: canonical-record
+approach: search + SAT
+compute: moderate
+controller: planner
+execution_role: experimentalist
+recommended_route: experiment-first
+active_route: experiment-first
+current_stage: brief
+current_owner: planner
+stage_status: ready
+active_run_id: null
+active_run_status: null
+active_run_agent: null
+last_run_id: null
+last_run_status: null
+last_verdict: null
+last_proof_result_path: null
+last_proof_status: null
+stages:
+- brief
+- novelty
+- triage
+- plan
+- experiment
+- results
+- paper
+- referee
+- closed
+last_updated: '2026-04-17T04:51:13Z'
+history:
+- at: '2026-04-17T04:51:13Z'
+  event: triaged
+  from_stage: null
+  to_stage: brief
+  notes: tier T1-computational -> experimentalist -> experiment-first

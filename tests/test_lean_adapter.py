@@ -99,6 +99,14 @@ class TestLeanAdapterCheckFile(unittest.TestCase):
         self.assertEqual(result["exit_code"], -1)
         self.assertIn("timed out", result["errors"][0]["message"])
 
+    @patch("lean_adapter.subprocess.run")
+    def test_check_file_missing_executable(self, mock_run: MagicMock) -> None:
+        mock_run.side_effect = FileNotFoundError("[WinError 2] The system cannot find the file specified")
+        result = self.adapter.check_file(Path("test.lean"), timeout_seconds=120)
+        self.assertFalse(result["success"])
+        self.assertEqual(result["exit_code"], -3)
+        self.assertIn("Executable not found", result["stderr"])
+
 
 class TestLeanAdapterBuildProject(unittest.TestCase):
     """Tests for LeanAdapter.build_project() with mocked subprocess."""
