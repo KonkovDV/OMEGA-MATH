@@ -74,10 +74,6 @@ research/active/**/logs/
 /_pytest_flagship.txt
 /_patch_results_md.py
 
-# Stale migration ghost directories (removed in docs restructure commit 60abde5)
-Docs/
-protocol/
-
 # Root markdown policy: keep core docs in root, move secondary docs to docs/
 /*.md
 !/README.md
