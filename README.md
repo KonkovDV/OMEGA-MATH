@@ -1,336 +1,257 @@
-# OMEGA — Open Mathematics Exploration by Generative Agents
+# OMEGA - Open Mathematics Exploration by Generative Agents
 
-> English: a standalone, registry-first research environment for bounded AI-assisted work on open mathematical problems.
+> English: a standalone, registry-first research environment for bounded AI-assisted investigation of open mathematical problems.
 
-> Русский: автономный репозиторий для систематического, проверяемого и ограниченного по рискам применения ИИ к исследованиям открытых математических задач.
+> Русский: автономная исследовательская среда с реестром задач и ограниченным контуром исполнения для ИИ-поддержки исследований открытых математических проблем.
 
 [![Validate OMEGA Registry](https://github.com/KonkovDV/OMEGA-MATH/actions/workflows/validate.yml/badge.svg)](https://github.com/KonkovDV/OMEGA-MATH/actions/workflows/validate.yml)
 ![Python](https://img.shields.io/badge/python-3.12%2B-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-## Start Here / Начать Здесь
+## Start Here / Быстрый Вход
 
-- [English overview](#english-overview)
-- [Русское описание](#русское-описание)
-- [Quick start](#quick-start)
-- [What exists now](#what-exists-now)
-- [What does not exist yet](#what-does-not-exist-yet)
-- [Repository map](#repository-map)
-- [Flagship research tracks](#flagship-research-tracks)
-- [Project health and governance](#project-health-and-governance)
+### English
 
-Main entry points:
+- [Abstract](#abstract)
+- [Verified Snapshot (2026-04-17)](#verified-snapshot-2026-04-17)
+- [What OMEGA Delivers](#what-omega-delivers)
+- [Boundaries and Non-Claims](#boundaries-and-non-claims)
+- [Reproducible Quick Start](#reproducible-quick-start)
+- [Documentation Map](#documentation-map)
 
-- [PROTOCOL.md](PROTOCOL.md) — full operating contract and research protocol
-- [protocol/operator-runbook.md](protocol/operator-runbook.md) — operator guide and bounded runtime usage
-- [protocol/orchestrator-contract.md](protocol/orchestrator-contract.md) — orchestrator contract and stage semantics
-- [research/OMEGA_6_PHASE_EXECUTION_PLAN_2026_04_05.md](research/OMEGA_6_PHASE_EXECUTION_PLAN_2026_04_05.md) — concrete execution plan
-- [research/OMEGA_DEVELOPMENT_ROADMAP_2026_04_05.md](research/OMEGA_DEVELOPMENT_ROADMAP_2026_04_05.md) — long-horizon roadmap
-- [docs/reports/HYPER_DEEP_AUDIT_REPORT_2026_04_17.md](docs/reports/HYPER_DEEP_AUDIT_REPORT_2026_04_17.md) — latest deep audit and gap matrix
-- [CITATION.cff](CITATION.cff), [LICENSE](LICENSE), [CONTRIBUTING.md](CONTRIBUTING.md), [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md), [SECURITY.md](SECURITY.md)
+### Русский
 
-## English Overview
+- [Краткая аннотация](#краткая-аннотация)
+- [Проверенный срез на 2026-04-17](#проверенный-срез-на-2026-04-17)
+- [Что уже реализовано](#что-уже-реализовано)
+- [Границы проекта](#границы-проекта)
+- [Быстрый старт](#быстрый-старт)
+- [Карта документации](#карта-документации)
 
-### What OMEGA is
+---
 
-OMEGA is a standalone Python-first research environment for systematic work on open mathematical problems. It is not a single-problem demo, not a notebook collection, and not a vague “AI for math” wrapper. The repository is organized around four operational commitments:
+## Abstract
 
-1. **Registry-first scope control**: open problems are tracked in machine-readable form before work starts.
-2. **Triage before execution**: problems are ranked by AI amenability, not only by mathematical prestige.
-3. **Bounded execution**: experiments, proof attempts, and orchestration stages are explicit, logged, and restartable.
-4. **Evidence-bearing outputs**: claims are tied to ledgers, artifacts, checksums, and verifier-visible states.
+OMEGA is not a single-problem demo and not a generic "AI for math" wrapper. It is a structured research-software repository built around five operational commitments:
 
-OMEGA borrows architectural patterns from external research-agent systems, but it does not vendor their runtimes. The repository executes on its own local contracts, scripts, schemas, and documentation surfaces.
+1. Registry first: track targets in machine-readable form before execution.
+2. Triage first: prioritize by practical AI amenability, not only by prestige.
+3. Bounded execution: run explicit, restartable stages with audit-friendly state.
+4. Evidence-bearing artifacts: tie claims to ledgers, manifests, and checksums.
+5. Honest scope: separate what is implemented, what is experimental, and what is not yet delivered.
 
-### Why this repository exists
+The project borrows architectural ideas from external research-agent ecosystems, but executes on local contracts, local scripts, and local evidence surfaces.
 
-Most mathematical AI projects optimize for one of two extremes: either polished benchmark demos with weak reproducibility, or fragmented experimental code with no durable research process. OMEGA addresses the missing middle layer:
+## Documentation Design Note (April 2026)
 
-- a **catalog** of targets
-- a **workflow** for choosing targets rationally
-- an **execution layer** for bounded stages
-- an **evidence model** for storing what happened
-- a **publication path** that does not overclaim autonomy or correctness
+This README is intentionally designed as an entrypoint and router, following current documentation practice:
 
-The intent is not to simulate a fully autonomous mathematical laboratory. The intent is to build a disciplined substrate for research operations where negative results, partial proofs, failed runs, and bounded repairs are first-class outputs rather than discarded noise.
+- GitHub README guidance: clear "what/why/how/help/maintainers" at repository entry.
+- Diataxis architecture: separate explanation, how-to, and reference surfaces.
+- Write the Docs principles: skimmable, current, nearby, and unique sources.
 
-### Verified Project State
+The goal is fast orientation without collapsing all project documentation into one file.
 
-| Surface | Verified state |
-|--------|----------------|
-| Release version | `0.6.0` |
-| Supported Python | `3.12`, `3.13` |
-| Registry size | `252` canonical problems |
-| AI triage coverage | `73 / 252` (`29.0%`) |
-| Test status | `226 passed` on the latest verified run |
-| Registry validation | `0 errors` |
-| Version sync | `pyproject.toml`, `CITATION.cff`, `PROTOCOL.md` aligned |
-| Security/governance workflows | `validate`, `ci`, `codeql`, `dependency-review`, `scorecard`, `sync-einstein-arena` |
+## Verified Snapshot (2026-04-17)
 
-## What Exists Now
+| Surface | Verified state | Source |
+|---|---|---|
+| Release version | `0.6.0` | `pyproject.toml` |
+| Python support | `3.12`, `3.13` | `pyproject.toml` |
+| Registry size | `252` problems | `registry/index.yaml` |
+| Triage coverage | `73 / 252` (`29.0%`) | `registry/index.yaml` |
+| Domain files | `14` | `registry/index.yaml` |
+| Collection files | `6` | `registry/index.yaml` |
+| Tier distribution | T1 `28`, T2 `22`, T3 `10`, T4 `5`, T5 `8`, untriaged `179` | `registry/index.yaml` |
+| Latest local test run | `218 passed, 8 skipped in 14.24s` | `python -m pytest -q` (2026-04-17) |
+| Docs closure rail | `8 passed, 0 warnings, 0 failures` | `agent:preflight:docs` |
 
-OMEGA already provides a meaningful bounded execution layer rather than only planning documents.
+## What OMEGA Delivers
 
-### Core repository surfaces
+### Core runtime surfaces
 
-- schema-validated registry under [registry](registry)
-- deterministic per-problem workflow controller via `omega-workflow`
-- experiment lifecycle and evidence-bundle runtime via `omega-runner` and `omega-verify-evidence`
-- Lean 4, SAT/SMT, and CAS execution adapters via `omega-lean`, `omega-solve`, and `omega-cas`
-- model routing and orchestration via `omega-model-router` and `omega-orchestrate`
-- LeanCopilot-compatible bridge and bounded proof-repair loop via `omega-leancop-bridge` and `omega-proof-repair`
-- Einstein Arena importer and API adapter surfaces for benchmark synchronization
+- Schema-validated registry and generated index under [registry](registry).
+- Deterministic per-problem workflow controller (`omega-workflow`).
+- Experiment lifecycle and evidence bundle tooling (`omega-runner`, `omega-verify-evidence`).
+- Execution adapters for Lean, SAT/SMT, and CAS (`omega-lean`, `omega-solve`, `omega-cas`).
+- Model routing and multi-stage orchestration (`omega-model-router`, `omega-orchestrate`).
+- LeanCopilot-compatible bridge and bounded proof-repair loop (`omega-leancop-bridge`, `omega-proof-repair`).
+- Einstein Arena ingestion and API surfaces (`omega-import-einstein-arena`, `omega-einstein-arena`).
 
-### Documentation and research control plane
+### Research operations model
 
-- top-level [protocol](protocol) for active operational documentation
-- top-level [research](research) for core planning, SOTA, and workstation strategy surfaces
-- [docs/reports](docs/reports) for audits and extraction reports
-- VS Code/Copilot operational surfaces under [.github](.github)
+Primary stage chain:
 
-### Claim model
+`brief -> novelty -> triage -> plan -> experiment/prove -> results -> paper -> referee -> promote/archive`
 
-OMEGA treats most model-assisted outputs as evidence-bearing but not self-verifying. Proof-oriented work remains subordinate to explicit verifier states and downstream review. The repository is designed to store candidate mathematical work, not to collapse generation and verification into a single unverifiable step.
+OMEGA is optimized for traceability and repeatability of this chain, not for unbounded autonomous behavior.
 
-## What Does Not Exist Yet
+## Boundaries and Non-Claims
 
-OMEGA is deliberately explicit about its boundaries.
+OMEGA does not currently claim:
 
-It does **not** currently provide:
+1. End-to-end autonomous publication with acceptance-grade review guarantees.
+2. Full theorem-level correctness closure without human or formal verification gates.
+3. Complete literature-graph or citation-evidence coverage for every registry entry.
+4. Always-on proof search that can independently close nontrivial Lean workflows at scale.
+5. A fully productized enterprise platform with SLA-grade operational guarantees.
 
-1. end-to-end autonomous paper production with trustworthy acceptance-level review
-2. full correctness closure for theorem-level claims without human or formal verification
-3. a complete literature-graph or citation-evidence service for all registry entries
-4. an always-on proof-search runtime that can independently close nontrivial Lean workflows at scale
-5. a mature publication pipeline for broad research dissemination across all problem classes
+These boundaries are methodological constraints, not omissions in disclosure.
 
-That boundary is not a weakness in documentation; it is part of the project’s methodological honesty.
+## Flagship Tracks (Run-Ready Surfaces)
 
-## Quick Start
+| Problem | Current executable surface | Primary scripts |
+|---|---|---|
+| Erdős-Straus | covering analysis, parametric decomposition | `phase1_covering.py`, `phase2_parametric.py` |
+| Kobon triangles | arrangement search | `phase1_pseudoline_enum.py` |
+| Thomson problem | multistart optimization, basin hopping, numerical certification scaffold | `phase1_multistart.py`, `phase2_basin_hopping.py`, `phase3_certify.py` |
 
-### Install
+Planned later phases remain in each workspace `planning/attack_plan.md`; only the surfaces above are treated as run-ready.
+
+## Reproducible Quick Start
+
+### 1) Install
 
 ```bash
 python -m pip install -e .[all]
 ```
 
-### Validate the repository
+### 2) Validate registry and release metadata
 
 ```bash
 omega-validate-registry
 omega-verify-version-sync
 ```
 
-### Scaffold one problem workspace
+### 3) Scaffold and triage a workspace
 
 ```bash
 omega-scaffold-problem erdos-straus --title "Erdos-Straus Conjecture"
 omega-workflow triage erdos-straus
 ```
 
-### Dry-run the orchestrator before live calls
+### 4) Dry-run orchestration before live calls
 
 ```bash
 omega-orchestrate run erdos-straus --stage plan --dry-run
 ```
 
-### Prefer the local prover lane when available
+### 5) Prefer local prover lane when available
 
 ```bash
 omega-orchestrate run erdos-straus --stage prove --prefer-local
 ```
 
-## Core Documentation Map
+### 6) Optional local verification
 
-This repository now follows a clearer separation between entrypoint, active protocol, core research context, and evidence layers.
+```bash
+python -m pytest -q
+```
 
-| Need | Best starting surface |
-|------|------------------------|
-| Understand the project at a high level | [README.md](README.md) |
-| Understand the full operating contract | [PROTOCOL.md](PROTOCOL.md) |
-| Run the system safely | [protocol/operator-runbook.md](protocol/operator-runbook.md) |
-| Understand orchestration semantics | [protocol/orchestrator-contract.md](protocol/orchestrator-contract.md) |
-| Understand evidence rules | [protocol/evidence-governance.md](protocol/evidence-governance.md) |
-| Understand formal-math setup | [protocol/lean-bootstrap.md](protocol/lean-bootstrap.md) |
-| Understand the execution plan | [research/OMEGA_6_PHASE_EXECUTION_PLAN_2026_04_05.md](research/OMEGA_6_PHASE_EXECUTION_PLAN_2026_04_05.md) |
-| Understand long-horizon strategy | [research/OMEGA_DEVELOPMENT_ROADMAP_2026_04_05.md](research/OMEGA_DEVELOPMENT_ROADMAP_2026_04_05.md) |
-| Understand current gaps and remediation | [docs/reports/HYPER_DEEP_AUDIT_REPORT_2026_04_17.md](docs/reports/HYPER_DEEP_AUDIT_REPORT_2026_04_17.md) |
+## Documentation Map
 
-This structure aligns with April 2026 documentation guidance from GitHub, Diátaxis, and Write the Docs:
+### Explanation surfaces
 
-- the root README is the **discoverable GitHub entrypoint**
-- protocol and research surfaces are **nearby** and **unique** sources rather than hidden deep in a docs tree
-- longer, dated, or historical audit material remains in **reports/evidence** surfaces
+- [README.md](README.md)
+- [PROTOCOL.md](PROTOCOL.md)
+- [research/OMEGA_DEVELOPMENT_ROADMAP_2026_04_05.md](research/OMEGA_DEVELOPMENT_ROADMAP_2026_04_05.md)
 
-## Research Model
+### How-to surfaces
 
-### External architectural donors
+- [protocol/operator-runbook.md](protocol/operator-runbook.md)
+- [protocol/lean-bootstrap.md](protocol/lean-bootstrap.md)
+- [protocol/verification-pipeline.md](protocol/verification-pipeline.md)
 
-OMEGA uses donor patterns rather than donor runtime coupling.
+### Reference surfaces
 
-| Source | Operational role in OMEGA |
-|--------|----------------------------|
-| Denario | modular research pipeline and artifact shape |
-| CMBAgent | planning/control runtime ideas and staged execution semantics |
-| LSST DESC AI roadmap | scientific validation, robustness, and reproducibility expectations |
-| EinsteinArena-new-SOTA | reproducible benchmark and public-verification donor surface |
+- [protocol/orchestrator-contract.md](protocol/orchestrator-contract.md)
+- [protocol/prover-result-contract.md](protocol/prover-result-contract.md)
+- [protocol/experiment-ledger-spec.md](protocol/experiment-ledger-spec.md)
+- [protocol/evidence-governance.md](protocol/evidence-governance.md)
 
-### Formal-math and theorem-proving context
+### Evidence and audit surfaces
 
-The April 2026 OMEGA stack is explicitly informed by the open formal-math landscape rather than benchmark folklore alone.
+- [docs/reports/HYPER_DEEP_AUDIT_REPORT_2026_04_17.md](docs/reports/HYPER_DEEP_AUDIT_REPORT_2026_04_17.md)
+- [docs/reports/HYPER_DEEP_AUDIT_REPORT_2026_04_06.md](docs/reports/HYPER_DEEP_AUDIT_REPORT_2026_04_06.md)
+- [docs/reports/EXTRACTION_REPORT.md](docs/reports/EXTRACTION_REPORT.md)
 
-Prominent surfaces include:
-
-- DeepSeek-Prover-V2
-- Kimina-Prover
-- LeanCopilot
-- Numina-Lean-Agent
-- FrontierMath
-- proof-verifier literature such as Process Advantage Verifiers
-
-The repository-level consequence is straightforward: OMEGA treats proof generation as a multi-stage activity involving decomposition, candidate generation, bounded repair, and explicit verifier-visible checkpoints.
-
-## Flagship Research Tracks
-
-OMEGA currently has three Tier-1 flagship workspaces under [research/active](research/active).
-
-| Problem | Current run-ready surface | Primary scripts |
-|--------|----------------------------|-----------------|
-| Erdős–Straus | covering analysis and parametric decomposition | `phase1_covering.py`, `phase2_parametric.py` |
-| Kobon triangles | arrangement search | `phase1_pseudoline_enum.py` |
-| Thomson problem | multistart optimization, basin hopping, numerical certification scaffold | `phase1_multistart.py`, `phase2_basin_hopping.py`, `phase3_certify.py` |
-
-Planned later stages remain in each workspace’s `planning/attack_plan.md`, but the repository only treats the executable phase surfaces above as currently run-ready.
-
-## Runtime Surface
-
-The CLI surface is intentionally broad enough to support bounded research operations without pretending to be a general autonomous laboratory runtime.
-
-### Registry and workflow
-
-- `omega-validate-registry`
-- `omega-scaffold-problem`
-- `omega-workflow`
-- `omega-generate-index`
-- `omega-generate-experiment-index`
-- `omega-query`
-
-### Execution adapters
-
-- `omega-lean`
-- `omega-solve`
-- `omega-cas`
-- `omega-proof-repair`
-- `omega-leancop-bridge`
-
-### Orchestration and routing
-
-- `omega-orchestrate`
-- `omega-model-router`
-
-### Evidence and benchmark sync
-
-- `omega-runner`
-- `omega-verify-evidence`
-- `omega-import-einstein-arena`
-- `omega-einstein-arena`
-- `omega-verify-version-sync`
-
-## Repository Map
+## Repository Topology
 
 ```text
 math/
-├── README.md                     # GitHub entrypoint
-├── PROTOCOL.md                   # Full operating contract
-├── protocol/                     # Active protocol documentation
-├── research/                     # Core planning docs + active/completed workspaces
-├── docs/reports/                 # Audits and extraction reports
-├── registry/                     # Canonical problem registry + schemas + triage
-├── scripts/                      # CLIs, adapters, routing, orchestration
-├── tests/                        # Python test suite
-├── templates/                    # Publication and Lean starter templates
-├── agents/                       # Role configuration files
-└── .github/                      # Workflows, prompts, skills, agent surfaces
+├── README.md
+├── PROTOCOL.md
+├── protocol/
+├── research/
+├── docs/reports/
+├── registry/
+├── scripts/
+├── tests/
+├── templates/
+├── agents/
+└── .github/
 ```
 
-## Project Health and Governance
+## Governance, Help, and Contribution
 
-This repository already exposes the standard open-source health surfaces GitHub recommends for serious collaboration.
+- License: [LICENSE](LICENSE)
+- Citation metadata: [CITATION.cff](CITATION.cff)
+- Contribution guide: [CONTRIBUTING.md](CONTRIBUTING.md)
+- Code of conduct: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+- Security policy: [SECURITY.md](SECURITY.md)
+- Maintainer surface: MicroPhoenix open-source community
+- Issue tracker: <https://github.com/KonkovDV/OMEGA-MATH/issues>
 
-- [LICENSE](LICENSE)
-- [CITATION.cff](CITATION.cff)
-- [CONTRIBUTING.md](CONTRIBUTING.md)
-- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
-- [SECURITY.md](SECURITY.md)
+## Citation
 
-Supply-chain and review surfaces:
-
-- `validate.yml`
-- `ci.yml`
-- `codeql.yml`
-- `dependency-review.yml`
-- `scorecard.yml`
-- `sync-einstein-arena.yml`
-
-Maintainer metadata currently identifies the project as maintained by the **MicroPhoenix open-source community**.
-
-## Citation and License
-
-OMEGA is released under the MIT license for protocol and tooling surfaces. Research outputs may carry additional publication or data-sharing constraints depending on their artifact class.
-
-If you use the repository or build derived academic outputs from it, cite the project via [CITATION.cff](CITATION.cff).
+If you use OMEGA in research or derived tooling, cite via [CITATION.cff](CITATION.cff).
 
 ---
 
-## Русское описание
+## Краткая аннотация
 
-### Что такое OMEGA
+OMEGA - это не демонстрационный проект на одну задачу и не обёртка "ИИ для всего". Это исследовательский репозиторий, в котором работа строится по прозрачному контуру:
 
-OMEGA — это не «ещё одно ИИ-демо для математики» и не набор случайных скриптов. Это самостоятельная исследовательская среда, построенная вокруг трёх вещей:
+1. сначала реестр задач,
+2. затем triage по практической доступности,
+3. затем ограниченное исполнение с журналированием,
+4. затем пакет свидетельств и формулировка результата.
 
-1. **машиночитаемый реестр задач**
-2. **приоритизация по доступности для ИИ**
-3. **ограниченный, верифицируемый контур исполнения**
+Проект сознательно отделяет реализованное, экспериментальное и пока недоступное. Это важная часть научной добросовестности.
 
-Идея проекта проста: не бросать модель сразу на одну знаменитую гипотезу, а выстроить воспроизводимую исследовательскую систему, где каталог, приоритизация, рабочее пространство задачи, эксперименты, попытки доказательства, пакет свидетельств и текстовый итог связаны в одну цепочку.
-
-### Что уже реализовано
-
-На текущем срезе проект уже содержит не только документы, но и рабочую инфраструктуру:
-
-- реестр открытых задач с валидацией схем
-- очередь приоритизации по доступности для ИИ
-- контроллер пошагового рабочего процесса
-- раннер для экспериментов и пакетов свидетельств
-- исполняющие адаптеры для Lean 4, SAT/SMT и CAS
-- маршрутизация моделей и оркестрация стадийного запуска агентов
-- мост, совместимый с LeanCopilot, и ограниченный цикл исправления доказательств
-- импортёр и API-адаптер для Einstein Arena
-- репозиторные поверхности управления: лицензия, цитирование, правила участия, безопасность, кодекс поведения, CI и процессы безопасности
-
-Проверенное состояние проекта:
+## Проверенный срез на 2026-04-17
 
 | Показатель | Значение |
-|-----------|----------|
+|---|---|
 | Версия | `0.6.0` |
-| Поддержка Python | `3.12`, `3.13` |
-| Канонических задач в реестре | `252` |
+| Поддерживаемый Python | `3.12`, `3.13` |
+| Задач в реестре | `252` |
 | Триажировано | `73 / 252` (`29.0%`) |
-| Последний верифицированный тестовый прогон | `226 passed` |
-| Валидация реестра | `0 ошибок` |
+| Последний локальный тестовый прогон | `218 passed, 8 skipped` |
+| Статус docs closure rail | `8 passed, 0 warnings, 0 failures` |
 
-### Чего пока нет
+## Что уже реализовано
 
-OMEGA принципиально не притворяется «полностью автономной математической лабораторией». Сейчас проект **не** даёт:
+- машиночитаемый реестр с валидацией схем;
+- контроллер стадийного рабочего процесса;
+- раннер экспериментов и генерация evidence bundle;
+- адаптеры Lean, SAT/SMT и CAS;
+- маршрутизация моделей и стадийная оркестрация;
+- мост LeanCopilot и ограниченный цикл исправления доказательств;
+- импорт и API-контур Einstein Arena;
+- набор governance-документов для открытой разработки и цитирования.
 
-- надёжного сквозного конвейера подготовки статьи с полноценным научным рецензированием
-- полной корректностной замены человеку или формальному проверяющему инструменту
-- зрелого графа литературы для всего реестра
-- гарантированного закрытия нетривиальных теоремных утверждений без ручного или формального контроля
+## Границы проекта
 
-Эти ограничения не замаскированы. Они являются частью исследовательской честности проекта.
+Сейчас OMEGA не заявляет:
 
-### Быстрый старт
+1. полностью автономную публикацию с гарантиями уровня рецензируемого журнала;
+2. закрытие теоремных утверждений без человека или формального верификатора;
+3. полный литераторный граф по всем записям реестра;
+4. самостоятельное закрытие сложных Lean-кейсов в непрерывном режиме;
+5. зрелую корпоративную платформу со SLA-гарантиями.
+
+## Быстрый старт
 
 ```bash
 python -m pip install -e .[all]
@@ -341,37 +262,18 @@ omega-workflow triage erdos-straus
 omega-orchestrate run erdos-straus --stage plan --dry-run
 ```
 
-### Куда смотреть в первую очередь
+## Карта документации
 
-- [PROTOCOL.md](PROTOCOL.md) — если нужен полный рабочий контракт проекта
-- [protocol/operator-runbook.md](protocol/operator-runbook.md) — если нужно реально запускать рабочий процесс
-- [protocol/orchestrator-contract.md](protocol/orchestrator-contract.md) — если нужна спецификация оркестратора
-- [research/OMEGA_6_PHASE_EXECUTION_PLAN_2026_04_05.md](research/OMEGA_6_PHASE_EXECUTION_PLAN_2026_04_05.md) — если нужен ближайший план исполнения
-- [research/OMEGA_DEVELOPMENT_ROADMAP_2026_04_05.md](research/OMEGA_DEVELOPMENT_ROADMAP_2026_04_05.md) — если нужен длинный горизонт проекта
-- [docs/reports/HYPER_DEEP_AUDIT_REPORT_2026_04_17.md](docs/reports/HYPER_DEEP_AUDIT_REPORT_2026_04_17.md) — если нужен текущий анализ пробелов и рисков
+- Полный протокол: [PROTOCOL.md](PROTOCOL.md)
+- Операторский запуск: [protocol/operator-runbook.md](protocol/operator-runbook.md)
+- Контракт оркестратора: [protocol/orchestrator-contract.md](protocol/orchestrator-contract.md)
+- Контракт результата доказательства: [protocol/prover-result-contract.md](protocol/prover-result-contract.md)
+- Политика свидетельств: [protocol/evidence-governance.md](protocol/evidence-governance.md)
+- Исполнительный план: [research/OMEGA_6_PHASE_EXECUTION_PLAN_2026_04_05.md](research/OMEGA_6_PHASE_EXECUTION_PLAN_2026_04_05.md)
+- Дорожная карта: [research/OMEGA_DEVELOPMENT_ROADMAP_2026_04_05.md](research/OMEGA_DEVELOPMENT_ROADMAP_2026_04_05.md)
+- Аудитные отчёты: [docs/reports](docs/reports)
 
-### Почему README устроен именно так
+## Лицензия и цитирование
 
-На апрель 2026 сильный README для GitHub-репозитория должен делать несколько вещей одновременно:
-
-- быстро объяснять, **что делает проект**
-- показывать, **чем он полезен и где его границы**
-- давать **короткий путь к запуску**
-- указывать, **где искать подробности**
-- не дублировать весь корпус документации в одном файле
-
-Поэтому этот README работает как **входная точка и навигационный слой**, а не как бесконечный монолит. Подробный протокол живёт в [PROTOCOL.md](PROTOCOL.md), активные процедурные и справочные документы — в [protocol](protocol), ключевой исследовательский контекст — в [research](research), а отчёты и аудитные материалы — в [docs/reports](docs/reports).
-
-### Следующие научные приоритеты
-
-Следующая волна работы в проекте — не «добавить больше AI», а усилить проверяемость и воспроизводимость:
-
-1. надёжная локальная подготовка среды для цепочки инструментов Lean
-2. полный цикл с пакетами свидетельств на трёх Tier-1 направлениях
-3. углубление формального контура доказательств с ограниченными контрольными точками верификатора
-4. усиление проверок новизны и коллизий перед публикационными стадиями
-5. публикационные конвейеры, которые сохраняют происхождение результатов, правила понижения статуса и видимые рецензенту свидетельства
-
-## License
-
-MIT for repository tooling and protocol surfaces. See [LICENSE](LICENSE).
+- Лицензия проекта: [LICENSE](LICENSE)
+- Правила цитирования: [CITATION.cff](CITATION.cff)
