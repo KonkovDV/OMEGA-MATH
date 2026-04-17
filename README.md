@@ -9,7 +9,7 @@
 ## TL;DR
 
 - **Что это:** local-first платформа для AI-assisted math research с реестром задач, triage, оркестрацией агентов и evidence governance.
-- **Что уже работает:** bounded execution pipeline, experiment ledgers, SHA-256 evidence bundles, Einstein Arena bridge, schema-валидация артефактов, тестовый контур `225` passing tests.
+- **Что уже работает:** bounded execution pipeline, experiment ledgers, SHA-256 evidence bundles, Einstein Arena bridge, schema-валидация артефактов, тестовый контур `226` passing tests.
 - **Чего пока нет:** production-grade автономного закрытия proof-first цикла без оператора (формально верифицированные результаты требуют ручного/итеративного контроля).
 
 ## Release Status — v0.6.0 (2026-04-16)
@@ -26,21 +26,9 @@
 - Failure observability: добавлен run-level канал `control/failure-patterns.jsonl`, который фиксирует stagnation/repair события для bounded retry анализа.
 - Lean execution safety: адаптер поддерживает sandbox policy `off|auto|required` с явной фиксацией sandbox-метаданных в результатах.
 - Extraction/docs: интегрирован FrenzyMath donor package (`Rethlas`, `Archon`, `Anderson-Conjecture`, arXiv:2604.03789) с evidence-class mapping.
-- Validation snapshot: `pytest -q` = `225 passed`; `agent:preflight:code` = APPROVED.
-
-## Quick Start (10 Minutes)
-
-```bash
-git clone https://github.com/KonkovDV/OMEGA-MATH.git
-cd OMEGA-MATH
-python -m pip install -e .[all]
-python scripts/validate_registry.py
-python scripts/scaffold_problem.py erdos-straus --title "Erdos-Straus Conjecture"
-python scripts/omega_workflow.py triage erdos-straus
-python scripts/agent_orchestrator.py run erdos-straus --stage plan --dry-run
-```
-
-For live dispatches, set model credentials first (for example `DEEPSEEK_API_KEY`) and then run `omega-orchestrate` without `--dry-run`.
+- Supply-chain controls: добавлены `CodeQL`, `dependency-review`, `OpenSSF Scorecard` workflow surfaces.
+- Documentation governance: второстепенные markdown-документы консолидированы в `docs/` (`docs/protocol`, `docs/research`, `docs/reports`) с root markdown policy в `.gitignore`.
+- Validation snapshot: `pytest -q` = `226 passed`; `validate_registry` = 0 errors; `verify_version_sync` = success; `agent:preflight:code` = APPROVED.
 
 ## Миссия
 
@@ -294,15 +282,17 @@ This repository is intentionally isolated from the main MicroPhoenix application
 ```
 math/
 ├── .github/
+│   ├── workflows/                    # CI, registry validation, CodeQL, dependency review, scorecard
 │   ├── agents/                       # VS Code custom agents for OMEGA workflows
 │   ├── prompts/                      # VS Code prompt files for flagship tracks
 │   └── skills/                       # Reusable experiment, referee, citation, and closure workflows
 │
 ├── README.md                          # Этот файл
 ├── PROTOCOL.md                        # Полный протокол исследования
-├── docs/reports/                              # Второстепенная документация и audit notes
-│   ├── EXTRACTION_REPORT.md
-│   └── HYPER_DEEP_AUDIT_REPORT_2026_04_06.md
+├── docs/
+│   ├── protocol/                      # Операционные документы исследования
+│   ├── research/                      # SOTA, roadmap, evidence packets, strategy notes
+│   └── reports/                       # Audit/extraction reports
 ├── pyproject.toml                     # Python package surface for installable OMEGA CLI tools
 │
 ├── registry/                          # Каталог открытых проблем
@@ -387,25 +377,6 @@ math/
 │       ├── lakefile.lean
 │       └── OmegaWorkbench/
 │
-├── docs/protocol/                          # Операционные документы исследования
-│   ├── agent-teams.md
-│   ├── amenability-rubric.md
-│   ├── cas-execution-adapter.md        # CAS adapter contract
-│   ├── experiment-ledger-spec.md
-│   ├── evidence-governance.md
-│   ├── lean-bootstrap.md
-│   ├── lean-execution-adapter.md       # Lean 4 adapter contract
-│   ├── operator-runbook.md
-│   ├── publication-workflow.md
-│   ├── prover-result-contract.md
-│   ├── research-intelligence-stack.md
-│   ├── research-object-packaging.md
-│   ├── runtime-language-strategy.md
-│   ├── orchestrator-contract.md        # Agent orchestrator specification
-│   ├── solver-execution-adapter.md     # SAT/SMT adapter contract
-│   ├── triage-matrix.md
-│   └── verification-pipeline.md
-│
 ├── agents/                            # Конфигурации ролей
 │   ├── analyst.yaml
 │   ├── experimentalist.yaml
@@ -417,57 +388,24 @@ math/
 │   └── writer.yaml
 │
 └── research/
-    ├── OMEGA_6_PHASE_EXECUTION_PLAN_2026_04_05.md
-    ├── OMEGA_ASSURANCE_SCOPE_MATRIX_2026_04_05.md
-    ├── OMEGA_COMPETITIVE_ANALYSIS.md
-    ├── OMEGA_DEVELOPMENT_ROADMAP_2026_04_05.md
-    ├── OMEGA_HYPER_ARCHITECTURE_2076.md
-    ├── OMEGA_HYPER_DEEP_AUDIT_2026_04_04.md
-    ├── OMEGA_INDIE_GTM_PLAYBOOK.md
-    ├── OMEGA_INTERNAL_EVIDENCE_PACKET_2026_04_05.md
-    ├── OMEGA_INVESTMENT_AND_MONETIZATION.md
-    ├── OMEGA_LOCAL_WORKSTATION_VIBE_PROVING_STACK_2026_04_04.md
-    ├── OMEGA_MARKET_AND_SOURCE_LEDGER_2026_04_05.md
-    ├── OMEGA_OPEN_SOURCE_STACK.md
-    ├── OMEGA_PROJECT_OVERVIEW_AND_NAMING.md
-    ├── OMEGA_SEED_NARRATIVE_2026_04_05.md
-    ├── OMEGA_SOTA_BIBLIOGRAPHY_2026_04_05.md
-    ├── OMEGA_SOTA_FORMAL_PROVING_LANDSCAPE_2026_04_05.md
-    ├── OMEGA_UNICORN_PITCH_DECK.md
-    ├── OMEGA_VIBE_PROVING_HYPERDEEP_REPORT_2026_04_04.md
-    ├── OMEGA_SOTA_LANDSCAPE_UPDATE_2026_04_13.md
-    ├── active/README.md
-    └── completed/README.md
+    ├── active/                         # Рабочие problem workspaces
+    │   ├── erdos-straus/
+    │   ├── kobon-triangles/
+    │   └── thomson-problem/
+    └── completed/
 ```
 
-## Planned Next Surface
+## Next Research Priorities (Evidence-Gated)
 
-Likely next additions (aligned with the 6-Phase Execution Plan):
+The current implementation is intentionally bounded. The next wave prioritizes auditable capability growth rather than unchecked automation.
 
-### Phase 1: Pipeline Closure (immediate priority)
-1. ~~Connect `lean_adapter.py` to real `lake build` with pinned mathlib toolchain~~ (Done: `lean_adapter.py` wired)
-2. ~~Write integration tests for `solver_adapter.py` with concrete problem instances~~ (Done: `test_solver_adapter.py` + `test_e2e_pipeline.py`)
-3. ~~Create `scripts/literature_adapter.py`~~ (Done: Semantic Scholar + arXiv API)
-4. Execute full lifecycle on 3 Tier 1 problems with real evidence bundles (pending real LLM API keys)
-5. ~~Create agent orchestrator with multi-API LLM dispatch~~ (Done: `agent_orchestrator.py`)
-6. ~~Add standalone evidence verification CLI~~ (Done: `verify_evidence.py`)
+1. **Proof execution reliability**: connect local Lean toolchain provisioning so `omega-lean` runs in clean environments without manual bootstrap friction.
+2. **Tier-1 end-to-end closure**: complete reproducible full-cycle runs for Erdős–Straus, Kobon triangles, and Thomson problem with immutable evidence bundles.
+3. **Formal proof lane deepening**: strengthen bounded repair loops with model-assisted decomposition and explicit verifier checkpoints.
+4. **Novelty control plane**: promote machine-readable novelty and collision checks into mandatory pre-publication gates.
+5. **Publication automation with safeguards**: generate reproducible paper artifacts while preserving reviewer-visible provenance and downgrade rules.
 
-### Phase 2: LLM-Backed Proof Search
-7. Create `scripts/model_router.py` routing to Ollama + DeepSeek-Prover-V2-7B / LeanCopilot ExternalGenerator / vLLM
-8. Implement bounded proof-repair loop (generate → verify → enrich → retry, max 64 iterations)
-9. Implement two-level subgoal decomposition (72B+ decomposes → local 7B solves)
-10. Produce first neural-generated Lean 4 proof with zero remaining `sorry`
-
-### Phase 3: Literature and Novelty Verification
-11. Add machine-readable novelty packet generator per problem
-12. Add mandatory anti-rediscovery gate at TRIAGE → PLAN workflow transition
-
-### Phase 4–6: Publication, Formal Assurance, Scaling
-13. LaTeX generation from stored artifacts with audit trail
-14. Automated paper generation pipelines (Writer → Reviewer loop)
-15. Post-quantum cryptography formal assurance wedge (NIST FIPS 203/204/205)
-
-See `docs/research/OMEGA_6_PHASE_EXECUTION_PLAN_2026_04_05.md` for complete task specifications with evidence gates and academic grounding.
+See `docs/research/OMEGA_6_PHASE_EXECUTION_PLAN_2026_04_05.md` for full phase-level tasks and acceptance criteria.
 
 ## Лицензия
 
