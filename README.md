@@ -230,7 +230,7 @@ Hardened in April 2026 updates:
 
 - Canonical problem records live in `registry/domains/*.yaml` and are the schema-validated source of truth.
 - Collection files under `registry/collections/*.yaml` are quick-reference overlays; when a canonical problem record exists, they should point back with `registry_id`.
-- Current AI triage coverage is `60 / 239` problems (`25.1%`), so the queue is suitable for prioritized exploration, not for exhaustive balanced routing across the full registry.
+- Current AI triage coverage is `73 / 252` problems (`29.0%`), so the queue is suitable for prioritized exploration, not for exhaustive balanced routing across the full registry.
 
 ## Isolation Status
 
