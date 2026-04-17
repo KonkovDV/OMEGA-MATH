@@ -3,14 +3,14 @@
 
 ## 1. Overview
 
-OMEGA (Open Mathematics Exploration by Generative Agents) is a systematic protocol for applying AI agents to the full landscape of unsolved mathematical problems. Unlike ad-hoc attempts where an LLM is pointed at a single famous conjecture, OMEGA takes a **catalog-first, triage-driven** approach:
+OMEGA (Open Mathematics Exploration by Generative Agents) is a systematic protocol for applying AI agents to unsolved mathematical problems. Instead of pointing an LLM at one famous conjecture, OMEGA uses a **catalog-first, triage-driven** approach:
 
 1. **Catalog** every known open problem in machine-readable format
 2. **Triage** each problem by AI-amenability (not difficulty alone)
 3. **Research** systematically, starting from the most tractable tier
 4. **Publish** all results — including negative results and refined conjectures
 
-OMEGA is a **standalone repository**. It borrows reusable ideas from external scientific-agent systems, but does not depend on their runtimes at execution time. The protocol is therefore split into two layers:
+OMEGA is a **standalone repository**. It borrows reusable ideas from external scientific-agent systems, but does not depend on their runtimes. The protocol is split into two layers:
 
 1. **Donor-extracted patterns** — what is adopted from Denario, CMBAgent, and LSST DESC
 2. **Local operating contract** — what OMEGA actually stores, validates, and publishes inside this repository
@@ -27,10 +27,10 @@ The current protocol is grounded in five externally verified sources:
 
 OMEGA uses these sources as **architectural donors**, not as permission to overclaim full autonomy or publication quality.
 
-## 1.2 Research-Intelligence Expansion (April 2026)
+## 1.2 Research Intelligence Expansion (April 2026)
 
 Beyond the initial Denario, CMBAgent, and LSST DESC donor set, OMEGA now tracks a
-research-intelligence support layer for literature discovery, bounded experiment design,
+research intelligence support layer for literature discovery, bounded experiment design,
 and presentation packaging.
 
 Open-source workflow donors verified in the April 2026 pass:
@@ -124,8 +124,8 @@ Operational consequences:
 
 ## 1.6 Orchestrator and Model Router (v0.5.0, April 2026)
 
-The v0.5.0 release closes the primary Phase 1 bottleneck — the absence of a repeatable
-execution loop — by adding three new infrastructure components:
+The v0.5.0 release closes the primary Phase 1 bottleneck - the absence of a repeatable
+execution loop - by adding six infrastructure components:
 
 1. **Agent Orchestrator** (`scripts/agent_orchestrator.py`, CLI: `omega-orchestrate`):
    8-stage pipeline dispatcher that loads agent definitions, assembles problem context,
@@ -136,8 +136,8 @@ execution loop — by adding three new infrastructure components:
 2. **Model Router** (`scripts/model_router.py`, CLI: `omega-model-router`):
    Declarative routing layer mapping agent roles and problem tiers to specific LLM
    backends (OpenAI, DeepSeek, Anthropic, Ollama, vLLM, LM Studio) with fallback
-   chains and health checks. Designed for the two-level architecture where large
-   models decompose and small models solve.
+     chains and health checks. It follows a two-level architecture where large
+     models decompose and small models solve.
 
 3. **Evidence Verification CLI** (`scripts/verify_evidence.py`, CLI: `omega-verify-evidence`):
    Standalone SHA-256 evidence bundle compute/verify/status tool.
@@ -182,7 +182,7 @@ See:
 
 ## 1.7 Einstein Arena Integration Hardening (April 2026)
 
-The Einstein Arena extraction and API surfaces are now treated as first-class bounded
+The Einstein Arena extraction and API surfaces are now treated as bounded
 runtime contracts.
 
 Operational additions:
@@ -221,7 +221,7 @@ Operational implication:
 
 ## 2. Problem Taxonomy
 
-### 2.1 Domains (12 primary, from Wikipedia's master list)
+### 2.1 Domains (12 primary taxonomy domains)
 
 | # | Domain | Subdomain count | Est. open problems |
 |---|--------|----------------|-------------------|
@@ -237,7 +237,9 @@ Operational implication:
 | 10 | Probability Theory | 1 | ~5 |
 | 11 | Set Theory | 1 | ~10 |
 | 12 | Topology | 1 | ~20 |
-| **Total** | | **~35** | **~395+** |
+| **Total (taxonomy baseline)** | | **~35** | **~395+** |
+
+Note: the live registry currently also includes an `einstein-arena` benchmark domain.
 
 ### 2.2 Named Collections
 
@@ -266,7 +268,7 @@ Operational implication:
 
 ## 3. AI Approach Tiers
 
-The key insight: mathematical problems vary enormously in how amenable they are to current AI/computational approaches. We classify into 5 tiers:
+Mathematical problems vary widely in how amenable they are to current AI and computational approaches. OMEGA uses five tiers:
 
 ### T1 — Computational (amenability: 8–10)
 **Profile:** Direct computation, exhaustive or heuristic search, SAT/SMT solving.
@@ -315,7 +317,7 @@ Following the Denario framework (arXiv:2510.26887), each research task employs a
 
 ### 4.2 Workflow (CMBAgent deep_research-inspired)
 
-Following CMBAgent's current repository guidance, OMEGA should prefer a **deep-research, context-carrying workflow** rather than the older `planning_and_control` path.
+Following current CMBAgent repository guidance, OMEGA should prefer a **deep-research, context-carrying workflow** rather than the older `planning_and_control` path.
 
 For citation hygiene, distinguish the repo's live operator surface from the paper surfaces: cite `arXiv:2507.07257` for the planning/control system and use `arXiv:2412.00431` only as the earlier cosmology precursor.
 
