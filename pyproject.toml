@@ -13,7 +13,7 @@ authors = [
   { name = "MicroPhoenix open-source community" },
 ]
 dependencies = [
-  "PyYAML==6.0.1",
+  "PyYAML==6.0.3",
   "jsonschema==4.23.0",
 ]
 keywords = ["mathematics", "research-software", "lean4", "provenance", "experiment-tracking"]
