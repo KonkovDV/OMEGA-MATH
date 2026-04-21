@@ -1,0 +1,62 @@
+{
+  "project": "OMEGA-MATH",
+  "artifact_type": "runtime_evidence_report",
+  "generated_at": "2026-04-21T20:37:42.286590+00:00",
+  "version": "v1",
+  "command_bundle": [
+    "omega-validate-registry",
+    "omega-verify-version-sync",
+    "python -m pytest -q",
+    "omega-workflow status erdos-straus",
+    "omega-orchestrate run erdos-straus --stage plan --dry-run"
+  ],
+  "metrics": {
+    "commands_passed": 5,
+    "commands_total": 5
+  },
+  "gates": {
+    "omega-validate-registry": {
+      "passed": true,
+      "details": "============================================================\nOMEGA Registry Validation Report\n============================================================\nDomain files:   14 active (+ deprecated redirects excluded)\nTotal problems: 252\nUnique IDs:     252\nErrors:         0\nWarnings:       0\n\nвњ“ Registry validation passed (0 errors)"
+    },
+    "omega-verify-version-sync": {
+      "passed": true,
+      "details": "success: true\nversion: 0.6.0\nsources:\n  pyproject: 0.6.0\n  citation: 0.6.0\n  protocol: 0.6.0"
+    },
+    "python -m pytest -q": {
+      "passed": true,
+      "details": "........................................................................ [ 29%]\n........................................................................ [ 59%]\n.......................................................................s [ 89%]\nsssssss..................                                                [100%]\n233 passed, 8 skipped in 19.87s"
+    },
+    "omega-workflow status erdos-straus": {
+      "passed": true,
+      "details": "version: '1.0'\nproblem_id: erdos-straus\ntitle: ErdЕ‘sStraus conjecture\ndomain: number-theory\ntier: T1-computational\namenability_score: 8\ntriage_source: canonical-record\napproach: parametric-search + covering-congruences\ncompute: moderate\ncontroller: planner\nexecution_role: experimentalist\nrecommended_route: experiment-first\nactive_route: experiment-first\ncurrent_stage: brief\ncurrent_owner: planner\nstage_status: ready\nactive_run_id: null\nactive_run_status: null\nactive_run_agent: null\nlast_run_id: null\nlast_run_status: null\nlast_verdict: null\nlast_proof_result_path: null\nlast_proof_status: null\nstages:\n- brief\n- novelty\n- triage\n- plan\n- experiment\n- results\n- paper\n- referee\n- closed\nlast_updated: '2026-04-17T04:51:13Z'\nhistory:\n- at: '2026-04-17T04:51:13Z'\n  event: triaged\n  from_stage: null\n  to_stage: brief\n  notes: tier T1-computational -> experimentalist -> experiment-first"
+    },
+    "omega-orchestrate run erdos-straus --stage plan --dry-run": {
+      "passed": true,
+      "details": "success: true\nrole: planner\nstage: plan\ndry_run: true\nsystem_prompt: \"You are an OMEGA research agent acting as: planner\\n\\nPurpose: select\\\n  \\ problems, define phases, enforce stop rules\\n\\nExpected inputs: registry entry,\\\n  \\ triage score, compute budget, prior run summaries\\nExpected outputs: research\\\n  \\ brief, task assignments, success criteria\\n\\nSuccess criteria:\\n- brief has clear\\\n  \\ scope\\n- task is aligned with tier\\n- downstream artifacts are specified\\n\\nRules:\\n\\\n  - Output structured YAML at the end of your response in a ```yaml block.\\n- Separate\\\n  \\ reasoning from output: think first, then produce the artifact.\\n- Evidence class:\\\n  \\ label every factual claim as R0 (machine-verified), R1 (reproducible computation),\\n\\\n  \\  E1 (external reference), E2 (LLM-assisted, requires verification), or H (human\\\n  \\ judgment).\\n- Anti-overclaiming: never say \\\"proved\\\" without formal verification.\\\n  \\ Use \\\"candidate proof\\\",\\n  \\\"computational evidence\\\", or \\\"conjecture supported\\\n  \\ by\\\" instead.\\n- Reproducibility: include all parameters, seeds, and commands\\\n  \\ needed to reproduce results.\\n\"\nuser_prompt: '# Stage: plan\n\n  Problem ID: erdos-straus\n\n\n  ## Problem Definition\n\n  Title: Unknown\n\n  Domain: number-theory\n\n  Statement: For every n в‰Ґ 2, there are positive integers x, y, z such that 4/n =\n  1/x + 1/y + 1/z.\n\n\n  Status: open\n\n\n  ## Triage\n\n  Tier: T1-computational\n\n  Amenability score: N/A\n\n  Recommended approach: parametric-search + covering-congruences\n\n\n  ## Problem Description (from README)\n\n  # ErdЕ‘sStraus conjecture\n\n\n  Registry ID: `erdos-straus`\n\n\n  Status: active\n\n\n\n  ## Proof Obligations\n\n  # Proof Obligations\n\n\n  ## Load-Bearing Claims\n\n\n  ## Branch / Sign / Endpoint Checks\n\n\n  ## Mechanizable Substeps\n\n\n  ## Independent Patch Search\n\n\n  ## Deferred Risks\n\n\n\n  ## Current Workflow State\n\n  Stage: brief\n\n  Owner: planner\n\n  Route: experiment-first\n\n\n  ## Task\n\n  Create a detailed method plan: algorithm choice, parameter ranges, verification\n  strategy, and expected outputs.\n\n\n  ## Output Format\n\n  Provide your analysis, then include a ```yaml block at the end with structured output\n  containing:\n\n  - artifact_type: the type of artifact produced\n\n  - evidence_class: R0|R1|E1|E2|H\n\n  - confidence: C1|C2|C3\n\n  - summary: one-paragraph summary of the output\n\n  - key_findings: list of key findings or decisions'\nmessages:\n- role: system\n  content: \"You are an OMEGA research agent acting as: planner\\n\\nPurpose: select\\\n    \\ problems, define phases, enforce stop rules\\n\\nExpected inputs: registry entry,\\\n    \\ triage score, compute budget, prior run summaries\\nExpected outputs: research\\\n    \\ brief, task assignments, success criteria\\n\\nSuccess criteria:\\n- brief has\\\n    \\ clear scope\\n- task is aligned with tier\\n- downstream artifacts are specified\\n\\\n    \\nRules:\\n- Output structured YAML at the end of your response in a ```yaml block.\\n\\\n    - Separate reasoning from output: think first, then produce the artifact.\\n- Evidence\\\n    \\ class: label every factual claim as R0 (machine-verified), R1 (reproducible\\\n    \\ computation),\\n  E1 (external reference), E2 (LLM-assisted, requires verification),\\\n    \\ or H (human judgment).\\n- Anti-overclaiming: never say \\\"proved\\\" without formal\\\n    \\ verification. Use \\\"candidate proof\\\",\\n  \\\"computational evidence\\\", or \\\"\\\n    conjecture supported by\\\" instead.\\n- Reproducibility: include all parameters,\\\n    \\ seeds, and commands needed to reproduce results.\\n\"\n- role: user\n  content: '# Stage: plan\n\n    Problem ID: erdos-straus\n\n\n    ## Problem Definition\n\n    Title: Unknown\n\n    Domain: number-theory\n\n    Statement: For every n в‰Ґ 2, there are positive integers x, y, z such that 4/n\n    = 1/x + 1/y + 1/z.\n\n\n    Status: open\n\n\n    ## Triage\n\n    Tier: T1-computational\n\n    Amenability score: N/A\n\n    Recommended approach: parametric-search + covering-congruences\n\n\n    ## Problem Description (from README)\n\n    # ErdЕ‘sStraus conjecture\n\n\n    Registry ID: `erdos-straus`\n\n\n    Status: active\n\n\n\n    ## Proof Obligations\n\n    # Proof Obligations\n\n\n    ## Load-Bearing Claims\n\n\n    ## Branch / Sign / Endpoint Checks\n\n\n    ## Mechanizable Substeps\n\n\n    ## Independent Patch Search\n\n\n    ## Deferred Risks\n\n\n\n    ## Current Workflow State\n\n    Stage: brief\n\n    Owner: planner\n\n    Route: experiment-first\n\n\n    ## Task\n\n    Create a detailed method plan: algorithm choice, parameter ranges, verification\n    strategy, and expected outputs.\n\n\n    ## Output Format\n\n    Provide your analysis, then include a ```yaml block at the end with structured\n    output containing:\n\n    - artifact_type: the type of artifact produced\n\n    - evidence_class: R0|R1|E1|E2|H\n\n    - confidence: C1|C2|C3\n\n    - summary: one-paragraph summary of the output\n\n    - key_findings: list of key findings or decisions'\nworkspace_contract:\n  ok: true\n  workspace_required: true\n  workspace_path: C:\\plans\\math\\research\\active\\erdos-straus\n  created_files: []\nprompt_packet_sha256: 94783cfa6a1df27030ae1e94043aa83a92ec04baf9fa4a505232d4402b6fc26f\nresolved_model: deepseek-chat\nresolved_backend: deepseek\nresolved_temperature: 0.3\nresolved_max_tokens: 2000\nprefer_local: false"
+    }
+  },
+  "implemented_vs_planned_note": {
+    "implemented": [
+      "workflow orchestration",
+      "model routing",
+      "registry validation",
+      "CLI runner"
+    ],
+    "planned": [
+      "FT scaffold for SFT/DPO",
+      "automated deployment"
+    ],
+    "non_claims": [
+      "No FT models deployed yet",
+      "No production inference yet"
+    ]
+  },
+  "verification": {
+    "tests": [
+      "pytest -q"
+    ],
+    "preflight": "not applicable (python space)",
+    "status": "APPROVED"
+  }
+}

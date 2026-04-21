@@ -7,6 +7,7 @@ import importlib.util
 import sys
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
@@ -122,6 +123,26 @@ class TestSolverAdapterPySAT(unittest.TestCase):
         self.assertTrue(required.issubset(result.keys()))
         self.assertIn(result["backend"], {"pysat", "pysat-builtin"})
         self.assertEqual(result["mode"], "sat")
+
+
+class TestSolverAdapterCapabilities(unittest.TestCase):
+    @patch("solver_adapter.importlib.util.find_spec")
+    def test_get_runtime_capabilities(self, mock_find_spec) -> None:  # type: ignore[no-untyped-def]
+        def fake_find_spec(name: str):
+            if name == "z3":
+                return object()
+            if name == "pysat":
+                return None
+            return None
+
+        mock_find_spec.side_effect = fake_find_spec
+
+        adapter = SolverAdapter()
+        caps = adapter.get_runtime_capabilities()
+
+        self.assertTrue(caps["z3_available"])
+        self.assertFalse(caps["pysat_available"])
+        self.assertEqual(caps["sat_backend_default"], "pysat-builtin")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,2 @@
+{"id":"train-001","prompt":"Summarize Erdos-Straus latest verified status.","chosen":"Status must cite explicit experiment outputs and avoid theorem-complete claims without proof artifacts.","rejected":"Erdos-Straus is solved globally with no caveats.","label":"bounded"}
+{"id":"train-002","prompt":"Report Thomson milestone findings.","chosen":"Thomson findings should separate verified runs from pending replication and include evidence paths.","rejected":"All Thomson milestones are final and unconditionally optimal.","label":"bounded"}

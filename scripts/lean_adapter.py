@@ -187,6 +187,24 @@ class LeanAdapter:
             "sandbox_tool": raw.get("sandbox_tool"),
         }
 
+    def get_runtime_capabilities(self) -> dict[str, Any]:
+        """Return machine-readable Lean/Lake runtime capability status."""
+        lean_path = shutil.which(self._lean)
+        lake_path = shutil.which(self._lake)
+        sandbox_tool_path = (
+            shutil.which(self._sandbox_tool) if self._sandbox_mode != "off" else None
+        )
+        return {
+            "lean_available": lean_path is not None,
+            "lake_available": lake_path is not None,
+            "lean_executable": lean_path,
+            "lake_executable": lake_path,
+            "sandbox_mode": self._sandbox_mode,
+            "sandbox_tool": self._sandbox_tool,
+            "sandbox_tool_available": sandbox_tool_path is not None,
+            "sandbox_tool_path": sandbox_tool_path,
+        }
+
     def check_file(
         self,
         lean_file: Path,

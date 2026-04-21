@@ -10,6 +10,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -552,21 +553,38 @@ def advance_workflow_state(
     history = state.setdefault("history", [])
     timestamp = utc_now_iso()
 
+    if current_stage not in stages and current_stage != "closed":
+        raise ValueError(f"Invalid state: current_stage '{current_stage}' is not in defined stages {stages}")
+
     if outcome == "block":
+        if state.get("stage_status") == "blocked":
+            raise ValueError(f"Cannot block: workflow is already blocked in stage '{current_stage}'")
         state["stage_status"] = "blocked"
         history.append({"at": timestamp, "event": "blocked", "from_stage": current_stage, "to_stage": current_stage, "notes": notes or ""})
     elif outcome == "resume":
+        if state.get("stage_status") != "blocked":
+            raise ValueError(f"Cannot resume: current status is '{state.get('stage_status')}', expected 'blocked'")
         state["stage_status"] = "ready"
         history.append({"at": timestamp, "event": "resumed", "from_stage": current_stage, "to_stage": current_stage, "notes": notes or ""})
     elif outcome == "close":
+        if current_stage == "closed":
+            raise ValueError("Cannot close: workflow is already closed")
         state["current_stage"] = "closed"
         state["current_owner"] = owner_for_stage(route, "closed", execution_role)
         state["stage_status"] = "completed"
         history.append({"at": timestamp, "event": "closed", "from_stage": current_stage, "to_stage": "closed", "notes": notes or ""})
     else:
         if current_stage == "closed":
-            raise ValueError("Workflow is already closed")
+            raise ValueError("Cannot advance: workflow is already closed")
+            
+        status = state.get("stage_status")
+        if status in {"blocked", "running"}:
+            raise ValueError(f"Cannot complete stage '{current_stage}' because its status is '{status}'. Must be resolved first.")
+            
         current_index = stages.index(current_stage)
+        if current_index + 1 >= len(stages):
+            raise ValueError(f"Cannot advance: '{current_stage}' is the final defined stage in route '{route}'")
+            
         next_stage = stages[current_index + 1]
         state["current_stage"] = next_stage
         state["current_owner"] = owner_for_stage(route, next_stage, execution_role)
@@ -586,14 +604,17 @@ def build_parser() -> argparse.ArgumentParser:
     triage_parser.add_argument("problem_id")
     triage_parser.add_argument("--route", choices=sorted(VALID_ROUTES))
     triage_parser.add_argument("--force", action="store_true")
+    triage_parser.add_argument("--format", choices=["yaml", "json"], default="yaml", help="Output format")
 
     status_parser = subparsers.add_parser("status", help="Read the current workflow state")
     status_parser.add_argument("problem_id")
+    status_parser.add_argument("--format", choices=["yaml", "json"], default="yaml", help="Output format")
 
     advance_parser = subparsers.add_parser("advance", help="Advance or update the workflow state")
     advance_parser.add_argument("problem_id")
     advance_parser.add_argument("--outcome", default="complete", choices=sorted(VALID_OUTCOMES))
     advance_parser.add_argument("--notes")
+    advance_parser.add_argument("--format", choices=["yaml", "json"], default="yaml", help="Output format")
 
     return parser
 
@@ -609,10 +630,14 @@ def main(argv: list[str] | None = None) -> int:
         else:
             state = advance_workflow_state(REPO_ROOT, args.problem_id, outcome=args.outcome, notes=args.notes)
     except (FileExistsError, FileNotFoundError, ValueError) as exc:
-        print(f"ERROR: {exc}")
+        print(f"ERROR: {exc}", file=sys.stderr)
         return 1
 
-    print(yaml.safe_dump(state, sort_keys=False, allow_unicode=True))
+    if getattr(args, "format", "yaml") == "json":
+        import json
+        print(json.dumps(state, indent=2, ensure_ascii=False))
+    else:
+        print(yaml.safe_dump(state, sort_keys=False, allow_unicode=True))
     return 0
 
 

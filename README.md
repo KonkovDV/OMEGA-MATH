@@ -13,8 +13,8 @@
 ### English
 
 - [Abstract](#abstract)
-- [Verified Snapshot (2026-04-17)](#verified-snapshot-2026-04-17)
-- [What OMEGA Delivers](#what-omega-delivers)
+- [Verified Snapshot (2026-04-21)](#verified-snapshot-2026-04-21)
+- [What Is In The Repo Now](#what-is-in-the-repo-now)
 - [Boundaries and Non-Claims](#boundaries-and-non-claims)
 - [Reproducible Quick Start](#reproducible-quick-start)
 - [Documentation Map](#documentation-map)
@@ -22,8 +22,8 @@
 ### Русский
 
 - [Краткая аннотация](#краткая-аннотация)
-- [Проверенный срез на 2026-04-17](#проверенный-срез-на-2026-04-17)
-- [Что уже реализовано](#что-уже-реализовано)
+- [Проверенный срез на 2026-04-21](#проверенный-срез-на-2026-04-21)
+- [Что сейчас есть в репозитории](#что-сейчас-есть-в-репозитории)
 - [Границы проекта](#границы-проекта)
 - [Быстрый старт](#быстрый-старт)
 - [Карта документации](#карта-документации)
@@ -37,22 +37,20 @@ OMEGA is not a single-problem demo and not a generic "AI for math" wrapper. It i
 1. Registry first: track targets in machine-readable form before execution.
 2. Triage first: prioritize by practical AI amenability, not only by prestige.
 3. Bounded execution: run explicit, restartable stages with audit-friendly state.
-4. Evidence-bearing artifacts: tie claims to ledgers, manifests, and checksums.
-5. Honest scope: separate what is implemented, what is experimental, and what is not yet delivered.
+4. Evidence-bearing artifacts: tie claims to ledgers, manifests, checksums, and machine-readable reports.
+5. Honest scope: separate what is implemented, what is experimental, and what is still only a scaffold.
 
-The project borrows architectural ideas from external research-agent ecosystems, but executes on local contracts, local scripts, and local evidence surfaces.
+OMEGA borrows ideas from external research-agent and proving ecosystems, but it executes on local contracts, local scripts, and local evidence surfaces.
 
 ## Documentation Design Note (April 2026)
 
-This README is intentionally designed as an entrypoint and router, following current documentation practice:
+This README is an entrypoint and router.
 
-- GitHub README guidance: clear "what/why/how/help/maintainers" at repository entry.
-- Diataxis architecture: separate explanation, how-to, and reference surfaces.
-- Write the Docs principles: skimmable, current, nearby, and unique sources.
+- It tells you what the repository can already do.
+- It points to the protocol and evidence surfaces that carry the details.
+- It avoids turning the root README into a dump of every internal document.
 
-The goal is fast orientation without collapsing all project documentation into one file.
-
-## Verified Snapshot (2026-04-17)
+## Verified Snapshot (2026-04-21)
 
 | Surface | Verified state | Source |
 |---|---|---|
@@ -63,28 +61,53 @@ The goal is fast orientation without collapsing all project documentation into o
 | Domain files | `14` | `registry/index.yaml` |
 | Collection files | `6` | `registry/index.yaml` |
 | Tier distribution | T1 `28`, T2 `22`, T3 `10`, T4 `5`, T5 `8`, untriaged `179` | `registry/index.yaml` |
-| Latest local test run | `218 passed, 8 skipped in 14.24s` | `python -m pytest -q` (2026-04-17) |
+| Latest local full test run | `241 passed in 27.74s` | `python -m pytest -q` (2026-04-21) |
+| Runtime baseline report | `APPROVED` | `reports/omega_runtime_evidence_report_v1.json` |
+| Execution maturity report | `WARNING` on the audited host: Lean/Lake and `z3` absent, SAT fallback still works | `reports/omega_execution_maturity_report_v1.json` |
+| FT scaffold gate | `APPROVED` | `reports/omega_ft_scaffold_gate_report_v1.json` |
 | Docs closure rail | `8 passed, 0 warnings, 0 failures` | `agent:preflight:docs` |
 
-## What OMEGA Delivers
+## What Is In The Repo Now
 
-### Core runtime surfaces
+### Core research runtime
 
 - Schema-validated registry and generated index under [registry](registry).
-- Deterministic per-problem workflow controller (`omega-workflow`).
-- Experiment lifecycle and evidence bundle tooling (`omega-runner`, `omega-verify-evidence`).
-- Execution adapters for Lean, SAT/SMT, and CAS (`omega-lean`, `omega-solve`, `omega-cas`).
-- Model routing and multi-stage orchestration (`omega-model-router`, `omega-orchestrate`).
-- LeanCopilot-compatible bridge and bounded proof-repair loop (`omega-leancop-bridge`, `omega-proof-repair`).
-- Einstein Arena ingestion and API surfaces (`omega-import-einstein-arena`, `omega-einstein-arena`).
+- Deterministic per-problem workflow controller, including stricter transition validation and machine-readable YAML or JSON output through `omega-workflow`.
+- Experiment lifecycle, evidence bundle generation, and global experiment index surfaces through `omega-runner`, `omega-verify-evidence`, and `omega-generate-experiment-index`.
+- Query surfaces for per-run ledgers and the global experiment index through `omega-query`.
 
-### Research operations model
+### Execution and orchestration surfaces
 
-Primary stage chain:
+- Lean, SAT/SMT, and CAS adapters through `omega-lean`, `omega-solve`, and `omega-cas`.
+- Machine-readable runtime capability probing for Lean/Lake and solver backends.
+- Model routing and multi-stage orchestration through `omega-model-router` and `omega-orchestrate`.
+- Orchestrator result envelopes that now preserve failed stage metadata and prompt-packet file references.
 
-`brief -> novelty -> triage -> plan -> experiment/prove -> results -> paper -> referee -> promote/archive`
+### Literature and novelty surfaces
 
-OMEGA is optimized for traceability and repeatability of this chain, not for unbounded autonomous behavior.
+- Programmatic literature lookup, title matching, and search through `omega-literature`.
+- Deterministic novelty-collision packet generation through `omega-literature novelty-packet`.
+- Local literature evidence surfaces under `input_files/literature.md`, `input_files/literature_graph.md`, and `input_files/citation_evidence.md`.
+
+### Synthetic reasoning packet lane
+
+- A bounded synthetic reasoning contract in [protocol/synthetic-reasoning-packets.md](protocol/synthetic-reasoning-packets.md).
+- Problem-local taxonomy and evaluation packet templates under [templates/synthetic-reasoning-taxonomy.md](templates/synthetic-reasoning-taxonomy.md) and [templates/synthetic-evaluation-packet.md](templates/synthetic-evaluation-packet.md).
+- Ledger support for `prompt-packet`, `synthetic-taxonomy`, and `evaluation-packet` artifacts.
+
+### Runtime evidence and export surfaces
+
+- Runtime baseline export through `omega-export-runtime-baseline`.
+- Lean or solver execution maturity export through `omega-export-execution-maturity`.
+- FT scaffold gate export through `omega-export-ft-scaffold-gate`.
+- Machine-readable reports under [reports](reports).
+
+### FT scaffold (OMG-201)
+
+- A bounded train/eval/serve smoke scaffold under [llm](llm).
+- Deterministic dataset manifest and split policy for the smoke lane.
+- Local smoke entrypoints for training, evaluation, and serving.
+- An explicit non-claim boundary: this scaffold proves readiness prerequisites, not theorem-quality model performance or production serving.
 
 ## Boundaries and Non-Claims
 
@@ -92,11 +115,12 @@ OMEGA does not currently claim:
 
 1. End-to-end autonomous publication with acceptance-grade review guarantees.
 2. Full theorem-level correctness closure without human or formal verification gates.
-3. Complete literature-graph or citation-evidence coverage for every registry entry.
-4. Always-on proof search that can independently close nontrivial Lean workflows at scale.
-5. A fully productized enterprise platform with SLA-grade operational guarantees.
+3. Complete literature coverage for every registry entry.
+4. A synthetic reasoning lane that by itself proves novelty, correctness, or proof closure.
+5. A fine-tuning stack that already delivers production inference or benchmark-leading theorem capability.
+6. A host-independent Lean or SMT toolchain guarantee; execution maturity reports are environment-relative.
 
-These boundaries are methodological constraints, not omissions in disclosure.
+These are scope controls, not omitted disclaimers.
 
 ## Flagship Tracks (Run-Ready Surfaces)
 
@@ -128,21 +152,35 @@ omega-verify-version-sync
 ```bash
 omega-scaffold-problem erdos-straus --title "Erdos-Straus Conjecture"
 omega-workflow triage erdos-straus
+omega-workflow status erdos-straus --format json
 ```
 
-### 4) Dry-run orchestration before live calls
+### 4) Build a novelty-collision packet before plan or publication work
+
+```bash
+omega-literature novelty-packet "erdos-straus conjecture unit fractions" --problem-id erdos-straus --max-items 10
+```
+
+### 5) Dry-run orchestration before live calls
 
 ```bash
 omega-orchestrate run erdos-straus --stage plan --dry-run
 ```
 
-### 5) Prefer local prover lane when available
+### 6) Export runtime evidence
 
 ```bash
-omega-orchestrate run erdos-straus --stage prove --prefer-local
+omega-export-runtime-baseline
+omega-export-execution-maturity
 ```
 
-### 6) Optional local verification
+### 7) Run the FT scaffold gate when you need the bounded smoke lane
+
+```bash
+omega-export-ft-scaffold-gate
+```
+
+### 8) Optional full local verification
 
 ```bash
 python -m pytest -q
@@ -154,6 +192,7 @@ python -m pytest -q
 
 - [README.md](README.md)
 - [PROTOCOL.md](PROTOCOL.md)
+- [llm/README.md](llm/README.md)
 - [research/OMEGA_DEVELOPMENT_ROADMAP_2026_04_05.md](research/OMEGA_DEVELOPMENT_ROADMAP_2026_04_05.md)
 
 ### How-to surfaces
@@ -168,12 +207,15 @@ python -m pytest -q
 - [protocol/prover-result-contract.md](protocol/prover-result-contract.md)
 - [protocol/experiment-ledger-spec.md](protocol/experiment-ledger-spec.md)
 - [protocol/evidence-governance.md](protocol/evidence-governance.md)
+- [protocol/literature-adapter.md](protocol/literature-adapter.md)
+- [protocol/synthetic-reasoning-packets.md](protocol/synthetic-reasoning-packets.md)
 
 ### Evidence and audit surfaces
 
-- [docs/reports/HYPER_DEEP_AUDIT_REPORT_2026_04_17.md](docs/reports/HYPER_DEEP_AUDIT_REPORT_2026_04_17.md)
-- [docs/reports/HYPER_DEEP_AUDIT_REPORT_2026_04_06.md](docs/reports/HYPER_DEEP_AUDIT_REPORT_2026_04_06.md)
 - [docs/reports/EXTRACTION_REPORT.md](docs/reports/EXTRACTION_REPORT.md)
+- [reports/omega_runtime_evidence_report_v1.json](reports/omega_runtime_evidence_report_v1.json)
+- [reports/omega_execution_maturity_report_v1.json](reports/omega_execution_maturity_report_v1.json)
+- [reports/omega_ft_scaffold_gate_report_v1.json](reports/omega_ft_scaffold_gate_report_v1.json)
 
 ## Repository Topology
 
@@ -183,11 +225,13 @@ math/
 ├── PROTOCOL.md
 ├── protocol/
 ├── research/
-├── docs/reports/
+├── docs/
 ├── registry/
 ├── scripts/
 ├── tests/
 ├── templates/
+├── llm/
+├── reports/
 ├── agents/
 └── .github/
 ```
@@ -210,16 +254,16 @@ If you use OMEGA in research or derived tooling, cite via [CITATION.cff](CITATIO
 
 ## Краткая аннотация
 
-OMEGA - это не демонстрационный проект на одну задачу и не обёртка "ИИ для всего". Это исследовательский репозиторий, в котором работа строится по прозрачному контуру:
+OMEGA - это не витрина на одну задачу и не общая обёртка "ИИ для математики". Это исследовательский репозиторий, в котором работа идёт по явному контуру:
 
 1. сначала реестр задач,
 2. затем triage по практической доступности,
-3. затем ограниченное исполнение с журналированием,
-4. затем пакет свидетельств и формулировка результата.
+3. затем ограниченное исполнение по стадиям,
+4. затем пакет свидетельств, отчёты и формулировка результата.
 
-Проект сознательно отделяет реализованное, экспериментальное и пока недоступное. Это важная часть научной добросовестности.
+Репозиторий сознательно разделяет то, что уже исполняется локально, то, что пока является bounded scaffold, и то, что ещё не должно звучать как закрытая научная претензия.
 
-## Проверенный срез на 2026-04-17
+## Проверенный срез на 2026-04-21
 
 | Показатель | Значение |
 |---|---|
@@ -227,19 +271,46 @@ OMEGA - это не демонстрационный проект на одну 
 | Поддерживаемый Python | `3.12`, `3.13` |
 | Задач в реестре | `252` |
 | Триажировано | `73 / 252` (`29.0%`) |
-| Последний локальный тестовый прогон | `218 passed, 8 skipped` |
+| Последний полный локальный тестовый прогон | `241 passed in 27.74s` |
+| Runtime baseline report | `APPROVED` |
+| Execution maturity report | `WARNING`: на проверенной машине не найден Lean/Lake и `z3`, SAT fallback работает |
+| FT scaffold gate | `APPROVED` |
 | Статус docs closure rail | `8 passed, 0 warnings, 0 failures` |
 
-## Что уже реализовано
+## Что сейчас есть в репозитории
+
+### Базовый исследовательский runtime
 
 - машиночитаемый реестр с валидацией схем;
-- контроллер стадийного рабочего процесса;
-- раннер экспериментов и генерация evidence bundle;
+- контроллер рабочего процесса по стадиям с более строгой валидацией переходов и выводом в YAML или JSON;
+- раннер экспериментов, evidence bundle и глобальный experiment index;
+- query surfaces для ledger и experiment index через `omega-query`.
+
+### Исполнительные и orchestration surfaces
+
 - адаптеры Lean, SAT/SMT и CAS;
+- capability probing для Lean/Lake и solver backends;
 - маршрутизация моделей и стадийная оркестрация;
-- мост LeanCopilot и ограниченный цикл исправления доказательств;
-- импорт и API-контур Einstein Arena;
-- набор governance-документов для открытой разработки и цитирования.
+- более информативные orchestrator envelopes: сохраняются failed stage metadata и prompt-packet file references.
+
+### Literature и novelty lane
+
+- `omega-literature` теперь покрывает lookup, search, match-title и `novelty-packet`;
+- novelty packet строится детерминированно и даёт collision-risk labels для предварительной проверки новизны;
+- локальные surfaces для литературы и citation evidence остаются обязательными при реальных novelty claims.
+
+### Synthetic reasoning packet lane
+
+- появился локальный контракт для synthetic reasoning work;
+- есть problem-local шаблоны taxonomy и evaluation packet;
+- ledger умеет хранить `prompt-packet`, `synthetic-taxonomy` и `evaluation-packet`.
+
+### Runtime evidence и FT scaffold
+
+- `omega-export-runtime-baseline` собирает общий runtime evidence report;
+- `omega-export-execution-maturity` фиксирует состояние Lean и solver toolchains на текущем хосте;
+- `omega-export-ft-scaffold-gate` проверяет bounded FT scaffold в `llm/`;
+- под `llm/` лежит локальный smoke train/eval/serve scaffold с явными non-claims.
 
 ## Границы проекта
 
@@ -248,8 +319,9 @@ OMEGA - это не демонстрационный проект на одну 
 1. полностью автономную публикацию с гарантиями уровня рецензируемого журнала;
 2. закрытие теоремных утверждений без человека или формального верификатора;
 3. полный литераторный граф по всем записям реестра;
-4. самостоятельное закрытие сложных Lean-кейсов в непрерывном режиме;
-5. зрелую корпоративную платформу со SLA-гарантиями.
+4. что synthetic reasoning lane сам по себе доказывает новизну, корректность или proof closure;
+5. что FT scaffold уже означает production inference или theorem-level model capability;
+6. что Lean или SMT toolchain гарантированно доступны на любой машине без отдельной локальной настройки.
 
 ## Быстрый старт
 
@@ -259,19 +331,27 @@ omega-validate-registry
 omega-verify-version-sync
 omega-scaffold-problem erdos-straus --title "Erdos-Straus Conjecture"
 omega-workflow triage erdos-straus
+omega-workflow status erdos-straus --format json
+omega-literature novelty-packet "erdos-straus conjecture unit fractions" --problem-id erdos-straus --max-items 10
 omega-orchestrate run erdos-straus --stage plan --dry-run
+omega-export-runtime-baseline
+omega-export-execution-maturity
+omega-export-ft-scaffold-gate
+python -m pytest -q
 ```
 
 ## Карта документации
 
 - Полный протокол: [PROTOCOL.md](PROTOCOL.md)
 - Операторский запуск: [protocol/operator-runbook.md](protocol/operator-runbook.md)
+- Literature adapter contract: [protocol/literature-adapter.md](protocol/literature-adapter.md)
+- Synthetic reasoning packet contract: [protocol/synthetic-reasoning-packets.md](protocol/synthetic-reasoning-packets.md)
 - Контракт оркестратора: [protocol/orchestrator-contract.md](protocol/orchestrator-contract.md)
 - Контракт результата доказательства: [protocol/prover-result-contract.md](protocol/prover-result-contract.md)
 - Политика свидетельств: [protocol/evidence-governance.md](protocol/evidence-governance.md)
-- Исполнительный план: [research/OMEGA_6_PHASE_EXECUTION_PLAN_2026_04_05.md](research/OMEGA_6_PHASE_EXECUTION_PLAN_2026_04_05.md)
-- Дорожная карта: [research/OMEGA_DEVELOPMENT_ROADMAP_2026_04_05.md](research/OMEGA_DEVELOPMENT_ROADMAP_2026_04_05.md)
-- Аудитные отчёты: [docs/reports](docs/reports)
+- FT scaffold note: [llm/README.md](llm/README.md)
+- Extraction report: [docs/reports/EXTRACTION_REPORT.md](docs/reports/EXTRACTION_REPORT.md)
+- Machine-readable reports: [reports](reports)
 
 ## Лицензия и цитирование
 

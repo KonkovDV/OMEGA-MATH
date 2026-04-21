@@ -1,0 +1,18 @@
+{
+  "artifact_type": "omega_ft_serve_smoke_report",
+  "generated_at": "2026-04-21T20:37:18.605962+00:00",
+  "status": "APPROVED",
+  "port": 65516,
+  "checks": [
+    {
+      "name": "health_endpoint",
+      "passed": true,
+      "details": "{\"status\": 200, \"body\": {\"status\": \"ok\", \"service\": \"omega-ft-smoke\"}}"
+    },
+    {
+      "name": "openai_completion_endpoint",
+      "passed": true,
+      "details": "{\"status\": 200, \"content\": \"OMEGA FT serve smoke response\"}"
+    }
+  ]
+}

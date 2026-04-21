@@ -13,6 +13,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import json
 import re
 import time
@@ -132,6 +133,17 @@ def _dpll_solve(num_vars: int, clauses: list[list[int]]) -> tuple[bool, dict[str
 
 class SolverAdapter:
     """Execution adapter for SAT/SMT solving."""
+
+    def get_runtime_capabilities(self) -> dict[str, Any]:
+        """Return machine-readable solver backend capability status."""
+        has_z3 = importlib.util.find_spec("z3") is not None
+        has_pysat = importlib.util.find_spec("pysat") is not None
+        return {
+            "z3_available": has_z3,
+            "pysat_available": has_pysat,
+            "sat_backend_default": "pysat" if has_pysat else "pysat-builtin",
+            "smt_backend_default": "z3",
+        }
 
     def solve_smt(
         self,

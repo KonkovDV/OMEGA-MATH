@@ -13,6 +13,7 @@ from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
 from literature_adapter import match_title_semantic_scholar, normalize_identifier, lookup_arxiv, lookup_auto, search_semantic_scholar  # type: ignore
+from literature_adapter import build_novelty_packet  # type: ignore
 
 
 class _FakeResponse:
@@ -97,20 +98,20 @@ class LiteratureAdapterTests(unittest.TestCase):
         self.assertEqual(paper["doi"], "10.48550/arXiv.2601.22401")
         self.assertEqual(paper["authors"], ["Tony Feng", "Trieu Trinh"])
 
-        def test_lookup_arxiv_raises_on_atom_error_feed(self) -> None:
-                error_feed = """
-                <feed xmlns="http://www.w3.org/2005/Atom" xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/">
-                    <entry>
-                        <id>http://arxiv.org/api/errors#incorrect_id_format</id>
-                        <title>Error</title>
-                        <summary>incorrect id format for 1234.12345</summary>
-                    </entry>
-                </feed>
-                """
+    def test_lookup_arxiv_raises_on_atom_error_feed(self) -> None:
+        error_feed = """
+        <feed xmlns="http://www.w3.org/2005/Atom" xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/">
+            <entry>
+                <id>http://arxiv.org/api/errors#incorrect_id_format</id>
+                <title>Error</title>
+                <summary>incorrect id format for 1234.12345</summary>
+            </entry>
+        </feed>
+        """
 
-                with patch("urllib.request.urlopen", return_value=_FakeResponse(error_feed)):
-                        with self.assertRaisesRegex(LookupError, "incorrect id format"):
-                                lookup_arxiv("ARXIV:1234.12345")
+        with patch("urllib.request.urlopen", return_value=_FakeResponse(error_feed)):
+            with self.assertRaisesRegex(LookupError, "incorrect id format"):
+                lookup_arxiv("ARXIV:1234.12345")
 
     def test_search_and_match_title_normalize_paper_lists(self) -> None:
         search_payload = """
@@ -143,6 +144,53 @@ class LiteratureAdapterTests(unittest.TestCase):
 
         self.assertEqual(result["count"], 0)
         self.assertEqual(result["papers"], [])
+
+    def test_build_novelty_packet_is_stable_and_deduplicated(self) -> None:
+        papers = [
+            {
+                "paper_id": "p1",
+                "title": "Collision Candidate",
+                "authors": ["A"],
+                "year": 2026,
+                "citation_count": 25,
+                "doi": "10.1000/abc",
+                "arxiv_id": None,
+                "url": "https://example.org/p1",
+            },
+            {
+                "paper_id": "p2",
+                "title": "Collision Candidate Duplicate",
+                "authors": ["A"],
+                "year": 2025,
+                "citation_count": 5,
+                "doi": "10.1000/abc",
+                "arxiv_id": None,
+                "url": "https://example.org/p2",
+            },
+            {
+                "paper_id": "p3",
+                "title": "Fresh but low-citation idea",
+                "authors": ["B"],
+                "year": 2026,
+                "citation_count": 2,
+                "doi": None,
+                "arxiv_id": "2601.00001",
+                "url": "https://example.org/p3",
+            },
+        ]
+
+        packet = build_novelty_packet(
+            "autonomous mathematics",
+            papers,
+            problem_id="erdos-straus",
+            max_items=5,
+        )
+
+        self.assertEqual(packet["source"], "omega-literature-novelty-packet")
+        self.assertEqual(packet["count"], 2)
+        self.assertEqual(packet["problem_id"], "erdos-straus")
+        self.assertEqual(packet["candidates"][0]["paper_id"], "p1")
+        self.assertEqual(packet["candidates"][0]["collision_risk"], "medium")
 
 
 if __name__ == "__main__":

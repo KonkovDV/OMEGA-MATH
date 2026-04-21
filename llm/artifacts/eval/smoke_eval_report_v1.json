@@ -1,0 +1,23 @@
+{
+  "artifact_type": "omega_ft_eval_smoke_report",
+  "generated_at": "2026-04-21T20:37:17.972536+00:00",
+  "status": "APPROVED",
+  "train_report_path": "C:\\plans\\math\\llm\\artifacts\\train\\smoke_train_report_v1.json",
+  "metrics": {
+    "consistency": 0.75,
+    "bounded_response_rate": 0.82,
+    "reasoning_clarity": 0.78
+  },
+  "checks": [
+    {
+      "name": "train_smoke_approved",
+      "passed": true,
+      "details": "train_status=APPROVED"
+    },
+    {
+      "name": "metrics_threshold",
+      "passed": true,
+      "details": "{\"consistency\": 0.75, \"bounded_response_rate\": 0.82, \"reasoning_clarity\": 0.78}"
+    }
+  ]
+}

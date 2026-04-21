@@ -1,0 +1,92 @@
+{
+  "project": "OMEGA-MATH",
+  "artifact_type": "omega_execution_maturity_report",
+  "generated_at": "2026-04-21T20:37:17.790831+00:00",
+  "version": "v1",
+  "command_bundle": [
+    "omega-lean run-command \"lean --version\"",
+    "omega-solve sat --clauses \"[[1,2],[-1,3]]\" --num-vars 3",
+    "omega-solve smt \"x = Int('x'); solver.add(x == 1)\""
+  ],
+  "capabilities": {
+    "lean": {
+      "lean_available": false,
+      "lake_available": false,
+      "lean_executable": null,
+      "lake_executable": null,
+      "sandbox_mode": "auto",
+      "sandbox_tool": "landrun",
+      "sandbox_tool_available": false,
+      "sandbox_tool_path": null
+    },
+    "solver": {
+      "z3_available": true,
+      "pysat_available": true,
+      "sat_backend_default": "pysat",
+      "smt_backend_default": "z3"
+    }
+  },
+  "checks": [
+    {
+      "name": "lean_adapter_capability_probe",
+      "passed": true,
+      "severity": "info",
+      "details": {
+        "lean_available": false,
+        "lake_available": false,
+        "sandbox_mode": "auto"
+      }
+    },
+    {
+      "name": "lean_command_smoke",
+      "passed": false,
+      "severity": "warning",
+      "details": {
+        "exit_code": -3,
+        "stderr": "Executable not found: 'lean'. Install Lean/Lake toolchain or pass explicit binary path. OS detail: [WinError 2] The system cannot find the file specified"
+      }
+    },
+    {
+      "name": "solver_sat_smoke",
+      "passed": true,
+      "severity": "error",
+      "details": {
+        "backend": "pysat",
+        "error": null
+      }
+    },
+    {
+      "name": "solver_smt_smoke",
+      "passed": true,
+      "severity": "warning",
+      "details": {
+        "z3_available": true,
+        "error": null
+      }
+    }
+  ],
+  "metrics": {
+    "checks_total": 4,
+    "checks_passed": 3,
+    "hard_failures": 0,
+    "warning_failures": 1
+  },
+  "verification": {
+    "status": "WARNING"
+  },
+  "implemented_vs_planned_note": {
+    "implemented": [
+      "Lean adapter capability probing and structured diagnostics",
+      "SAT/SMT solver capability probing and deterministic SAT smoke",
+      "Machine-readable execution maturity evidence export"
+    ],
+    "planned": [
+      "Lean/Lake environment pre-bundling in CI images",
+      "Extended solver benchmark matrix by problem family"
+    ],
+    "non_claims": [
+      "This report does not claim theorem-quality guarantees.",
+      "This report does not claim full benchmark superiority across all solver classes."
+    ]
+  }
+}

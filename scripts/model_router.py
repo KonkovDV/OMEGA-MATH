@@ -121,6 +121,7 @@ class ModelProfile:
     temperature: float
     description: str
     fallback: str | None = None
+    fallback_reason: str | None = None
 
 
 # Role → tier → model profile (the routing table)
@@ -221,6 +222,11 @@ def resolve_with_fallback(
     if profile.fallback:
         fallback_backend_name = _infer_backend(profile.fallback)
         fallback_backend = BACKENDS.get(fallback_backend_name)
+        
+        fallback_reason = None
+        if not backend.is_configured:
+            fallback_reason = f"Primary backend '{backend.name}' not configured (missing API key or URL)"
+        
         if fallback_backend and fallback_backend.is_configured:
             fallback_profile = ModelProfile(
                 model=profile.fallback,
@@ -228,6 +234,7 @@ def resolve_with_fallback(
                 max_tokens=profile.max_tokens,
                 temperature=profile.temperature,
                 description=f"Fallback for {profile.model}",
+                fallback_reason=fallback_reason,
             )
             return fallback_profile, fallback_backend
 
@@ -314,14 +321,18 @@ def cmd_profiles() -> None:
     for role, tiers in PROFILES.items():
         output[role] = {}
         for tier, profile in tiers.items():
-            output[role][tier] = {
-                "model": profile.model,
-                "backend": profile.backend,
-                "max_tokens": profile.max_tokens,
-                "temperature": profile.temperature,
-                "description": profile.description,
-                "fallback": profile.fallback,
-            }
+            try:
+                output[role][tier] = {
+                    "model": profile.model,
+                    "backend": profile.backend,
+                    "max_tokens": profile.max_tokens,
+                    "temperature": profile.temperature,
+                    "description": profile.description,
+                    "fallback": profile.fallback,
+                    "fallback_reason": getattr(profile, "fallback_reason", None),
+                }
+            except Exception:
+                pass
     print(yaml.safe_dump(output, sort_keys=False, allow_unicode=True))
 
 

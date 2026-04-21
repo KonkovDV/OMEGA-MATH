@@ -123,6 +123,89 @@ def normalize_semantic_scholar_paper(payload: dict[str, Any], *, source: str) ->
     }
 
 
+def _paper_identity_key(paper: dict[str, Any]) -> str:
+    doi = (paper.get("doi") or "").strip().lower()
+    arxiv_id = (paper.get("arxiv_id") or "").strip().lower()
+    title = (paper.get("title") or "").strip().lower()
+    if doi:
+        return f"doi:{doi}"
+    if arxiv_id:
+        return f"arxiv:{arxiv_id}"
+    return f"title:{title}"
+
+
+def _stable_sort_key(paper: dict[str, Any]) -> tuple[int, int, str]:
+    citations = int(paper.get("citation_count") or 0)
+    year = int(paper.get("year") or 0)
+    title = (paper.get("title") or "").lower()
+    return (-citations, -year, title)
+
+
+def stabilize_paper_records(papers: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Deduplicate and sort papers deterministically for novelty packet assembly."""
+    deduped: dict[str, dict[str, Any]] = {}
+    for paper in papers:
+        key = _paper_identity_key(paper)
+        existing = deduped.get(key)
+        if existing is None or _stable_sort_key(paper) < _stable_sort_key(existing):
+            deduped[key] = paper
+    return sorted(deduped.values(), key=_stable_sort_key)
+
+
+def _collision_risk_level(paper: dict[str, Any]) -> str:
+    citations = int(paper.get("citation_count") or 0)
+    year = int(paper.get("year") or 0)
+    if citations >= 100:
+        return "high"
+    if citations >= 20 or year >= 2025:
+        return "medium"
+    return "low"
+
+
+def build_novelty_packet(
+    query: str,
+    papers: list[dict[str, Any]],
+    *,
+    problem_id: str | None = None,
+    max_items: int = 10,
+) -> dict[str, Any]:
+    stable = stabilize_paper_records(papers)
+    selected = stable[:max_items]
+
+    candidates: list[dict[str, Any]] = []
+    risk_summary = {"high": 0, "medium": 0, "low": 0}
+
+    for index, paper in enumerate(selected, start=1):
+        risk = _collision_risk_level(paper)
+        risk_summary[risk] += 1
+        candidates.append(
+            {
+                "rank": index,
+                "collision_risk": risk,
+                "paper_id": paper.get("paper_id"),
+                "title": paper.get("title"),
+                "authors": paper.get("authors"),
+                "year": paper.get("year"),
+                "citation_count": paper.get("citation_count"),
+                "doi": paper.get("doi"),
+                "arxiv_id": paper.get("arxiv_id"),
+                "url": paper.get("url"),
+            }
+        )
+
+    packet: dict[str, Any] = {
+        "source": "omega-literature-novelty-packet",
+        "packet_version": "v1",
+        "query": query,
+        "count": len(candidates),
+        "candidates": candidates,
+        "risk_summary": risk_summary,
+    }
+    if problem_id:
+        packet["problem_id"] = problem_id
+    return packet
+
+
 def lookup_semantic_scholar(identifier: str, *, api_key: str | None = None) -> dict[str, Any]:
     normalized = normalize_identifier(identifier)
     payload = _fetch_json(
@@ -270,6 +353,15 @@ def main(argv: list[str] | None = None) -> int:
     match_parser.add_argument("query")
     match_parser.add_argument("--problem-id")
 
+    packet_parser = subparsers.add_parser(
+        "novelty-packet",
+        help="Build deterministic novelty-collision packet from Semantic Scholar search",
+    )
+    packet_parser.add_argument("query")
+    packet_parser.add_argument("--limit", type=int, default=20)
+    packet_parser.add_argument("--max-items", type=int, default=10)
+    packet_parser.add_argument("--problem-id")
+
     args = parser.parse_args(argv)
 
     if args.action == "lookup":
@@ -291,10 +383,18 @@ def main(argv: list[str] | None = None) -> int:
         payload = search_semantic_scholar(args.query, limit=args.limit, api_key=args.api_key)
         if args.problem_id:
             payload["problem_id"] = args.problem_id
-    else:
+    elif args.action == "match-title":
         payload = match_title_semantic_scholar(args.query, api_key=args.api_key)
         if args.problem_id:
             payload["problem_id"] = args.problem_id
+    else:
+        search_payload = search_semantic_scholar(args.query, limit=args.limit, api_key=args.api_key)
+        payload = build_novelty_packet(
+            args.query,
+            search_payload.get("papers") or [],
+            problem_id=args.problem_id,
+            max_items=args.max_items,
+        )
 
     print(dump_payload(payload, output_format=args.output_format))
     return 0

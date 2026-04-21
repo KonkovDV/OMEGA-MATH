@@ -733,6 +733,7 @@ def save_artifact(
         prompt_packet_payload = json.dumps(prompt_packet, ensure_ascii=False, indent=2, sort_keys=True)
         prompt_packet_path.write_text(prompt_packet_payload, encoding="utf-8")
         prompt_packet_file_sha256 = _sha256_text(prompt_packet_payload)
+        metadata["prompt_packet_file"] = f"prompts/{prompt_filename}"
 
     # Build artifact file with metadata header
     header = yaml.safe_dump(
@@ -1008,6 +1009,9 @@ def run_pipeline(
             return {
                 "success": False,
                 "error": f"Pipeline failed at stage '{stage}'",
+                "failed_stage": stage,
+                "failed_stage_role": STAGE_TO_ROLE.get(stage),
+                "error_detail": result.get("error"),
                 "stage_results": results,
             }
 

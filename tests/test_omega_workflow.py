@@ -165,6 +165,44 @@ class OmegaWorkflowTests(unittest.TestCase):
         self.assertEqual(resumed["current_stage"], "brief")
         self.assertEqual(resumed["stage_status"], "ready")
 
+    def test_transition_validation(self) -> None:
+        self._create_workspace("kobon-triangles", "Kobon triangles")
+        self._write_domain_problem(
+            "geometry.yaml",
+            {
+                "id": "kobon-triangles",
+                "name": "Kobon triangles",
+                "status": "open",
+                "statement": "Maximize triangles from n lines.",
+                "ai_triage": {"tier": "T1-computational", "amenability_score": 8},
+            },
+        )
+
+        initialize_workflow_state(self.repo_root, "kobon-triangles")
+        
+        # Test blocking an already blocked state
+        advance_workflow_state(self.repo_root, "kobon-triangles", outcome="block")
+        with self.assertRaisesRegex(ValueError, "Cannot block: workflow is already blocked"):
+            advance_workflow_state(self.repo_root, "kobon-triangles", outcome="block")
+            
+        # Test completing a blocked state
+        with self.assertRaisesRegex(ValueError, "Cannot complete stage .* Must be resolved first"):
+            advance_workflow_state(self.repo_root, "kobon-triangles", outcome="complete")
+        
+        # Resume
+        advance_workflow_state(self.repo_root, "kobon-triangles", outcome="resume")
+        
+        # Test resuming a ready state
+        with self.assertRaisesRegex(ValueError, "Cannot resume: current status is 'ready'"):
+            advance_workflow_state(self.repo_root, "kobon-triangles", outcome="resume")
+
+        # Close
+        advance_workflow_state(self.repo_root, "kobon-triangles", outcome="close")
+        
+        # Test advancing closed state
+        with self.assertRaisesRegex(ValueError, "Cannot advance: workflow is already closed"):
+            advance_workflow_state(self.repo_root, "kobon-triangles", outcome="complete")
+
     def test_load_workflow_state_reads_written_file(self) -> None:
         self._create_workspace("kobon-triangles", "Kobon triangles")
         self._write_domain_problem(

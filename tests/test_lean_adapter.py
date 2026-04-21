@@ -204,5 +204,28 @@ class TestLeanAdapterSandboxMode(unittest.TestCase):
         self.assertIn("Sandbox mode is 'required'", result["stderr"])
 
 
+class TestLeanAdapterCapabilities(unittest.TestCase):
+    @patch("lean_adapter.shutil.which")
+    def test_get_runtime_capabilities(self, mock_which: MagicMock) -> None:
+        def fake_which(binary: str) -> str | None:
+            if binary == "lean":
+                return "/usr/bin/lean"
+            if binary == "lake":
+                return "/usr/bin/lake"
+            if binary == "landrun":
+                return "/usr/bin/landrun"
+            return None
+
+        adapter = LeanAdapter(sandbox_mode="auto")
+        mock_which.side_effect = fake_which
+
+        caps = adapter.get_runtime_capabilities()
+
+        self.assertTrue(caps["lean_available"])
+        self.assertTrue(caps["lake_available"])
+        self.assertTrue(caps["sandbox_tool_available"])
+        self.assertEqual(caps["sandbox_mode"], "auto")
+
+
 if __name__ == "__main__":
     unittest.main()

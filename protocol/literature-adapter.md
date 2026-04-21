@@ -35,6 +35,16 @@ output_format: "yaml | json"
 api_key: "optional Semantic Scholar key"
 ```
 
+For novelty packet generation:
+
+```yaml
+action: "novelty-packet"
+query: "novelty search phrase"
+limit: 20
+max_items: 10
+problem_id: "optional OMEGA registry id"
+```
+
 ### Output
 
 ```yaml
@@ -58,6 +68,30 @@ paper:
   publication_date: "YYYY-MM-DD"
   bibtex: "@article{...}" | null
 papers: []
+```
+
+Novelty packet output:
+
+```yaml
+source: "omega-literature-novelty-packet"
+packet_version: "v1"
+query: "..."
+count: 3
+problem_id: "optional"
+candidates:
+  - rank: 1
+    collision_risk: "high | medium | low"
+    paper_id: "..."
+    title: "..."
+    year: 2026
+    citation_count: 120
+    doi: "..."
+    arxiv_id: "..."
+    url: "..."
+risk_summary:
+  high: 1
+  medium: 1
+  low: 1
 ```
 
 ## Actions
@@ -88,6 +122,18 @@ If the official endpoint returns `404 Title match not found`, the adapter normal
 that into `count: 0` with an empty `papers` list instead of crashing the operator workflow.
 
 Use this when you already have a candidate title string and want the smallest high-confidence confirmation call.
+
+### `novelty-packet`
+
+Build a deterministic novelty-collision packet from Semantic Scholar search results.
+
+Stabilization rules:
+
+1. deduplicate records by DOI, then arXiv id, then normalized title,
+2. sort deterministically by citation count (desc), year (desc), title (asc),
+3. assign collision risk labels (`high`, `medium`, `low`) for operator triage.
+
+Use this action when preparing novelty evidence packets before plan/publication stages.
 
 ## Source Rules
 
