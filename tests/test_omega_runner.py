@@ -121,6 +121,7 @@ class OmegaRunnerTests(unittest.TestCase):
         self.assertEqual(index[0]["problem_id"], self.problem_id)
         self.assertEqual(index[0]["latest_run"], run_id)
         self.assertEqual(index[0]["total_runs"], 1)
+        self.assertEqual(index[0]["latest_artifact_types"], [])
 
     def test_start_allocates_next_sequence_number(self) -> None:
         first = start_run(
@@ -284,6 +285,72 @@ class OmegaRunnerTests(unittest.TestCase):
                 status="completed",
                 artifacts=[{"path": str(self.problem_root / 'artifacts' / 'bad.log'), "type": "log"}],
             )
+
+    def test_finish_completed_requires_minimum_evidence_documents(self) -> None:
+        run_id = start_run(
+            repo_root=self.repo_root,
+            problem_id=self.problem_id,
+            route="experiment-first",
+            agent="experimentalist",
+            description="bounded search",
+        )
+
+        reproducibility = self.problem_root / "reproducibility.md"
+        reproducibility.unlink()
+
+        with self.assertRaisesRegex(ValueError, "missing required evidence documents"):
+            finish_run(
+                repo_root=self.repo_root,
+                problem_id=self.problem_id,
+                run_id=run_id,
+                status="completed",
+                verdict="positive",
+            )
+
+    def test_finish_accepts_synthetic_packet_artifact_types(self) -> None:
+        run_id = start_run(
+            repo_root=self.repo_root,
+            problem_id=self.problem_id,
+            route="experiment-first",
+            agent="experimentalist",
+            description="synthetic benchmark pass",
+        )
+
+        taxonomy_file = self.problem_root / "input_files" / "synthetic_taxonomy.md"
+        taxonomy_file.write_text("# Synthetic Taxonomy\n", encoding="utf-8")
+
+        evaluation_file = self.problem_root / "input_files" / "synthetic_evaluation_packet.md"
+        evaluation_file.write_text("# Synthetic Evaluation Packet\n", encoding="utf-8")
+
+        prompt_file = self.problem_root / "artifacts" / "prompts" / "synthetic.prompt.json"
+        prompt_file.parent.mkdir(parents=True, exist_ok=True)
+        prompt_file.write_text('{"messages": []}\n', encoding="utf-8")
+
+        finish_run(
+            repo_root=self.repo_root,
+            problem_id=self.problem_id,
+            run_id=run_id,
+            status="completed",
+            verdict="inconclusive",
+            artifacts=[
+                {"path": "input_files/synthetic_taxonomy.md", "type": "synthetic-taxonomy"},
+                {"path": "input_files/synthetic_evaluation_packet.md", "type": "evaluation-packet"},
+                {"path": "artifacts/prompts/synthetic.prompt.json", "type": "prompt-packet"},
+            ],
+        )
+
+        entry = self._load_ledger()[0]
+        artifact_types = {artifact["type"] for artifact in entry["artifacts"]}
+        self.assertIn("synthetic-taxonomy", artifact_types)
+        self.assertIn("evaluation-packet", artifact_types)
+        self.assertIn("prompt-packet", artifact_types)
+
+        index_path = self.repo_root / "research" / "active" / "experiment-index.yaml"
+        index = yaml.safe_load(index_path.read_text(encoding="utf-8")) or []
+        self.assertEqual(
+            index[0]["latest_artifact_types"],
+            ["evaluation-packet", "prompt-packet", "synthetic-taxonomy"],
+        )
 
     def test_proof_result_writes_contract_and_links_ledger_artifact(self) -> None:
         run_id = start_run(

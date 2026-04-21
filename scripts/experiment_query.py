@@ -92,6 +92,7 @@ def query_global_index(
     problem_id: str | None = None,
     verdict: str | None = None,
     route: str | None = None,
+    artifact_type: str | None = None,
     stage: str | None = None,
     owner: str | None = None,
     workflow_status: str | None = None,
@@ -113,6 +114,10 @@ def query_global_index(
             continue
         if route is not None and entry.get("active_route") != route:
             continue
+        if artifact_type is not None:
+            latest_artifact_types = cast(list[str], entry.get("latest_artifact_types") or [])
+            if artifact_type not in latest_artifact_types:
+                continue
         if stage is not None and entry.get("current_stage") != stage:
             continue
         if owner is not None and entry.get("current_owner") != owner:
@@ -199,6 +204,7 @@ def main() -> None:
             problem_id=args.problem,
             verdict=args.verdict,
             route=args.route,
+            artifact_type=args.artifact_type,
             stage=args.stage,
             owner=args.owner,
             workflow_status=args.workflow_status,

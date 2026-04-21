@@ -102,6 +102,11 @@ Outputs:
 7. Reviewer challenges it and records `referee.md`.
 8. Planner either closes the cycle or schedules another pass.
 
+If a run creates synthetic reasoning assets or benchmark variants, add two extra handoff artifacts:
+
+- `input_files/synthetic_taxonomy.md` from `templates/synthetic-reasoning-taxonomy.md`
+- `input_files/synthetic_evaluation_packet.md` from `templates/synthetic-evaluation-packet.md`
+
 For step-by-step operator procedures, see `protocol/operator-runbook.md`.
 
 ## Handoff Artifacts
@@ -113,6 +118,8 @@ Required artifacts:
 - input_files/literature.md
 - input_files/methods.md
 - input_files/proof_obligations.md when proof work is involved
+- input_files/synthetic_taxonomy.md when synthetic reasoning or benchmark-generation work is involved
+- input_files/synthetic_evaluation_packet.md when synthetic reasoning outputs are evaluated
 - input_files/results.md
 - experiments/ledger.yaml (run records per `protocol/experiment-ledger-spec.md`)
 - artifacts/prover-results/<run-id>.yaml when proof work reaches a verifier-visible outcome

@@ -4,7 +4,7 @@ This reference maps the April 2026 research-intelligence pass onto OMEGA receive
 OMEGA stays standalone: these donors and services inform local workflow design, but they are
 not vendored as runtime dependencies by default.
 
-Last updated: 2026-04-16 (added FrenzyMath conjecture-resolution donor extraction).
+Last updated: 2026-04-21 (added Simula synthetic-data donor extraction).
 
 ## Open-Source Workflow Donors
 
@@ -16,6 +16,16 @@ Last updated: 2026-04-16 (added FrenzyMath conjecture-resolution donor extractio
 | autoresearch | fixed-budget keep or discard loop, branch-per-run isolation, experiment ledger discipline | plan, experiment, results |
 | Paper2Slides | staged paper-to-slides pipeline with source-linked outputs and fast or normal modes | publication, presentation pack |
 | create-llm | right-sized project templates, scaffold topology, generated starter surfaces | scaffold contract, workflow packaging |
+
+## Synthetic Reasoning Data and Evaluation Donors (April 2026)
+
+| Donor | Verified reusable signal | OMEGA receiver surfaces |
+|-------|--------------------------|-------------------------|
+| OpenReview `NALsdGEPhB` / Simula | seedless taxonomy-driven synthetic data generation, meta-prompt complexification, critic-gated filtering, taxonomic coverage, and calibrated complexity scoring | future synthetic reasoning corpora, prompt-packet families, benchmark generation, evaluation packets |
+
+Extraction memo: `docs/research/OMEGA_SIMULA_EXTRACTION_2026_04_21.md`.
+
+Local packet contract: `protocol/synthetic-reasoning-packets.md` with base templates in `templates/synthetic-reasoning-taxonomy.md` and `templates/synthetic-evaluation-packet.md`.
 
 ## Conjecture-Resolution Stack Donors (April 2026)
 
@@ -136,6 +146,7 @@ Every external search or donor-assisted workflow must collapse back into local O
 6. A proof-first run that reaches a verifier-visible state should also emit `artifacts/prover-results/<run-id>.yaml`; the experiment ledger and proof result are complementary, not interchangeable.
 7. Press coverage and public summaries are secondary evidence; they never outrank the primary paper or the maintained repository artifact.
 8. LLM judges are diagnostic tools only. They can help enumerate objections, but they do not count as sufficient proof verification.
+9. Synthetic reasoning datasets or benchmark packs can guide training and evaluation, but they do not by themselves upgrade proof, novelty, or theorem-level claims.
 
 ## Non-Goals
 

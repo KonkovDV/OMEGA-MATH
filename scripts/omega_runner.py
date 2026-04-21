@@ -34,7 +34,18 @@ VALID_PROOF_STATUSES = {
 }
 VALID_CLAIM_CLASSES = {"lemma", "theorem", "structural-claim", "counterexample-cert"}
 VALID_VERIFIER_KINDS = {"lean4", "coq", "isabelle", "cas", "human-line-check"}
-VALID_LEDGER_ARTIFACT_TYPES = {"log", "dataset", "proof-draft", "prover-result", "counterexample", "plot", "failure-pattern"}
+VALID_LEDGER_ARTIFACT_TYPES = {
+    "log",
+    "dataset",
+    "proof-draft",
+    "prover-result",
+    "counterexample",
+    "plot",
+    "failure-pattern",
+    "prompt-packet",
+    "synthetic-taxonomy",
+    "evaluation-packet",
+}
 VALID_PROOF_ARTIFACT_TYPES = {"source", "log", "transcript", "proof-term", "report"}
 EVIDENCE_BUNDLE_PATH = "artifacts/evidence-bundle.yaml"
 FAILURE_CHANNEL_PATH = "control/failure-patterns.jsonl"
@@ -43,6 +54,19 @@ EVIDENCE_DOCUMENTS = (
     ("reproducibility.md", "reproducibility-manifest"),
     ("input_files/proof_obligations.md", "proof-obligations"),
 )
+
+
+def ensure_required_evidence_documents(problem_root: Path) -> None:
+    missing: list[str] = []
+    for relative_path, _role in EVIDENCE_DOCUMENTS:
+        normalized, resolved = resolve_workspace_path(problem_root, relative_path)
+        if not resolved.exists() or not resolved.is_file():
+            missing.append(normalized)
+    if missing:
+        raise ValueError(
+            "Cannot finish completed run: missing required evidence documents: "
+            + ", ".join(sorted(missing))
+        )
 
 
 def _read_workspace_heading(problem_root: Path) -> str:
@@ -356,6 +380,13 @@ def generate_experiment_index(repo_root: Path) -> list[dict]:
         if latest is None and not workflow_summary["workflow_exists"]:
             continue
 
+        latest_artifact_types = sorted(
+            {
+                str(artifact.get("type"))
+                for artifact in ((latest or {}).get("artifacts") or [])
+                if artifact.get("type")
+            }
+        )
         last_updated = workflow_summary["workflow_last_updated"] or (latest or {}).get("finished") or (latest or {}).get("started") or utc_now_iso()
         index_entries.append(
             {
@@ -378,6 +409,7 @@ def generate_experiment_index(repo_root: Path) -> list[dict]:
                 "active_run_status": workflow_summary["active_run_status"],
                 "last_run_id": workflow_summary["last_run_id"],
                 "last_run_status": workflow_summary["last_run_status"],
+                "latest_artifact_types": latest_artifact_types,
                 "last_proof_result_path": workflow_summary["last_proof_result_path"],
                 "last_proof_status": workflow_summary["last_proof_status"],
                 "last_updated": last_updated,
@@ -443,6 +475,12 @@ def generate_evidence_bundle(repo_root: Path, problem_id: str) -> Path:
         else:
             documents.append({"path": normalized, "role": role, "exists": False})
 
+    required_documents_total = len(EVIDENCE_DOCUMENTS)
+    required_documents_present = sum(1 for document in documents if document.get("exists"))
+    completeness_score = (
+        required_documents_present / required_documents_total if required_documents_total > 0 else 1.0
+    )
+
     payload = {
         "version": "1.0",
         "problem_id": problem_id,
@@ -452,6 +490,9 @@ def generate_evidence_bundle(repo_root: Path, problem_id: str) -> Path:
             "total_artifacts": total_artifacts,
             "total_bytes": total_bytes,
             "by_type": dict(sorted(summary_by_type.items())),
+            "required_documents_total": required_documents_total,
+            "required_documents_present": required_documents_present,
+            "evidence_completeness_score": completeness_score,
         },
         "documents": documents,
         "runs": runs,
@@ -530,6 +571,8 @@ def finish_run(
     if verdict is not None and verdict not in VALID_VERDICTS:
         raise ValueError(f"Verdict must be one of {sorted(VALID_VERDICTS)}; got {verdict}")
     problem_root = get_problem_root(repo_root, problem_id)
+    if status == "completed":
+        ensure_required_evidence_documents(problem_root)
     normalized_artifacts = validate_artifacts(artifacts, VALID_LEDGER_ARTIFACT_TYPES) if artifacts is not None else None
     ledger = load_ledger(problem_root)
     target_entry: dict | None = None

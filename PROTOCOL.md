@@ -1,5 +1,5 @@
 # OMEGA Research Protocol
-# Version: 0.6.0 | Date: 2026-04-16
+# Version: 0.6.0 | Date: 2026-04-21
 
 ## 1. Overview
 
@@ -42,12 +42,24 @@ Open-source workflow donors verified in the April 2026 pass:
 - Paper2Slides
 - create-llm
 
+Paper-backed methodology donors verified in the April 2026 pass:
+
+- Simula / *Reasoning-Driven Synthetic Data Generation and Evaluation* (OpenReview `NALsdGEPhB`, TMLR 2026)
+
 External support services classified for optional use:
 
 - research-grade retrieval support: Elicit, Scite, Litmaps, Inciteful, ResearchRabbit, Connected Papers, SciSpace
 - presentation helper: WorkPPT
 - tutor-only supplemental surfaces: MathGPT Pro / Mathos AI, Examful
 - explicitly excluded: detector-bypass and AI-humanizer workflows
+
+Simula does not widen OMEGA's runtime boundary. It only justifies a bounded future
+synthetic-reasoning lane with:
+
+- taxonomy-first prompt or task generation instead of free-form prompt churn
+- critic-gated filtering for synthetic reasoning artifacts
+- separate evaluation of coverage, complexity, and downstream utility
+- a non-claim rule: synthetic data quality does not count as theorem correctness, novelty, or proof closure
 
 These tools do not change OMEGA's standalone execution boundary. They only justify local
 receiver surfaces such as `literature_graph.md`, `citation_evidence.md`,

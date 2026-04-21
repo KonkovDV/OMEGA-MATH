@@ -110,6 +110,8 @@ research/active/<problem-id>/
       idea.md
     methods.md
     proof_obligations.md
+      synthetic_taxonomy.md
+      synthetic_evaluation_packet.md
       results.md
       referee.md
   experiments/
@@ -119,6 +121,8 @@ research/active/<problem-id>/
       run-manifest.yaml
       prover-results/
    paper/
+
+The scaffolded synthetic files are stubs. Replace them with the packet templates under `templates/` when a synthetic reasoning or benchmark-generation lane is actually used.
    presentation/
   reproducibility.md
 ```
@@ -258,3 +262,8 @@ Before publishing any OMEGA result externally:
 5. Confirm `reproducibility.md` lists exact commands, versions, and artifact checksums.
 6. Run the Reviewer agent or perform a manual review pass.
 7. Fill in the publication template from `templates/` and narrow claims to stored evidence.
+
+If the result depends on synthetic reasoning assets or benchmark variants, also confirm:
+
+8. `input_files/synthetic_taxonomy.md` exists and matches the generated asset family.
+9. `input_files/synthetic_evaluation_packet.md` records coverage, complexity, critic outcomes, and explicit non-claim boundaries.

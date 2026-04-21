@@ -77,6 +77,22 @@ def render_templates(problem_id: str, title: str) -> dict[str, str]:
             "## Independent Patch Search\n\n"
             "## Deferred Risks\n"
         ),
+        "input_files/synthetic_taxonomy.md": (
+            "# Synthetic Reasoning Taxonomy\n\n"
+            "> Replace this stub with `templates/synthetic-reasoning-taxonomy.md` before claiming a synthetic reasoning or benchmark-generation result.\n\n"
+            f"- Registry ID: {problem_id}\n"
+            f"- Problem name: {title}\n"
+            "- Asset family: pending\n"
+            "- Status: inactive until synthetic lane is explicitly used\n"
+        ),
+        "input_files/synthetic_evaluation_packet.md": (
+            "# Synthetic Evaluation Packet\n\n"
+            "> Replace this stub with `templates/synthetic-evaluation-packet.md` when synthetic reasoning assets are actually evaluated.\n\n"
+            f"- Registry ID: {problem_id}\n"
+            f"- Problem name: {title}\n"
+            "- Taxonomy path: input_files/synthetic_taxonomy.md\n"
+            "- Status: pending first synthetic run\n"
+        ),
         "input_files/statement_spec.md": (
             "# Statement Specification\n\n"
             "## Claim Label\n\n"
@@ -98,6 +114,8 @@ def render_templates(problem_id: str, title: str) -> dict[str, str]:
             "literature_graph: input_files/literature_graph.md\n"
             "citation_evidence: input_files/citation_evidence.md\n"
             "proof_obligations: input_files/proof_obligations.md\n"
+            "synthetic_taxonomy: input_files/synthetic_taxonomy.md\n"
+            "synthetic_evaluation_packet: input_files/synthetic_evaluation_packet.md\n"
             "statement_spec: input_files/statement_spec.md\n"
             "experiment_ledger: experiments/ledger.yaml\n"
             "evidence_bundle: artifacts/evidence-bundle.yaml\n"

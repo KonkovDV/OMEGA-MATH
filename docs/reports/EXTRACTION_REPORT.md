@@ -1,7 +1,7 @@
 # OMEGA Extraction Report
 
-Date: 2026-04-16
-Status: seed + research-intelligence expansion + FrenzyMath extraction complete
+Date: 2026-04-21
+Status: seed + research-intelligence expansion + FrenzyMath extraction + Simula extraction complete
 
 ## Scope
 
@@ -53,6 +53,8 @@ This workspace seeds an OMEGA research surface for open mathematics:
    Role: reproducibility donor for statement/proof separation and comparator-based verification envelope
 19. FrenzyMath conjecture post + CRC Substack commentary
    Role: secondary narrative/context surfaces; not used as primary authority over paper/repo evidence
+20. OpenReview `NALsdGEPhB` / *Reasoning-Driven Synthetic Data Generation and Evaluation*
+   Role: methodology donor for taxonomy-driven synthetic data generation, critic-gated filtering, and explicit coverage/complexity evaluation in a future OMEGA synthetic-reasoning lane
 
 ## What Was Extracted
 
@@ -69,6 +71,7 @@ This workspace seeds an OMEGA research surface for open mathematics:
 - a buildable Python packaging surface under `math/pyproject.toml`
 - a dated evidence report under `math/docs/research/OMEGA_VIBE_PROVING_HYPERDEEP_REPORT_2026_04_04.md`
 - a dated FrenzyMath extraction report under `math/docs/research/OMEGA_FRENZYMATH_EXTRACTION_2026_04_16.md`
+- a dated Simula extraction report under `math/docs/research/OMEGA_SIMULA_EXTRACTION_2026_04_21.md`
 
 ## Current Coverage Level
 
@@ -126,6 +129,7 @@ Validated as architectural donors for this standalone repo:
 - autoresearch: fixed-budget keep-or-discard experiment loops plus ledger discipline
 - Paper2Slides: staged paper-to-slides pipeline for companion presentation artifacts
 - create-llm: scaffold topology and generated starter-surface design for workflow packaging
+- Simula (`NALsdGEPhB`): taxonomy-first synthetic data generation, critic filtering, and coverage-plus-complexity evaluation for future synthetic reasoning assets
 
 ### External services classified for reference use
 
@@ -166,6 +170,16 @@ Unverified or inaccessible during the April 2026 pass:
 - `presentation/`
 
 These are local contracts only. OMEGA still does not vendor external runtimes or service SDKs.
+
+### Simula synthetic-data methodology donor
+
+- **Adopt**: taxonomy-first synthetic prompt or task generation, critic-gated filtering, and separate coverage plus complexity metrics.
+- **Extend**: apply these rules to future synthetic reasoning datasets, prompt families, and benchmark packs rather than treating them as multimodal-only guidance.
+- **Reject**: any move that treats synthetic data scores as proof verification, theorem correctness, or novelty evidence.
+
+Detailed mapping is recorded in:
+
+- `docs/research/OMEGA_SIMULA_EXTRACTION_2026_04_21.md`
 
 ## Vibe-Proving and Formal-Math Expansion (April 2026)
 

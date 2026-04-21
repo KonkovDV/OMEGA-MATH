@@ -17,6 +17,8 @@ Recommended per-problem layout (Denario-compatible, OMEGA-adapted):
 - input_files/idea.md
 - input_files/methods.md
 - input_files/proof_obligations.md
+- input_files/synthetic_taxonomy.md
+- input_files/synthetic_evaluation_packet.md
 - input_files/results.md
 - input_files/referee.md
 - input_files/plots/
@@ -35,6 +37,8 @@ Bootstrap a new folder with:
 - `python scripts/scaffold_problem.py <problem-id> --title "..."`
 
 For proof-first work, copy `templates/lean-starter/` into a problem-local Lean workspace such as `research/active/<problem-id>/proof/lean/`, then follow `protocol/lean-bootstrap.md`.
+
+For synthetic reasoning or benchmark-generation work, copy `templates/synthetic-reasoning-taxonomy.md` and `templates/synthetic-evaluation-packet.md` into `input_files/`, then follow `protocol/synthetic-reasoning-packets.md`.
 
 Use `data_description.md` as the canonical problem brief. Do not open a research cycle without a registry ID, literature packet, graph-aware literature and citation notes when novelty matters, a bounded stop condition, and a reproducibility stub that names the active ledger, evidence-bundle, and prover-result surfaces.
 

@@ -148,11 +148,11 @@ class TestQueryGlobalIndex(unittest.TestCase):
             {"problem_id": "goldbach", "latest_run": "goldbach-20260301-003",
                "latest_verdict": "positive", "total_runs": 3, "active_route": "experiment-first",
                "current_stage": "results", "current_owner": "experimentalist", "workflow_status": "ready",
-               "blocked": False, "active_run_id": None, "last_updated": "2026-03-01T12:00:00Z"},
+                    "blocked": False, "active_run_id": None, "latest_artifact_types": ["dataset", "plot"], "last_updated": "2026-03-01T12:00:00Z"},
             {"problem_id": "twin-primes", "latest_run": "twin-primes-20260301-001",
                "latest_verdict": "inconclusive", "total_runs": 1, "active_route": "proof-first",
                "current_stage": "plan", "current_owner": "planner", "workflow_status": "blocked",
-               "blocked": True, "active_run_id": "twin-primes-20260301-001", "last_updated": "2026-03-01T12:00:00Z"},
+                    "blocked": True, "active_run_id": "twin-primes-20260301-001", "latest_artifact_types": ["synthetic-taxonomy", "evaluation-packet"], "last_updated": "2026-03-01T12:00:00Z"},
         ]
         self.index_path.write_text(yaml.safe_dump(index, sort_keys=False), encoding="utf-8")
 
@@ -188,6 +188,11 @@ class TestQueryGlobalIndex(unittest.TestCase):
         results = query_global_index(self.repo_root, route="experiment-first")
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0]["problem_id"], "goldbach")
+
+    def test_query_by_latest_artifact_type(self) -> None:
+        results = query_global_index(self.repo_root, artifact_type="synthetic-taxonomy")
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0]["problem_id"], "twin-primes")
 
     def test_query_no_match(self) -> None:
         results = query_global_index(self.repo_root, verdict="positive", problem_id="twin-primes")
