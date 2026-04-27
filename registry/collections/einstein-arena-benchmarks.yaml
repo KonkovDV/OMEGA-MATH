@@ -4,7 +4,7 @@
 collection: einstein-arena-benchmarks
 status: active
 source: https://raw.githubusercontent.com/togethercomputer/EinsteinArena-new-SOTA/main/README.md
-last_synced: '2026-04-15T08:43:51Z'
+last_synced: '2026-04-27T11:21:50Z'
 problems:
 - id: einstein-arena-erdos-minimum-overlap
   name: Erdős' Minimum Overlap
@@ -30,6 +30,7 @@ problems:
   evidence_class: E1
   note: Extracted from EinsteinArena-new-SOTA README table. Scores are benchmark snapshots
     and may lag live leaderboard.
+  registry_id: first-autocorrelation
 - id: einstein-arena-flat-polynomials
   name: Flat Polynomials (degree 69)
   status: open
@@ -42,6 +43,7 @@ problems:
   evidence_class: E1
   note: Extracted from EinsteinArena-new-SOTA README table. Scores are benchmark snapshots
     and may lag live leaderboard.
+  registry_id: flat-polynomials
 - id: einstein-arena-edges-vs-triangles
   name: Edges vs Triangles
   status: open
@@ -54,6 +56,7 @@ problems:
   evidence_class: E1
   note: Extracted from EinsteinArena-new-SOTA README table. Scores are benchmark snapshots
     and may lag live leaderboard.
+  registry_id: edges-vs-triangles
 - id: einstein-arena-tammes-problem
   name: Tammes Problem (n = 50)
   status: open
@@ -66,7 +69,7 @@ problems:
   evidence_class: E1
   note: Extracted from EinsteinArena-new-SOTA README table. Scores are benchmark snapshots
     and may lag live leaderboard.
-  registry_id: thomson-problem
+  registry_id: tammes-problem
 - id: einstein-arena-hexagon-packing
   name: Hexagon Packing in a Hexagon (n = 12)
   status: open
@@ -79,6 +82,7 @@ problems:
   evidence_class: E1
   note: Extracted from EinsteinArena-new-SOTA README table. Scores are benchmark snapshots
     and may lag live leaderboard.
+  registry_id: hexagon-packing
 - id: einstein-arena-heilbronn-convex
   name: Heilbronn Problem for Convex Regions (n = 14)
   status: open
@@ -91,6 +95,7 @@ problems:
   evidence_class: E1
   note: Extracted from EinsteinArena-new-SOTA README table. Scores are benchmark snapshots
     and may lag live leaderboard.
+  registry_id: heilbronn-convex
 - id: einstein-arena-circles-rectangle
   name: Circles in a Rectangle (n = 21)
   status: open
@@ -103,6 +108,7 @@ problems:
   evidence_class: E1
   note: Extracted from EinsteinArena-new-SOTA README table. Scores are benchmark snapshots
     and may lag live leaderboard.
+  registry_id: circles-rectangle
 - id: einstein-arena-second-autocorrelation
   name: Second Autocorrelation Inequality
   status: open
@@ -115,6 +121,7 @@ problems:
   evidence_class: E1
   note: Extracted from EinsteinArena-new-SOTA README table. Scores are benchmark snapshots
     and may lag live leaderboard.
+  registry_id: second-autocorrelation
 - id: einstein-arena-third-autocorrelation
   name: Third Autocorrelation Inequality
   status: open
@@ -127,6 +134,7 @@ problems:
   evidence_class: E1
   note: Extracted from EinsteinArena-new-SOTA README table. Scores are benchmark snapshots
     and may lag live leaderboard.
+  registry_id: third-autocorrelation
 - id: einstein-arena-min-distance-ratio-2d
   name: Min Distance Ratio (2D, n=16)
   status: open
@@ -139,6 +147,7 @@ problems:
   evidence_class: E1
   note: Extracted from EinsteinArena-new-SOTA README table. Scores are benchmark snapshots
     and may lag live leaderboard.
+  registry_id: min-distance-ratio-2d
 - id: einstein-arena-uncertainty-inequality
   name: Uncertainty Inequality
   status: open
@@ -151,6 +160,7 @@ problems:
   evidence_class: E1
   note: Extracted from EinsteinArena-new-SOTA README table. Scores are benchmark snapshots
     and may lag live leaderboard.
+  registry_id: uncertainty-inequality
 - id: einstein-arena-prime-number-theorem
   name: Prime Number Theorem
   status: open
@@ -163,3 +173,4 @@ problems:
   evidence_class: E1
   note: Extracted from EinsteinArena-new-SOTA README table. Scores are benchmark snapshots
     and may lag live leaderboard.
+  registry_id: prime-number-theorem
