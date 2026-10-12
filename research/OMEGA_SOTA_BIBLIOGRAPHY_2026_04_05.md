@@ -1,7 +1,7 @@
 ---
 title: "OMEGA SOTA Bibliography"
 status: active
-version: "1.5.0"
+version: "1.6.0"
 last_updated: "2026-10-12"
 date: "2026-04-21"
 role: reference
@@ -384,10 +384,16 @@ OMEGA uses a three-tier evidence classification:
     - Evidence class: E1 for the tool contract. A success means the named solution theorems match the challenge statements and the permitted axioms
     - OMEGA role: same-party challenges are `challenge_party: same-party` and `claim_scope: comparator-selection` until a person matches the challenge to the registry statement. The reading is `protocol/openai-release-functions.md`
 
+45. **Decade reading of the 2026 catalogs**
+    Internal note `research/OMEGA_DECADE_FROM_2026_CATALOGS.md`, 12 October 2026.
+    - Evidence class: E1 for the mechanisms it cites (Nexus, FrontierMath Erdős, the pinned OpenAI commits, arXiv:2610.08144). The ten-year split is a reading, class H where it projects cost
+    - OMEGA role: PROTOCOL.md §1.11. Search inside a frozen statement and choice of the sentence stay separate. No registry score changes
+
 ## Version History
 
 | Version | Date | Change |
 |---------|------|--------|
+| 1.6.0 | 2026-10-12 | Added the decade reading: which 2026 mechanisms to keep, and which axes do not move |
 | 1.5.0 | 2026-10-12 | Corrected 722: it is the initial commit's own count, not an outside rumor. Recorded the withdrawal commit |
 | 1.4.0 | 2026-10-12 | Added the OpenAI release functions: citation, Comparator, scope notes, and the patched Lean base |
 | 1.3.0 | 2026-10-12 | Added the OpenAI catalog, the independent formalization count, the Navier–Stokes fidelity paper, the 11 September declaration, and the October murder board |

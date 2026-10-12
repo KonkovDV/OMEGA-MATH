@@ -180,6 +180,11 @@ Horizon 1 is complete only when OMEGA can solve at least three T1-class problems
 
 Move from a working bounded runtime to a research platform that integrates modern formal provers and long-horizon reasoning loops.
 
+October 2026 revision: the default prover pass is one model in a bounded
+repair loop against a frozen statement. A heavier agent is an escalation
+after that loop stops. Each attempt records a denominator. The reading is
+`research/OMEGA_DECADE_FROM_2026_CATALOGS.md`.
+
 ### Required outcomes
 
 1. integrate frontier formal reasoning models
@@ -226,6 +231,12 @@ Horizon 2 is complete only when OMEGA produces at least one defensible semi-auto
 ### Goal
 
 Make OMEGA capable of translating natural-language mathematics into formal and machine-checkable knowledge at scale.
+
+October 2026 revision: a better prover does not by itself translate a
+paper. The pipeline to build is a named-definition challenge, an outside
+list, and a retraction that updates dependents. A fluent conjecture
+without a frozen statement stays a draft. The reading is
+`research/OMEGA_DECADE_FROM_2026_CATALOGS.md`.
 
 ### Required outcomes
 

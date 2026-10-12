@@ -349,6 +349,31 @@ Operational rules:
   same-party`. Cite the commit and the `OAI:` slug, not the `blob/main`
   URL in their BibTeX.
 
+## 1.11 What To Keep For The Next Decade
+
+The mechanisms worth copying, and the ones that age badly, are in
+`research/OMEGA_DECADE_FROM_2026_CATALOGS.md`. Two jobs stay separate.
+Search inside a statement that is already frozen is the part whose cost
+can fall if models and compilers get cheaper. That cost sentence is a
+projection. Choosing the sentence does not follow from a cheaper prover.
+A Comparator pass, a manuscript, or a faster prover does not decide
+whether the sentence is the problem in the registry.
+
+For this decade:
+
+- Freeze the statement, and name the definitions it depends on, before
+  any search. `frozen-before-search` is the default channel.
+- Record the outside list: which sentences of the source were not
+  checked. Support checks stay out of success counts.
+- Put a denominator on the attempt: episodes, cost, or hours, including
+  the failures.
+- Hash the toolchain, the library commit, and every patch. A second
+  kernel checks the proof again. It does not check the statement.
+- A retraction updates the map a reader opens, not only a history file.
+- Do not retune amenability because search got cheaper on other
+  statements. Axis 4 moves for a problem after its own statement is
+  faithful and frozen. Tier 5 stays tier 5.
+
 ## 2. Problem Taxonomy
 
 ### 2.1 Domains (12 primary taxonomy domains)

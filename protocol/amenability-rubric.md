@@ -149,6 +149,16 @@ OpenAI manuscript catalog. A headline that a field has been annihilated does
 not move a tier. The next quarterly pass may rescore individual items, and
 it must name each change.
 
+Over the next decade, search inside an already frozen statement is the
+part whose cost can fall. That is a projection, not a score change. Axis
+4 moves for one problem only after that problem has a faithful frozen
+statement and one compile is the feedback, and only when a quarterly
+pass names the problem. Axis 3 moves when the challenge names
+definitions that live in a library, not when a local file redefines
+them. Axes 1 and 2 do not move because a catalog got larger. Tier 5
+stays tier 5. The reading is
+`research/OMEGA_DECADE_FROM_2026_CATALOGS.md`.
+
 ## Recalibration Schedule
 
 - Scores should be reviewed quarterly as AI capabilities evolve
