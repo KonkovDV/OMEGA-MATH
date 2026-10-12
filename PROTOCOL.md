@@ -5,7 +5,7 @@
 
 OMEGA (Open Mathematics Exploration by Generative Agents) is a systematic protocol for applying AI agents to unsolved mathematical problems. Instead of pointing an LLM at one famous conjecture, OMEGA uses a **catalog-first, triage-driven** approach:
 
-1. **Catalog** every known open problem in machine-readable format
+1. **Catalog** a versioned, curated set of open problems in machine-readable format. The live registry is not a claim to have listed every known open problem.
 2. **Triage** each problem by AI-amenability (not difficulty alone)
 3. **Research** systematically, starting from the most tractable tier
 4. **Publish** all results — including negative results and refined conjectures
@@ -95,10 +95,10 @@ Companion synthesis:
 The April 2026 landscape analysis added frontier neural theorem proving evidence:
 
 - **DeepSeek-Prover-V2** (deepseek-ai/DeepSeek-Prover-V2, 2025): 88.9% MiniF2F-test, 49/658 PutnamBench. Architecture: recursive subgoal decomposition by large model (671B) → independent solving by small model (7B) → RL with Lean 4 compiler as reward. Open-weight 7B and 671B variants. This is the dominant paradigm for formal theorem proving as of April 2026.
-- **Kimina-Prover** (arXiv:2504.11354, MoonshotAI/Numina): 80.7% MiniF2F pass@8192. First demonstration that model-size scaling improves neural theorem proving. Whole-proof generation without MCTS or PRM. Formal Reasoning Pattern: think → formalize → verify. Open-weight distilled 1.5B and 7B models.
+- **Kimina-Prover** (arXiv:2504.11354, MoonshotAI/Numina): 80.7% MiniF2F pass@8192. The pass budget is part of the number. First demonstration that model-size scaling improves neural theorem proving. Whole-proof generation without MCTS or PRM. Formal Reasoning Pattern: think → formalize → verify. Open-weight distilled 1.5B and 7B models.
 - **LeanCopilot v4.28.0** (arXiv:2404.12534, lean-dojo/LeanCopilot, MIT): automates 74.2% of proof steps. Provide `suggest_tactics`, `search_proof`, `select_premises` natively in Lean 4. Bring-your-own-model via `ExternalGenerator` Python API server. This is the recommended integration surface for OMEGA's proof lane.
 - **Process Advantage Verifiers** (arXiv:2410.08146): step-level reward models give +8% accuracy and 5-6× sample efficiency over outcome reward models. Applicable to ranking candidate tactics in OMEGA's proof-repair loop.
-- **FrontierMath** (arXiv:2411.04872, Epoch AI): current SOTA models solve under 2% of research-grade math problems. This quantifies the gap between current AI and research-level mathematical capability and serves as OMEGA's honest calibration surface.
+- **FrontierMath** (arXiv:2411.04872, Epoch AI): the paper reports that the models it measured solved under 2% of its research-grade problems. That sentence is the 2024 result. It is not a measurement dated October 2026, and it is not ranked against a later percentage from a different slice of the benchmark.
 
 Operational consequences:
 
@@ -172,8 +172,10 @@ The repeatable execution loop is now:
 triage → workspace → experiment → evidence-bundle → writeup → review
 ```
 
-All outputs are classified as evidence class E2 (LLM-assisted, requires verification)
-until a formal verification step upgrades them.
+All orchestrator outputs start at evidence class H and confidence C1.
+A label written by the model is stored as a self-report and is not the class.
+A stronger class is written only when `evidence_assignment` is `checked`.
+The class names are the ones in `protocol/evidence-governance.md`.
 
 Runtime guarantees added in April 2026 hardening:
 

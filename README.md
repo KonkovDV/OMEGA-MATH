@@ -140,6 +140,8 @@ Planned later phases remain in each workspace `planning/attack_plan.md`; only th
 python -m pip install -e .[all]
 ```
 
+The command above is an editable install from this checkout. `omega-orchestrate` reads `agents/`, `registry/`, and `research/` from that tree. Those directories are not included in the wheel.
+
 ### 2) Validate registry and release metadata
 
 ```bash
@@ -200,6 +202,7 @@ python -m pytest -q
 - [research/OMEGA_OCTOBER_2026_MURDER_BOARD.md](research/OMEGA_OCTOBER_2026_MURDER_BOARD.md)
 - [research/OMEGA_DECADE_FROM_2026_CATALOGS.md](research/OMEGA_DECADE_FROM_2026_CATALOGS.md)
 - [research/OMEGA_PUBLIC_REGISTRY_LANDSCAPE_2026_10_12.md](research/OMEGA_PUBLIC_REGISTRY_LANDSCAPE_2026_10_12.md)
+- [research/OMEGA_STATIC_AUDIT_DISPOSITION_2026_10_12.md](research/OMEGA_STATIC_AUDIT_DISPOSITION_2026_10_12.md)
 
 ### How-to surfaces
 
@@ -346,6 +349,8 @@ omega-export-execution-maturity
 omega-export-ft-scaffold-gate
 python -m pytest -q
 ```
+
+Установка редактируемая и читает `agents/`, `registry/` и `research/` из этого дерева. Эти каталоги в wheel не входят.
 
 ## Карта документации
 

@@ -166,6 +166,11 @@ an axis. Those projects are read in
 rebuild of this problem's own frozen statement is evidence a later
 quarterly pass may name. It is not an automatic score change.
 
+A static read of the public tree on 12 October 2026 did not rescore
+anything. The April single-rater estimates, and the absence of an
+inter-rater check, still stand. The tier map remains an editorial
+backlog order.
+
 ## Recalibration Schedule
 
 - Scores should be reviewed quarterly as AI capabilities evolve

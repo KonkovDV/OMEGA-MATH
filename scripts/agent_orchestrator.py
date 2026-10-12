@@ -27,8 +27,10 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import sys
 import time
+import uuid
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -36,6 +38,39 @@ from typing import Any
 import yaml
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
+
+_IDENTIFIER = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+_WINDOWS_DEVICE_NAMES = {
+    "con",
+    "prn",
+    "aux",
+    "nul",
+    *(f"com{index}" for index in range(1, 10)),
+    *(f"lpt{index}" for index in range(1, 10)),
+}
+EVIDENCE_CLASSES = {"R0", "R1", "E1", "E2", "H"}
+CONFIDENCE_LABELS = {"C1", "C2", "C3"}
+LITERATURE_SURFACE_NAMES = (
+    "literature.md",
+    "literature_graph.md",
+    "citation_evidence.md",
+)
+
+
+def require_identifier(value: str, label: str) -> str:
+    """Accept a registry-style id. Reject paths, drives, and traversal."""
+    if not isinstance(value, str) or _IDENTIFIER.fullmatch(value) is None or value in _WINDOWS_DEVICE_NAMES:
+        raise ValueError(f"{label} must be a lowercase identifier, not a path")
+    return value
+
+
+def path_inside(root: Path, candidate: Path) -> Path:
+    """Resolve candidate and refuse a path that leaves root."""
+    resolved_root = root.resolve()
+    resolved = candidate.resolve()
+    if resolved != resolved_root and resolved_root not in resolved.parents:
+        raise ValueError(f"path leaves {resolved_root}")
+    return resolved
 
 # Import model router for profile-based routing
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -119,8 +154,10 @@ WORKSPACE_FILE_TEMPLATES: dict[str, str] = {
 
 def load_agent_definition(role: str) -> dict[str, Any]:
     """Load an agent YAML definition from agents/<role>.yaml."""
-    agent_path = REPO_ROOT / "agents" / f"{role}.yaml"
-    if not agent_path.exists():
+    require_identifier(role, "role")
+    agents_root = REPO_ROOT / "agents"
+    agent_path = path_inside(agents_root, agents_root / f"{role}.yaml")
+    if not agent_path.is_file():
         raise FileNotFoundError(f"Agent definition not found: {agent_path}")
     return yaml.safe_load(agent_path.read_text(encoding="utf-8"))
 
@@ -153,8 +190,62 @@ def load_benchmark_snapshot(problem_id: str) -> dict[str, Any] | None:
 
 # ──────────────────────────── Problem Context Assembly ────────────────────────
 
+def _is_literature_template(name: str, text: str) -> bool:
+    if not text.strip():
+        return True
+    template = WORKSPACE_FILE_TEMPLATES.get(f"input_files/{name}")
+    return template is not None and text.strip() == template.strip()
+
+
+def _usable_novelty_packet(loaded: Any) -> bool:
+    if not isinstance(loaded, dict):
+        return False
+    candidates = loaded.get("candidates")
+    if not isinstance(candidates, list):
+        return False
+    return any(isinstance(item, dict) and (item.get("title") or item.get("paper_id")) for item in candidates)
+
+
+def attach_literature_surfaces(context: dict[str, Any], problem_id: str) -> None:
+    """Read local literature files. Do not call a search API from the orchestrator."""
+    require_identifier(problem_id, "problem_id")
+    active = REPO_ROOT / "research" / "active"
+    workspace = path_inside(active, active / problem_id)
+    files: dict[str, str] = {}
+    if workspace.is_dir():
+        for name in LITERATURE_SURFACE_NAMES:
+            try:
+                path = path_inside(workspace, workspace / "input_files" / name)
+            except ValueError:
+                continue
+            if path.is_file():
+                files[name] = path.read_text(encoding="utf-8")[:4000]
+    context["literature_files"] = files
+    packet = None
+    packet_path: Path | None
+    try:
+        packet_path = path_inside(workspace, workspace / "input_files" / "novelty-packet.yaml")
+    except ValueError:
+        packet_path = None
+    if workspace.is_dir() and packet_path is not None and packet_path.is_file():
+        try:
+            loaded = yaml.safe_load(packet_path.read_text(encoding="utf-8"))
+        except yaml.YAMLError:
+            loaded = None
+        if _usable_novelty_packet(loaded):
+            packet = loaded
+    context["novelty_packet"] = packet
+    if packet is not None:
+        context["literature_retrieval"] = "local_packet"
+    elif any(not _is_literature_template(name, text) for name, text in files.items()):
+        context["literature_retrieval"] = "local_files"
+    else:
+        context["literature_retrieval"] = "not_run"
+
+
 def load_problem_context(problem_id: str) -> dict[str, Any]:
     """Assemble full problem context from registry + workspace."""
+    require_identifier(problem_id, "problem_id")
     context: dict[str, Any] = {
         "problem_id": problem_id,
         "registry": None,
@@ -240,6 +331,8 @@ def load_problem_context(problem_id: str) -> dict[str, Any]:
         if statement_spec_path.exists():
             context["statement_spec"] = statement_spec_path.read_text(encoding="utf-8")
 
+    attach_literature_surfaces(context, problem_id)
+
     # Load external benchmark snapshot (if available)
     context["benchmark"] = load_benchmark_snapshot(problem_id)
 
@@ -269,8 +362,11 @@ Success criteria:
 Rules:
 - Output structured YAML at the end of your response in a ```yaml block.
 - Separate reasoning from output: think first, then produce the artifact.
-- Evidence class: label every factual claim as R0 (machine-verified), R1 (reproducible computation),
-  E1 (external reference), E2 (LLM-assisted, requires verification), or H (human judgment).
+- Evidence class, from protocol/evidence-governance.md: R0 is a rerunnable local proof,
+  R1 is a current document inside this repository, E1 is a primary external source,
+  E2 is a qualified external comparison, and H is a hypothesis.
+  The label in your YAML is a self-report. It is not copied onto the artifact.
+  An unverified dispatch is stored as H and C1.
 - Anti-overclaiming: never say "proved" without formal verification. Use "candidate proof",
   "computational evidence", or "conjecture supported by" instead.
 - Reproducibility: include all parameters, seeds, and commands needed to reproduce results.
@@ -321,6 +417,17 @@ def build_user_prompt(
             desc = desc[:2000] + "\n[... truncated]"
         sections.append(f"\n## Problem Description (from README)\n{desc}")
 
+    literature_files = context.get("literature_files") or {}
+    if literature_files and stage in {"novelty", "results", "paper", "referee"}:
+        sections.append("\n## Literature Surfaces")
+        sections.append(f"Retrieval: {context.get('literature_retrieval', 'not_run')}")
+        for name, text in literature_files.items():
+            sections.append(f"\n### {name}\n{text[:2000]}")
+    packet = context.get("novelty_packet")
+    if packet and stage in {"novelty", "results", "paper", "referee"}:
+        sections.append("\n## Stored Novelty Packet")
+        sections.append(yaml.safe_dump(packet, sort_keys=False, allow_unicode=True)[:4000])
+
     if context.get("proof_obligations"):
         sections.append(f"\n## Proof Obligations\n{context['proof_obligations'][:1500]}")
 
@@ -357,7 +464,12 @@ def build_user_prompt(
     # Stage-specific instructions
     stage_instructions: dict[str, str] = {
         "brief": "Create a research brief: scope, objectives, success criteria, compute budget estimate, and risk assessment.",
-        "novelty": "Search literature for prior work on this problem. Identify known results, partial progress, and gaps. Produce a bibliography and prior-work memo.",
+        "novelty": (
+            "Write a prior-work memo from the literature surfaces included below. "
+            "The memo stays preliminary. local_packet means a saved search file was present. "
+            "local_files means workspace prose was present. not_run means no search was executed. "
+            "None of the three is a systematic review."
+        ),
         "plan": "Create a detailed method plan: algorithm choice, parameter ranges, verification strategy, and expected outputs.",
         "experiment": "Design and describe the computational experiment. Specify: algorithm, parameters, stopping criteria, expected output format, and verification steps.",
         "prove": (
@@ -387,6 +499,7 @@ def build_user_prompt(
     sections.append(f"\n## Output Format\nProvide your analysis, then include a ```yaml block at the end with structured output containing:")
     sections.append(f"- artifact_type: the type of artifact produced")
     sections.append(f"- evidence_class: R0|R1|E1|E2|H")
+    sections.append("  This field is a self-report. The stored class stays H until a caller sets evidence_assignment to checked and names a file that exists inside the workspace.")
     sections.append(f"- confidence: C1|C2|C3")
     sections.append(f"- summary: one-paragraph summary of the output")
     sections.append(f"- key_findings: list of key findings or decisions")
@@ -430,7 +543,9 @@ def ensure_stage_workspace_contract(
     For stages beyond brief, a workspace must exist. Required documentation files are
     auto-materialized from minimal templates when missing.
     """
-    workspace = REPO_ROOT / "research" / "active" / problem_id
+    require_identifier(problem_id, "problem_id")
+    active = REPO_ROOT / "research" / "active"
+    workspace = path_inside(active, active / problem_id)
     if stage not in STAGES_REQUIRING_WORKSPACE:
         return {
             "ok": True,
@@ -715,73 +830,148 @@ def save_artifact(
     prompt_packet: dict[str, Any] | None = None,
 ) -> Path:
     """Save an artifact to the problem workspace."""
-    workspace = REPO_ROOT / "research" / "active" / problem_id
+    require_identifier(problem_id, "problem_id")
+    if stage not in STAGE_TO_ROLE:
+        raise ValueError(f"Unknown stage: {stage}")
+    active = REPO_ROOT / "research" / "active"
+    workspace = path_inside(active, active / problem_id)
     artifacts_dir = workspace / "artifacts"
     artifacts_dir.mkdir(parents=True, exist_ok=True)
 
     timestamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
-    filename = f"{stage}_{timestamp}.md"
+    run_token = uuid.uuid4().hex[:12]
+    filename = f"{stage}_{timestamp}_{run_token}.md"
     artifact_path = artifacts_dir / filename
+
+    assignment = metadata.get("evidence_assignment", "default-unverified")
+    anchor_sha = None
+    evidence_class = "H"
+    confidence = "C1"
+    if assignment == "checked":
+        anchor_sha = _anchor_sha256(workspace, metadata.get("evidence_anchor"))
+        if anchor_sha is not None:
+            supplied_class = metadata.get("evidence_class", "H")
+            supplied_confidence = metadata.get("confidence", "C1")
+            if supplied_class in EVIDENCE_CLASSES:
+                evidence_class = supplied_class
+            if supplied_confidence in CONFIDENCE_LABELS:
+                confidence = supplied_confidence
 
     prompt_packet_path: Path | None = None
     prompt_packet_file_sha256: str | None = None
     if prompt_packet is not None:
         prompt_dir = artifacts_dir / "prompts"
         prompt_dir.mkdir(parents=True, exist_ok=True)
-        prompt_filename = f"{stage}_{timestamp}.prompt.json"
+        prompt_filename = f"{stage}_{timestamp}_{run_token}.prompt.json"
         prompt_packet_path = prompt_dir / prompt_filename
         prompt_packet_payload = json.dumps(prompt_packet, ensure_ascii=False, indent=2, sort_keys=True)
-        prompt_packet_path.write_text(prompt_packet_payload, encoding="utf-8")
+        _atomic_write(prompt_packet_path, prompt_packet_payload)
         prompt_packet_file_sha256 = _sha256_text(prompt_packet_payload)
         metadata["prompt_packet_file"] = f"prompts/{prompt_filename}"
 
-    # Build artifact file with metadata header
+    stored_metadata = dict(metadata)
+    stored_metadata["evidence_class"] = evidence_class
+    stored_metadata["confidence"] = confidence
+    for reserved in ("stage", "created", "run_token", "problem_id"):
+        stored_metadata.pop(reserved, None)
     header = yaml.safe_dump(
         {
             "stage": stage,
             "created": timestamp,
+            "run_token": run_token,
             "problem_id": problem_id,
-            **metadata,
+            **stored_metadata,
         },
         sort_keys=False,
         allow_unicode=True,
     )
 
     artifact_content = f"---\n{header}---\n\n{content}"
-    artifact_path.write_text(artifact_content, encoding="utf-8")
+    _atomic_write(artifact_path, artifact_content)
 
-    # Compute checksum
     checksum = hashlib.sha256(artifact_content.encode("utf-8")).hexdigest()
 
-    # Update artifact manifest
     manifest_path = artifacts_dir / "manifest.yaml"
-    manifest: dict[str, Any] = {}
-    if manifest_path.exists():
-        manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8")) or {}
+    lock_path = artifacts_dir / "manifest.lock"
+    lock_fd = _acquire_lock(lock_path)
+    try:
+        manifest: dict[str, Any] = {}
+        if manifest_path.exists():
+            manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8")) or {}
 
-    entries = manifest.setdefault("artifacts", [])
-    entry: dict[str, Any] = {
-        "path": filename,
-        "stage": stage,
-        "created": timestamp,
-        "checksum_sha256": checksum,
-        "evidence_class": metadata.get("evidence_class", "E2"),
-        "confidence": metadata.get("confidence", "C2"),
-    }
-    if prompt_packet_path is not None:
-        entry["prompt_packet_path"] = str(prompt_packet_path.relative_to(artifacts_dir)).replace("\\", "/")
-    if metadata.get("prompt_packet_sha256"):
-        entry["prompt_packet_sha256"] = metadata.get("prompt_packet_sha256")
-    if prompt_packet_file_sha256 is not None:
-        entry["prompt_packet_file_sha256"] = prompt_packet_file_sha256
-    entries.append(entry)
-    manifest["last_updated"] = timestamp
-    manifest_path.write_text(
-        yaml.safe_dump(manifest, sort_keys=False, allow_unicode=True),
-        encoding="utf-8",
-    )
+        entries = manifest.setdefault("artifacts", [])
+        entry: dict[str, Any] = {
+            "path": filename,
+            "stage": stage,
+            "created": timestamp,
+            "run_token": run_token,
+            "checksum_sha256": checksum,
+            "evidence_class": evidence_class,
+            "confidence": confidence,
+        }
+        if anchor_sha is not None:
+            entry["evidence_anchor"] = metadata.get("evidence_anchor")
+            entry["evidence_anchor_sha256"] = anchor_sha
+        if prompt_packet_path is not None:
+            entry["prompt_packet_path"] = str(prompt_packet_path.relative_to(artifacts_dir)).replace("\\", "/")
+        if metadata.get("prompt_packet_sha256"):
+            entry["prompt_packet_sha256"] = metadata.get("prompt_packet_sha256")
+        if prompt_packet_file_sha256 is not None:
+            entry["prompt_packet_file_sha256"] = prompt_packet_file_sha256
+        entries.append(entry)
+        manifest["last_updated"] = timestamp
+        _atomic_write(
+            manifest_path,
+            yaml.safe_dump(manifest, sort_keys=False, allow_unicode=True),
+        )
+    finally:
+        os.close(lock_fd)
+        lock_path.unlink(missing_ok=True)
 
     return artifact_path
+
+
+def _anchor_sha256(workspace: Path, anchor: Any) -> str | None:
+    """Hash a caller-named file inside the workspace. A missing or escaping path does not promote the class."""
+    if not isinstance(anchor, str) or not anchor or anchor.startswith(("/", "\\")) or ":" in anchor:
+        return None
+    try:
+        anchor_path = path_inside(workspace, workspace / anchor)
+    except ValueError:
+        return None
+    if not anchor_path.is_file():
+        return None
+    return hashlib.sha256(anchor_path.read_bytes()).hexdigest()
+
+
+def _atomic_write(path: Path, text: str) -> None:
+    temporary = path.with_name(f".{path.name}.{os.getpid()}.{uuid.uuid4().hex[:8]}.tmp")
+    temporary.write_text(text, encoding="utf-8")
+    os.replace(temporary, path)
+
+
+def _acquire_lock(lock_path: Path) -> int:
+    lock_path.parent.mkdir(parents=True, exist_ok=True)
+    deadline = time.monotonic() + 5
+    while time.monotonic() < deadline:
+        try:
+            fd = os.open(str(lock_path), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+        except FileExistsError:
+            try:
+                age = time.time() - lock_path.stat().st_mtime
+            except FileNotFoundError:
+                continue
+            if age > 30:
+                try:
+                    lock_path.unlink()
+                except FileNotFoundError:
+                    pass
+                continue
+            time.sleep(0.01)
+            continue
+        os.write(fd, f"{os.getpid()}\n".encode("ascii"))
+        return fd
+    raise TimeoutError(f"could not lock {lock_path}")
 
 
 # ──────────────────────────── Orchestration Engine ────────────────────────────
@@ -803,6 +993,12 @@ def dispatch_agent(
         dict with keys: success, role, stage, artifact_path, llm_response, metadata
     """
     # Load agent definition
+    require_identifier(problem_id, "problem_id")
+    if stage not in STAGE_TO_ROLE:
+        return {
+            "success": False,
+            "error": f"Unknown stage: {stage}. Valid stages: {sorted(STAGE_TO_ROLE.keys())}",
+        }
     agent_def = load_agent_definition(role)
 
     # Load problem context
@@ -817,6 +1013,7 @@ def dispatch_agent(
             "error": workspace_contract.get("error", "Workspace contract check failed"),
             "workspace_contract": workspace_contract,
         }
+    attach_literature_surfaces(context, problem_id)
 
     # Build prompts
     system_prompt = build_system_prompt(agent_def)
@@ -893,8 +1090,13 @@ def dispatch_agent(
         "backend": resolved_backend,
         "temperature": resolved_temp,
         "max_tokens": max_tokens,
-        "evidence_class": yaml_meta.get("evidence_class", "E2"),
-        "confidence": yaml_meta.get("confidence", "C2"),
+        "evidence_class": "H",
+        "confidence": "C1",
+        "evidence_assignment": "default-unverified",
+        "model_asserted_evidence_class": yaml_meta.get("evidence_class"),
+        "model_asserted_confidence": yaml_meta.get("confidence"),
+        "literature_retrieval": context.get("literature_retrieval", "not_run"),
+        "novelty_status": "preliminary" if stage == "novelty" else "not_applicable",
         "prompt_tokens": llm_result.get("prompt_tokens", 0),
         "completion_tokens": llm_result.get("completion_tokens", 0),
         "duration_seconds": llm_result.get("duration_seconds", 0),
@@ -1065,40 +1267,43 @@ def main() -> None:
 
     args = parser.parse_args()
 
-    if args.command == "run":
-        result = run_stage(
-            args.problem_id,
-            stage=args.stage,
-            model=args.model,
-            temperature=args.temperature,
-            prefer_local=args.prefer_local,
-            extra_instructions=args.extra,
-            dry_run=args.dry_run,
-        )
-    elif args.command == "dispatch":
-        result = dispatch_agent(
-            args.problem_id,
-            role=args.role,
-            stage=args.stage,
-            model=args.model,
-            temperature=args.temperature,
-            prefer_local=args.prefer_local,
-            dry_run=args.dry_run,
-        )
-    elif args.command == "pipeline":
-        result = run_pipeline(
-            args.problem_id,
-            from_stage=args.from_stage,
-            to_stage=args.to_stage,
-            model=args.model,
-            temperature=args.temperature,
-            prefer_local=args.prefer_local,
-            dual_lane=args.dual_lane,
-            dry_run=args.dry_run,
-        )
-    else:
-        parser.error(f"Unknown command: {args.command}")
-        return
+    try:
+        if args.command == "run":
+            result = run_stage(
+                args.problem_id,
+                stage=args.stage,
+                model=args.model,
+                temperature=args.temperature,
+                prefer_local=args.prefer_local,
+                extra_instructions=args.extra,
+                dry_run=args.dry_run,
+            )
+        elif args.command == "dispatch":
+            result = dispatch_agent(
+                args.problem_id,
+                role=args.role,
+                stage=args.stage,
+                model=args.model,
+                temperature=args.temperature,
+                prefer_local=args.prefer_local,
+                dry_run=args.dry_run,
+            )
+        elif args.command == "pipeline":
+            result = run_pipeline(
+                args.problem_id,
+                from_stage=args.from_stage,
+                to_stage=args.to_stage,
+                model=args.model,
+                temperature=args.temperature,
+                prefer_local=args.prefer_local,
+                dual_lane=args.dual_lane,
+                dry_run=args.dry_run,
+            )
+        else:
+            parser.error(f"Unknown command: {args.command}")
+            return
+    except ValueError as exc:
+        result = {"success": False, "error": str(exc)}
 
     print(yaml.safe_dump(result, sort_keys=False, allow_unicode=True))
 

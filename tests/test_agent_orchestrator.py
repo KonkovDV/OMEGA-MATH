@@ -519,5 +519,167 @@ class TestStageToRoleMapping(unittest.TestCase):
             self.assertIn("id", defn, f"Role {role} for stage {stage} missing 'id'")
 
 
+class TestAuditGates(unittest.TestCase):
+    """The model does not grade its own evidence, and paths stay inside the tree."""
+
+    def test_model_evidence_label_is_not_stored_as_the_class(self) -> None:
+        import tempfile
+        from agent_orchestrator import dispatch_agent
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp_path = Path(tmpdir)
+            agents = tmp_path / "agents"
+            agents.mkdir()
+            (agents / "experimentalist.yaml").write_text(
+                "id: experimentalist\nrole: experimentalist\npurpose: test\ninputs: []\noutputs: []\nsuccess_criteria: []\n",
+                encoding="utf-8",
+            )
+            (agents / "team.yaml").write_text("orchestration: {}\n", encoding="utf-8")
+            workspace = tmp_path / "research" / "active" / "test-problem"
+            workspace.mkdir(parents=True)
+            with patch("agent_orchestrator.REPO_ROOT", tmp_path), patch(
+                "agent_orchestrator.invoke_llm",
+                return_value={
+                    "content": "```yaml\nevidence_class: R0\nconfidence: C3\n```",
+                    "model": "mock",
+                    "prompt_tokens": 1,
+                    "completion_tokens": 1,
+                    "duration_seconds": 0,
+                },
+            ):
+                result = dispatch_agent("test-problem", role="experimentalist", stage="experiment", model="mock")
+
+        self.assertTrue(result["success"])
+        self.assertEqual(result["metadata"]["evidence_class"], "H")
+        self.assertEqual(result["metadata"]["confidence"], "C1")
+        self.assertEqual(result["metadata"]["model_asserted_evidence_class"], "R0")
+        self.assertEqual(result["metadata"]["evidence_assignment"], "default-unverified")
+
+    def test_unchecked_caller_label_is_stored_as_hypothesis(self) -> None:
+        import tempfile
+        from agent_orchestrator import save_artifact
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp_path = Path(tmpdir)
+            (tmp_path / "research" / "active" / "test-problem").mkdir(parents=True)
+            with patch("agent_orchestrator.REPO_ROOT", tmp_path):
+                first = save_artifact("test-problem", "experiment", "one", {"evidence_class": "R1", "confidence": "C2"})
+                second = save_artifact("test-problem", "experiment", "two", {})
+            manifest = yaml.safe_load((tmp_path / "research" / "active" / "test-problem" / "artifacts" / "manifest.yaml").read_text(encoding="utf-8"))
+
+        self.assertNotEqual(first.name, second.name)
+        self.assertEqual(len(manifest["artifacts"]), 2)
+        self.assertEqual(manifest["artifacts"][0]["evidence_class"], "H")
+        self.assertEqual(manifest["artifacts"][1]["confidence"], "C1")
+
+    def test_checked_without_an_anchor_file_stays_a_hypothesis(self) -> None:
+        import tempfile
+        from agent_orchestrator import save_artifact
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp_path = Path(tmpdir)
+            (tmp_path / "research" / "active" / "test-problem").mkdir(parents=True)
+            with patch("agent_orchestrator.REPO_ROOT", tmp_path):
+                save_artifact(
+                    "test-problem",
+                    "prove",
+                    "checked",
+                    {"evidence_class": "R0", "confidence": "C2", "evidence_assignment": "checked"},
+                )
+            manifest = yaml.safe_load((tmp_path / "research" / "active" / "test-problem" / "artifacts" / "manifest.yaml").read_text(encoding="utf-8"))
+        self.assertEqual(manifest["artifacts"][0]["evidence_class"], "H")
+        self.assertNotIn("evidence_anchor_sha256", manifest["artifacts"][0])
+
+    def test_checked_anchor_records_the_file_hash(self) -> None:
+        import hashlib
+        import tempfile
+        from agent_orchestrator import save_artifact
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp_path = Path(tmpdir)
+            workspace = tmp_path / "research" / "active" / "test-problem"
+            anchor = workspace / "input_files" / "ledger.txt"
+            anchor.parent.mkdir(parents=True)
+            anchor.write_text("replay me", encoding="utf-8")
+            with patch("agent_orchestrator.REPO_ROOT", tmp_path):
+                save_artifact(
+                    "test-problem",
+                    "prove",
+                    "checked",
+                    {
+                        "evidence_class": "R0",
+                        "confidence": "C2",
+                        "evidence_assignment": "checked",
+                        "evidence_anchor": "input_files/ledger.txt",
+                    },
+                )
+            manifest = yaml.safe_load((workspace / "artifacts" / "manifest.yaml").read_text(encoding="utf-8"))
+        entry = manifest["artifacts"][0]
+        self.assertEqual(entry["evidence_class"], "R0")
+        self.assertEqual(entry["evidence_anchor_sha256"], hashlib.sha256(b"replay me").hexdigest())
+
+    def test_stale_manifest_lock_is_replaced(self) -> None:
+        import os
+        import tempfile
+        import time
+        from agent_orchestrator import save_artifact
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp_path = Path(tmpdir)
+            artifacts = tmp_path / "research" / "active" / "test-problem" / "artifacts"
+            artifacts.mkdir(parents=True)
+            lock = artifacts / "manifest.lock"
+            lock.write_text("dead", encoding="ascii")
+            old = time.time() - 60
+            os.utime(lock, (old, old))
+            with patch("agent_orchestrator.REPO_ROOT", tmp_path):
+                save_artifact("test-problem", "experiment", "after-lock", {})
+            self.assertFalse(lock.exists())
+            manifest = yaml.safe_load((artifacts / "manifest.yaml").read_text(encoding="utf-8"))
+        self.assertEqual(len(manifest["artifacts"]), 1)
+
+    def test_path_identifiers_are_refused(self) -> None:
+        from agent_orchestrator import require_identifier
+
+        for raw in ("../agents", "Role", "a/b", "con", "nul"):
+            with self.assertRaises(ValueError):
+                require_identifier(raw, "problem_id")
+
+    def test_novelty_packet_needs_a_paper_not_a_bare_value(self) -> None:
+        import tempfile
+        from agent_orchestrator import attach_literature_surfaces
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp_path = Path(tmpdir)
+            packet = tmp_path / "research" / "active" / "test-problem" / "input_files"
+            packet.mkdir(parents=True)
+            (packet / "novelty-packet.yaml").write_text("candidates: yes\n", encoding="utf-8")
+            (packet / "literature.md").write_text("\n", encoding="utf-8")
+            context: dict[str, Any] = {}
+            with patch("agent_orchestrator.REPO_ROOT", tmp_path):
+                attach_literature_surfaces(context, "test-problem")
+        self.assertEqual(context["literature_retrieval"], "not_run")
+        self.assertIsNone(context["novelty_packet"])
+
+    def test_novelty_prompt_includes_local_literature_and_says_search_did_not_run(self) -> None:
+        from agent_orchestrator import build_user_prompt
+
+        prompt = build_user_prompt(
+            "novelty",
+            {
+                "problem_id": "erdos-straus",
+                "registry": {},
+                "triage": {},
+                "workflow": {},
+                "prior_runs": [],
+                "literature_retrieval": "not_run",
+                "literature_files": {"literature.md": "UNIQUE-PAPER-TOKEN"},
+            },
+        )
+        self.assertIn("UNIQUE-PAPER-TOKEN", prompt)
+        self.assertIn("Retrieval: not_run", prompt)
+        self.assertIn("preliminary", prompt)
+
+
 if __name__ == "__main__":
     unittest.main()

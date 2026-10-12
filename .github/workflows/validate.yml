@@ -23,7 +23,7 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         python -m pip install build pytest
         # Install optional adapter dependencies for full test coverage
-        python -m pip install ".[all]" || true
+        python -m pip install ".[all]"
 
     - name: Regenerate registry index
       run: |

@@ -1,7 +1,7 @@
 ---
 title: "OMEGA SOTA Bibliography"
 status: active
-version: "1.7.0"
+version: "1.8.0"
 last_updated: "2026-10-12"
 date: "2026-04-21"
 role: reference
@@ -187,7 +187,7 @@ OMEGA uses a three-tier evidence classification:
 20. **FrontierMath**
     Glazer, E., Erdil, E., Besiroglu, T., Chicharro, D., Chen, E., Gunning, A., Falkman Olsson, C., Denain, J.-S., et al. *FrontierMath: A Benchmark for Evaluating Advanced Mathematical Reasoning in AI.* arXiv:2411.04872 [cs.AI], November 2024 (v7 December 2025).
     - Evidence class: E1
-    - Key result: SOTA models solve **under 2%** of research-grade math problems
+    - Key result: the paper reports that the models it measured solved under 2% of its problems. That is not an October 2026 remeasurement, and it is not comparable to a later percentage on a different slice without naming the benchmark version, date, model, pass budget, and access conditions
     - Tier structure: 1-3 (undergrad → early postdoc), 4 (research-level), Open Problems
     - OMEGA role: honest calibration surface; target T1-T2 subproblems; FrontierMath Open Problems aspirational only
 
@@ -418,6 +418,7 @@ OMEGA uses a three-tier evidence classification:
 
 | Version | Date | Change |
 |---------|------|--------|
+| 1.8.0 | 2026-10-12 | Qualified the FrontierMath under-2% figure as the 2024 paper's own report, not a later remeasurement |
 | 1.7.0 | 2026-10-12 | Added Palomar, qed.bot, the Formal Conjectures stats snapshot, MathDB, and the cross-registry comparison. No score change |
 | 1.6.0 | 2026-10-12 | Added the decade reading: which 2026 mechanisms to keep, and which axes do not move |
 | 1.5.0 | 2026-10-12 | Corrected 722: it is the initial commit's own count, not an outside rumor. Recorded the withdrawal commit |

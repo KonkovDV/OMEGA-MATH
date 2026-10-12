@@ -26,6 +26,20 @@ For operator-facing notes, pitches, or summary decks, use these confidence bound
 
 Do not use `C3` if the repo-local runtime path is missing.
 
+## Orchestrator Assignment
+
+`scripts/agent_orchestrator.py` stores `H` and `C1` on every dispatch.
+The YAML block returned by the model is kept as `model_asserted_evidence_class`
+and `model_asserted_confidence`. It does not become the artifact class.
+A stronger class is recorded only when the caller sets `evidence_assignment`
+to `checked` and `evidence_anchor` names a file that exists inside the
+problem workspace. The function stores that file's SHA-256. It does not
+rerun the checker. The orchestrator dispatch does not set `checked`.
+A novelty stage also records whether a local literature packet was present.
+`not_run` means no search was executed. `local_files` means workspace prose
+was present. `local_packet` means the saved packet listed at least one
+paper. The novelty status stays preliminary in all three cases.
+
 ## Claim Rules
 
 1. Theorem-level language requires a proof-first run, a `prover-results/<run-id>.yaml` artifact, and a verifier or human line-check outcome that matches the prose.
