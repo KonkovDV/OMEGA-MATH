@@ -63,11 +63,15 @@ Purpose:
 - verify candidate arguments in proof assistants or symbolic systems
 
 Outputs:
-- proof sketch
+- proof sketch, with the statement frozen and any remaining `sorry` named as an obligation
 - proof_obligations.md
-- `artifacts/prover-results/<run-id>.yaml`
+- `artifacts/prover-results/<run-id>.yaml`, including `statement_fidelity`
 - formalization status
 - dependency chain of lemmas
+
+The first pass on an open statement is one capable model plus Lean feedback.
+A second model, a population of sketches, or an external prover is an
+escalation after that pass stops. See PROTOCOL.md §1.9.
 
 ### Writer
 

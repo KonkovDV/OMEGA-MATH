@@ -393,6 +393,9 @@ class OmegaRunnerTests(unittest.TestCase):
         self.assertEqual(result["promotion_gate"]["current_step"], "draft")
         self.assertIn("formally-checked", result["promotion_gate"]["allowed_progression"])
         self.assertEqual(result["verifier"]["kind"], "lean4")
+        self.assertEqual(result["statement_fidelity"], "unchecked")
+        self.assertEqual(result["agent_profile"], "basic-loop")
+        self.assertEqual(result["unsafe_candidates_rejected"], 0)
 
         ledger_entry = self._load_ledger()[0]
         linked = [artifact for artifact in ledger_entry["artifacts"] if artifact["type"] == "prover-result"]
@@ -404,6 +407,103 @@ class OmegaRunnerTests(unittest.TestCase):
         self.assertEqual(state["current_stage"], "prove")
         self.assertEqual(state["last_proof_status"], "draft")
         self.assertEqual(state["last_proof_result_path"], f"artifacts/prover-results/{run_id}.yaml")
+
+    def test_formal_status_requires_faithful_statement(self) -> None:
+        run_id = start_run(
+            repo_root=self.repo_root,
+            problem_id=self.problem_id,
+            route="proof-first",
+            agent="prover",
+            description="lemma search",
+        )
+        proof_file = self.problem_root / "artifacts" / "candidate.lean"
+        proof_file.parent.mkdir(parents=True)
+        proof_file.write_text("theorem candidate : True := by trivial\n", encoding="utf-8")
+
+        with self.assertRaises(ValueError):
+            create_proof_result(
+                repo_root=self.repo_root,
+                problem_id=self.problem_id,
+                run_id=run_id,
+                claim_label="candidate theorem",
+                claim_class="theorem",
+                status="formally-checked",
+                verifier_kind="lean4",
+                toolchain="leanprover/lean4:v4.29.0",
+                command="lake env lean artifacts/candidate.lean",
+                source_entry="artifacts/candidate.lean",
+                artifacts=[{"path": "artifacts/candidate.lean", "type": "source"}],
+            )
+
+        proof_result_path = create_proof_result(
+            repo_root=self.repo_root,
+            problem_id=self.problem_id,
+            run_id=run_id,
+            claim_label="candidate theorem",
+            claim_class="theorem",
+            status="formally-checked",
+            verifier_kind="lean4",
+            toolchain="leanprover/lean4:v4.29.0",
+            command="lake env lean artifacts/candidate.lean",
+            source_entry="artifacts/candidate.lean",
+            artifacts=[{"path": "artifacts/candidate.lean", "type": "source"}],
+            statement_fidelity="faithful",
+            agent_profile="basic-loop",
+            unsafe_candidates_rejected=3,
+        )
+        result = yaml.safe_load(proof_result_path.read_text(encoding="utf-8"))
+        self.assertEqual(result["statement_fidelity"], "faithful")
+        self.assertEqual(result["claim_scope"], "registry-statement")
+        self.assertEqual(result["agent_profile"], "basic-loop")
+        self.assertEqual(result["unsafe_candidates_rejected"], 3)
+
+    def test_special_case_cannot_promote_to_formal_status(self) -> None:
+        run_id = start_run(
+            repo_root=self.repo_root,
+            problem_id=self.problem_id,
+            route="proof-first",
+            agent="prover",
+            description="special-case search",
+        )
+        proof_file = self.problem_root / "artifacts" / "candidate.lean"
+        proof_file.parent.mkdir(parents=True)
+        proof_file.write_text("theorem candidate : True := by trivial\n", encoding="utf-8")
+
+        with self.assertRaises(ValueError):
+            create_proof_result(
+                repo_root=self.repo_root,
+                problem_id=self.problem_id,
+                run_id=run_id,
+                claim_label="zero-free region",
+                claim_class="theorem",
+                status="formally-checked",
+                verifier_kind="lean4",
+                toolchain="leanprover/lean4:v4.29.0",
+                command="lake env lean artifacts/candidate.lean",
+                source_entry="artifacts/candidate.lean",
+                artifacts=[{"path": "artifacts/candidate.lean", "type": "source"}],
+                statement_fidelity="faithful",
+                claim_scope="special-case",
+            )
+
+        proof_result_path = create_proof_result(
+            repo_root=self.repo_root,
+            problem_id=self.problem_id,
+            run_id=run_id,
+            claim_label="zero-free region",
+            claim_class="theorem",
+            status="verifier-checked",
+            verifier_kind="lean4",
+            toolchain="leanprover/lean4:v4.29.0",
+            command="lake env lean artifacts/candidate.lean",
+            source_entry="artifacts/candidate.lean",
+            artifacts=[{"path": "artifacts/candidate.lean", "type": "source"}],
+            statement_fidelity="faithful",
+            claim_scope="catalog-title",
+        )
+        result = yaml.safe_load(proof_result_path.read_text(encoding="utf-8"))
+        self.assertEqual(result["status"], "verifier-checked")
+        self.assertEqual(result["claim_scope"], "catalog-title")
 
     def test_create_proof_result_requires_existing_proof_obligations(self) -> None:
         run_id = start_run(

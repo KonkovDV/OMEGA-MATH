@@ -1,0 +1,131 @@
+# Snapshot of the public OpenAI mathematics catalog at commit
+# fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb (2026-10-08).
+# OMEGA did not rebuild the Lean library and did not copy manuscripts.
+# A family is not a theorem. A headline is not a registry status.
+# The review is research/OMEGA_OCTOBER_2026_MURDER_BOARD.md.
+retrieved: "2026-10-12"
+repository: https://github.com/openai/math
+sources:
+  readme: https://raw.githubusercontent.com/openai/math/main/README.md
+  history: https://raw.githubusercontent.com/openai/math/main/history.md
+  release_note: https://openai.com/index/sharing-ai-progress-in-mathematics/
+  navier_stokes_note: https://openai.com/index/navier-stokes-solution/
+  declaration: https://mathandai.org/
+  declaration_doi: 10.5281/zenodo.22737750
+  smf_seminar: https://smf.emath.fr/smf-dossiers-et-ressources/un-grave-defaut-dalignement-de-lia-en-math-h-duminil-copin-video-2026
+  le_monde: https://www.lemonde.fr/sciences/article/2026/10/10/nouveau-coup-de-massue-d-openai-sur-les-mathematiciens-ils-ont-annihile-mon-domaine-de-recherche_6790951_1650684.html
+commit: fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb
+commit_date: "2026-10-08"
+manuscripts: 719
+families: 372
+formalized_top_line_self_report: 300
+formalized_note: "300/719 ≈ 42%, history.md dated 7 October 2026, self-report"
+formalization_yaml:
+  version: "v0.4"
+  scope: "Partial progress."
+  sources: 173
+  main_results: 200
+  matches_self_report: false
+secondary_manuscript_count_722_adopted: false
+problems_posed_approx: 4000
+mean_compute: "three hours of ChatGPT Pro thinking compute per result"
+model: "unreleased internal OpenAI model"
+domain_closed: false
+withdrawn:
+  - title: Algebraicity of Weil classes on split abelian eightfolds
+    role: source
+    reason: "A sign error invalidates a stabilization-trace cancellation and the construction used by the two dependent manuscripts."
+  - title: Algebraicity of Kuga–Satake Correspondences for K3 Surfaces
+    role: dependent
+    reason: "Withdrawn with the eightfolds manuscript."
+  - title: The rational Hodge conjecture for products of K3 surfaces
+    role: dependent
+    reason: "Withdrawn with the eightfolds manuscript. This is not the Hodge conjecture."
+revised_manuscripts: 14
+citation_only_updates: 13
+exceptions:
+  - id: zeta-zero-free-region
+    claim: "zero-free region Re(s) > 11/12 for the Riemann zeta function"
+    human_edited_writeup: true
+    closes_riemann_hypothesis: false
+  - id: hodge-cm-abelian
+    claim: "Hodge conjecture for CM abelian varieties"
+    closes_hodge_conjecture: false
+navier_stokes:
+  date: "2026-09-08"
+  clay_statements_claimed: ["C", "D"]
+  forced: true
+  from_rest: true
+  finite_energy: true
+  unforced_claimed: false
+  prize_claimed_by_openai: false
+  closes_registry_entry: false
+  separate_unforced_euler: true
+  fidelity_paper: "Bastounis, Circelli, and Hansen, arXiv:2610.08144"
+  fidelity_finding: "The Lean development is not a semantic translation of the natural-language argument. Lemma 8.6 spends m+5 derivatives in Lean against m+4 in the prose. The pressure-flux bound (10.19) is a second mismatch. The authors do not assert that the natural-language argument is false."
+  lean_repository: https://github.com/openai/NavierStokesAndEuler
+  lean_commit_cited_by_fidelity_paper: f9e8bc5b38b6e212696e8a30e3e91517af887bbd
+  lean_commit_exists: true
+  omega_rebuilt_lean: false
+statement_checks:
+  - id: hadwiger-conjecture
+    file: lean/OAI/Combinatorics/HadwigerCounterexample/Main.lean
+    declaration: OAI.HadwigerCounterexample.not_hadwiger_conjecture
+    formal_target: "Negation of: for every finite m and every simple graph on Fin m, chromaticNumber is at most hadwigerNumber."
+    matches_registry_sentence: true
+    compiled_by_omega: false
+    definitions_audited: false
+    closes_registry_entry: false
+  - id: riemann-seven-eighths
+    registry_id: riemann-hypothesis
+    file: lean/OAI/NumberTheory/DirichletL/Nonvanishing.lean
+    declaration: OAI.riemannZeta_ne_zero_of_seven_eighths_lt_re
+    formal_target: "riemannZeta s is nonzero whenever the real part of s exceeds 7/8. The binder does not exclude s = 1. The Dirichlet theorem in the same file does exclude the principal pole."
+    matches_registry_sentence: false
+    compiled_by_omega: false
+    closes_registry_entry: false
+  - id: seymour-second-neighborhood
+    registry_id: null
+    file: lean/OAI/Combinatorics/SecondNeighborhood/Main.lean
+    declaration: OAI.SeymourSecondNeighborhood.exists_goodVertex
+    formal_target: "Every finite nonempty oriented relation has a GoodVertex. GoodVertex is defined in an imported file that was not read."
+    closes_registry_entry: false
+triage:
+  - surface: openai-math-catalog
+    disposition: draft-batch
+    score_change: none
+  - surface: formalization-yaml-v0.4
+    disposition: partial-machine-count
+    score_change: none
+  - surface: navier-stokes-c-d
+    disposition: external-claim
+    score_change: none
+  - surface: hadwiger-formal-negation
+    disposition: sentence-matches-build-missing
+    score_change: none
+  - surface: zeta-seven-eighths
+    disposition: special-case
+    score_change: none
+  - surface: le-monde-domain-annihilated
+    disposition: reported-judgment
+    score_change: none
+declaration:
+  date: "2026-09-11"
+  initial_signatories_reported_by_tao: 25
+  signatories_listed_on_retrieval: 28
+  includes_duminil_copin: true
+le_monde:
+  evidence_class: E2
+  date: "2026-10-10"
+  body_retrieved: false
+  smf_talk_date: "2026-10-08"
+  smf_page_confirms_talk: true
+not_adopted:
+  - "A research domain was annihilated"
+  - "The unforced Navier-Stokes problem is solved"
+  - "The Riemann hypothesis is solved"
+  - "The Hodge conjecture is solved"
+  - "The square-lattice connective constant is known"
+  - "Sixteen personal questions are solved"
+  - "Conformal invariance of percolation is solved"
+  - "The six-vertex height function is solved"

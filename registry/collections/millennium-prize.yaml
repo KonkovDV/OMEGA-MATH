@@ -31,6 +31,8 @@ problems:
     ai_tier: T5-foundational
     amenability: 0
 
+  # Canonical statement is Clay (A) and (B). The 8 September 2026 forced-blowup
+  # announcement is Clay (C) and (D) and does not change this status.
   - id: navier-stokes
     name: Navier–Stokes existence and smoothness
     status: open

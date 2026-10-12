@@ -37,6 +37,63 @@ class _FakeLeanAdapter:
 
 
 class ProofRepairLoopTests(unittest.TestCase):
+    def test_unsafe_candidate_reason(self) -> None:
+        self.assertEqual(repair.unsafe_candidate_reason("exact True.intro"), None)
+        self.assertEqual(repair.unsafe_candidate_reason("sorry"), "sorry-laundering")
+        self.assertEqual(
+            repair.unsafe_candidate_reason("have h : True := by\n  admit"),
+            "sorry-laundering",
+        )
+        self.assertEqual(
+            repair.unsafe_candidate_reason("lemma helper : True := by\n  exact True.intro"),
+            "new-declaration",
+        )
+
+    def test_frozen_prefix_stops_at_first_sorry(self) -> None:
+        source = "theorem t : True := by\n  sorry\n"
+        self.assertEqual(repair.frozen_prefix(source), "theorem t : True := by\n  ")
+
+    def test_run_loop_rejects_sorry_laundering(self) -> None:
+        class _LaunderingAdapter:
+            def check_file(self, lean_file: Path, *, timeout_seconds: int = 120):
+                content = lean_file.read_text(encoding="utf-8")
+                if "have h" in content and "sorry" in content:
+                    return {"success": False, "errors": [], "warnings": []}
+                if "sorry" in content:
+                    return {
+                        "success": False,
+                        "errors": [{"message": "declaration uses sorry"}],
+                        "warnings": [],
+                    }
+                return {"success": True, "errors": [], "warnings": []}
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            lean_file = Path(tmpdir) / "Launder.lean"
+            original = "theorem t : True := by\n  sorry\n"
+            lean_file.write_text(original, encoding="utf-8")
+
+            result = repair.run_proof_repair_loop(
+                lean_file,
+                model="mock",
+                base_url="http://localhost:8000/v1",
+                api_key="",
+                max_iterations=2,
+                candidates=1,
+                timeout_seconds=10,
+                temperature_schedule=[0.1],
+                in_place=True,
+                max_stagnant_iterations=2,
+                adapter=_LaunderingAdapter(),
+                candidate_provider=lambda *_: ["have h : True := by\n  sorry\nexact h"],
+            )
+
+            self.assertFalse(result["success"])
+            self.assertEqual(result["status"], "exhausted")
+            self.assertEqual(lean_file.read_text(encoding="utf-8"), original)
+            reasons = [item.get("reason") for item in result["history"]]
+            self.assertIn("sorry-laundering", reasons)
+            self.assertEqual(result["unsafe_candidates_rejected"], 2)
+
     def test_count_and_replace_sorry(self) -> None:
         source = "theorem t : True := by\n  sorry\n"
         self.assertEqual(repair.count_sorries(source), 1)

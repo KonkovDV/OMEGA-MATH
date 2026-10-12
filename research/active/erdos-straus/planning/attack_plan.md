@@ -2,6 +2,15 @@
 
 Execution status: **Phase 1 and Phase 2 are implemented and runnable now. Phase 3 is still planned research work, not shipped code.**
 
+## External status, 12 October 2026
+
+Erdős–Straus is not among the nine Lean files from Tsoukalas et al. It is
+problem 242 on the FrontierMath Erdős list (arXiv:2609.25050) of problems
+that were open in August 2026, and it was not resolved in that evaluation.
+The block construction used for Erdős #12 does not give Egyptian-fraction
+identities. Phases 1–3 stay the plan. See
+`research/OMEGA_ALPHAPROOF_NEXUS_MATHEMATICAL_READING_2026_10_12.md`.
+
 ## Phase 1: Covering Congruence Machine (Python, ~2h compute)
 
 **Goal**: For each of the 6 uncovered residues mod 840 (r ∈ {1, 121, 169, 289, 361, 529}),

@@ -28,7 +28,11 @@ problems:
     ai_triage:
       tier: T5-foundational
       amenability_score: 0
-      notes: Deep algebraic geometry. No computational approach known.
+      notes: >
+        Deep algebraic geometry. No computational approach known.
+        The Hodge conjecture for CM abelian varieties, named as an exception in the
+        OpenAI catalog of 6 October 2026, is a special case. It does not close this
+        entry. See research/OMEGA_OPENAI_MATH_CATALOG_2026_10_12.md.
 
   - id: abundance-conjecture
     name: Abundance conjecture

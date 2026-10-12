@@ -231,6 +231,117 @@ Operational implication:
 - OMEGA returns to a "green pipeline" state for Erdos-Straus, Kobon triangles,
      Thomson workflows, and registry/schema validation in the standalone runtime.
 
+## 1.9 Formal Proof Search on Open Problems (October 2026)
+
+Tsoukalas et al., *Science*, 8 October 2026 (AAAS release 1146436; preprint
+arXiv:2605.22763v2) is the new authority surface for how OMEGA spends a proof
+search. The evidence note is
+`research/OMEGA_SOTA_LANDSCAPE_UPDATE_2026_10_12.md`. The statement-level
+reading is `research/OMEGA_ALPHAPROOF_NEXUS_MATHEMATICAL_READING_2026_10_12.md`,
+with the nine targets in `research/external/alphaproof_nexus_erdos_2026.yaml`.
+This section revises the open-problem recommendation in §1.4. It does not
+retract the MiniF2F numbers recorded there.
+
+What the paper changes:
+
+1. The default open-problem prover pass is one capable model in a bounded
+   generate-and-check loop: propose a Lean sketch, compile it, feed the
+   compiler message back, and carry a short lesson into the next episode.
+   On the nine formal targets their full agent had already closed, this basic
+   loop also found a proof. That is not nine closed Erdős problems: #12 and
+   #138 stay open, #26 is a Tenenbaum variant, and #741 (i) in the published
+   file is a disproof of one density reading. Gemini 3.0 Flash, Gemini 3.1
+   Flash-Lite, and AlphaProof used alone as a tree search found none.
+2. A heavier agent (evolutionary ranking of sketches, plus AlphaProof as a
+   tool) remains an escalation, not the first pass. In the post-hoc comparison
+   it was cheaper on the hardest of those nine, notably #125 and #138. The
+   comparison was run after those nine were already known to be solvable, so
+   it is not a license to skip the basic loop on a fresh screen of hundreds
+   of statements.
+3. A Lean check of the file is not a solution of the mathematical problem.
+   A human must record whether the formal statement matches the informal
+   claim. The same run found misformalizations (natural density written where
+   the claim was lower or upper density). For a sequence, the sketch must
+   prove a test lemma on the first terms before the conjecture is attempted.
+4. Prompting a model not to hide the goal does not work. The repair loop
+   rejects a candidate that still contains `sorry`, `admit`, or `sorryAx`,
+   or that opens a new declaration. The text before the placeholder stays
+   fixed. A remaining `sorry` inside a helper lemma is an open obligation,
+   even when the model calls it a known theorem.
+5. A failed formal sketch is kept when its open goals are explicit. Reviewers
+   read the unresolved goals. They do not re-check every closed step.
+6. Spend this lane where mathlib already has the needed theory and the goal
+   splits into library-supported steps: combinatorics, elementary number
+   theory, convex optimization. A problem that needs a new theory stays
+   outside the autonomous lane. Nine files out of 353 formalized statements,
+   and two out of 68 curated open problems in FrontierMath Erdős
+   (arXiv:2609.25050, $300, one attempt), are the calibration. A part or a
+   variant is not reported as the whole catalog entry.
+
+Operational rules:
+
+- Route `prove` first through `scripts/proof_repair_loop.py` or an equivalent
+  single-model Lean loop. Escalate to a second model, a population of
+  sketches, or an external prover only after that loop stops on a statement
+  whose fidelity note is already written.
+- Do not send an open statement to a small local prover as the primary
+  search. Small models stay available for short, already-isolated obligations.
+- Record `statement_fidelity` on the prover-result artifact before any
+  status moves to `formally-checked`.
+- Do not add the nine solved Erdős items to the registry from this paper
+  alone. §1.5 still blocks registry growth until three T1 workspaces finish
+  the local lifecycle. The external proofs live in
+  `google-deepmind/alphaproof-nexus-results`.
+
+## 1.10 Mass Manuscript Releases (October 2026)
+
+On 6 October 2026 OpenAI published a GitHub catalog of manuscripts from an
+unreleased internal model: 719 manuscripts in 372 families, from about 4,000
+problems posed, at an average cost of three hours of ChatGPT Pro thinking
+compute per result. The repository's own history, dated 7 October, says 300
+of the 719 top-line results are formalized in Lean, about 42 percent, and
+withdraws three manuscripts because one sign error breaks a cancellation
+used by the other two. The reading is
+`research/OMEGA_OPENAI_MATH_CATALOG_2026_10_12.md`. The counts are in
+`research/external/openai_math_catalog_2026.yaml`.
+
+Le Monde, 10 October 2026, reports that Hugo Duminil-Copin told the SMF
+seminar MIAM on 8 October that this release had annihilated his research
+area. That sentence is a mathematician's judgment about the shock to a
+field and to younger researchers. It is not a registry status. A domain
+stays open until a named manuscript, a named statement, and a checker agree.
+
+Operational rules:
+
+- A batch of informal manuscripts is not a proof. Each family enters as
+  `draft`. `formally-checked` still requires `statement_fidelity` of
+  `faithful` or `amended`, `claim_scope: registry-statement`, and a
+  verifier command. On the self-reported count, about 58 percent of
+  top-line results have no Lean file. The machine catalog is smaller.
+- A withdrawal or a repaired dependency downgrades every manuscript that
+  cites it. Record the version. Do not cite a withdrawn file as a theorem.
+- A special case is not the problem in the registry. A zero-free region
+  `Re(s) > 11/12`, and the separate formal sentence `Re(s) > 7/8` in
+  `openai/math` at `fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb`, are not the
+  Riemann hypothesis. The Hodge conjecture for CM abelian varieties is not
+  the Hodge conjecture. A forced Navier–Stokes blowup, Clay statements (C)
+  and (D), is not the unforced regularity problem tracked as
+  `navier-stokes`. Those three registry entries stay `open`. The runner
+  enforces the split: `formally-checked` requires `claim_scope:
+  registry-statement`.
+- The company's formalization total, 300/719, is its own sentence in
+  `history.md`. The machine-readable catalog `lean/formalization.yaml` at
+  the same commit is version v0.4, scope "Partial progress.", with 173
+  source titles and 200 main-result declarations. Those counts are not
+  interchangeable. A secondary page's figure of 722 manuscripts is not
+  the README at this commit.
+- Do not copy the catalog into `registry/domains/`. Do not retune amenability
+  because a headline says a field is finished.
+- The human remainder named at the SMF seminar is the OMEGA remainder:
+  understand the argument, digest the dependencies, and transmit a checked
+  statement. That work is the referee and literature lanes, not a second
+  generation pass over the PDFs.
+
 ## 2. Problem Taxonomy
 
 ### 2.1 Domains (12 primary taxonomy domains)

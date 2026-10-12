@@ -9,7 +9,12 @@ This module is used by agent_orchestrator.py and can be invoked standalone
 for health checks and profile inspection.
 
 Design grounded in:
-- DeepSeek-Prover-V2 two-level architecture (72B decomposes → 7B solves)
+- DeepSeek-Prover-V2 two-level architecture (72B decomposes → 7B solves),
+  kept for competition-style subgoals and for planner/executor routing
+- Tsoukalas et al., Science, 8 Oct 2026 (arXiv:2605.22763): on open problems
+  the default prover pass is one capable model plus Lean feedback. Small
+  models and a standalone tree search solved none of the nine Erdős problems
+  in that comparison. See research/OMEGA_SOTA_LANDSCAPE_UPDATE_2026_10_12.md
 - OMEGA team.yaml tier routing rules
 - LeanCopilot ExternalGenerator API pattern
 

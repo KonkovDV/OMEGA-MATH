@@ -8,8 +8,11 @@ problems:
     subdomain: partial-differential-equations
     status: open
     statement: >
-      Do solutions of the 3D Navier–Stokes equations always exist, and are
-      they always smooth (no singularities in finite time)?
+      For the unforced 3D incompressible Navier–Stokes equations, do smooth
+      solutions exist for all time for every smooth divergence-free
+      finite-energy initial datum, on R^3 and on the torus? These are Clay
+      statements (A) and (B). A forced finite-time blowup, Clay (C) and (D),
+      is a different claim and does not close this entry.
     year_posed: 2000
     collections: [millennium-prize]
     prize:
@@ -23,7 +26,15 @@ problems:
       tier: T5-foundational
       amenability_score: 1
       approaches: [numerical-verification, pattern-recognition]
-      notes: Numerical simulations can provide evidence but proof requires deep PDE analysis.
+      notes: >
+        Numerical simulations can provide evidence but proof requires deep PDE analysis.
+        OpenAI, 8 September 2026, claims a finite-time blowup from rest for a smooth
+        compactly supported force with finite energy, and identifies that claim with
+        Clay (C) and (D). The company says it is not claiming the Millennium Prize.
+        Bastounis, Circelli, and Hansen, arXiv:2610.08144, show that the Lean file
+        is not a semantic translation of the prose, and they do not assert that the
+        prose is false. Status stays open. Reading:
+        research/OMEGA_OPENAI_MATH_CATALOG_2026_10_12.md.
 
   - id: yang-mills
     name: Yang–Mills existence and mass gap

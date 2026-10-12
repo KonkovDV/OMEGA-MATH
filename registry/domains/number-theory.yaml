@@ -622,6 +622,12 @@ problems:
       notes: >
         Over 10^13 zeros verified on critical line. Deep connections to random
         matrix theory. Likely requires entirely new mathematics.
+        A zero-free region Re(s) > 11/12 in the OpenAI catalog of 6 October 2026
+        is a different theorem, and the writeup of that region was human-edited.
+        A separate Lean file at commit fd4aeeb2 states that zeta is nonzero for
+        real part greater than 7/8, and its binder does not exclude s = 1.
+        Neither sentence closes this entry.
+        See research/OMEGA_OCTOBER_2026_MURDER_BOARD.md.
     related_problems:
       - generalized-riemann-hypothesis
       - grand-riemann-hypothesis

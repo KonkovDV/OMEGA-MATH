@@ -16,6 +16,11 @@ problems:
       tier: T2-experimental
       amenability_score: 6
       approaches: [numerical-verification, monte-carlo]
+      notes: >
+        The hexagonal value μ = √(2+√2) is the Duminil-Copin–Smirnov theorem.
+        The open remainder is the square lattice and the other lattices named
+        in the statement. A report that self-avoiding-walk manuscripts appear
+        in the October 2026 OpenAI catalog is not a value of μ.
 
   - id: gaussian-correlation
     name: Gaussian correlation inequality (extensions)

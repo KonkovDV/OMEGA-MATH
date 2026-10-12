@@ -1,8 +1,8 @@
 ---
 title: "OMEGA SOTA Bibliography"
 status: active
-version: "1.1.0"
-last_updated: "2026-04-21"
+version: "1.3.0"
+last_updated: "2026-10-12"
 date: "2026-04-21"
 role: reference
 audience: internal+academic
@@ -335,10 +335,56 @@ OMEGA uses a three-tier evidence classification:
 
 ---
 
+## Addendum, October 2026
+
+36. **AlphaProof Nexus**
+    Tsoukalas et al. *Advancing Mathematics Research with AI-Driven Formal Proof Search.* arXiv:2605.22763v2, 2026. *Science*, 8 October 2026.
+    - Proofs: https://github.com/google-deepmind/alphaproof-nexus-results
+    - Evidence class: E1
+    - OMEGA role: open-problem search policy and the nine-file ledger. The mathematical reading is `research/OMEGA_ALPHAPROOF_NEXUS_MATHEMATICAL_READING_2026_10_12.md`
+
+37. **Formal Conjectures**
+    Firsching et al. arXiv:2605.13171, 2026. Repository `google-deepmind/formal-conjectures`.
+    - Evidence class: E1
+    - OMEGA role: misformalization layers (translation, underspecified, source) and the `answer(sorry)` split between a truth value and a frozen claim
+
+38. **FrontierMath Erdős**
+    Adamczewski and Bloom. arXiv:2609.25050, 2026.
+    - Evidence class: E1
+    - OMEGA role: controlled denominator. One attempt, $300, 68 curated problems: 2 resolved by one model, 0 by four others. Erdős–Straus is problem 242 and was not resolved
+
+39. **AI contributions to Erdős problems**
+    Tao and contributors. Wiki frozen 30 June 2026.
+    - URL: https://github.com/teorth/erdosproblems/wiki/AI-contributions-to-Erd%C5%91s-problems
+    - Evidence class: E2
+    - OMEGA role: provisional catalog of partial, variant, and incorrect claims. Not a benchmark
+
+40. **Perspectives in the same Science issue**
+    Avigad and Ballard, DOI 10.1126/science.ael6628. Riehl, DOI 10.1126/science.ael8339.
+    - Evidence class: E1 for the publication record, E2 for the interpretation
+    - OMEGA role: a proof is not a judgment of importance
+
+41. **OpenAI mathematics catalog**
+    Repository `openai/math`, README and `history.md`, read 12 October 2026. Release note, 6 October 2026.
+    - Evidence class: E1 for the repository's own counts at commit `fd4aeeb2ee4f` (719 manuscripts, 372 families, self-reported 300/719, three withdrawals, and the separate machine count 173 sources / 200 declarations). E2 for the company blog
+    - OMEGA role: mass-release policy in PROTOCOL.md §1.10. The reading is `research/OMEGA_OPENAI_MATH_CATALOG_2026_10_12.md`. The review is `research/OMEGA_OCTOBER_2026_MURDER_BOARD.md`
+
+42. **Forced Navier–Stokes claim and its fidelity gap**
+    OpenAI, "On the Navier–Stokes Millennium Prize Problem", 8 September 2026. Bastounis, Circelli, and Hansen, arXiv:2610.08144.
+    - Evidence class: E2 for the company claim of Clay (C) and (D). E1 for the paper's finding that the Lean file is not a semantic translation of the prose
+    - OMEGA role: `navier-stokes` tracks Clay (A) and (B) and stays open
+
+43. **A Severe Misalignment of AI in Mathematics**
+    Declaration, 11 September 2026. DOI 10.5281/zenodo.22737750. Page `https://mathandai.org/`.
+    - Evidence class: E1 as a community document, not as a theorem
+    - OMEGA role: a solved problem is not yet a transmitted proof. Le Monde, 10 October 2026, and the SMF seminar MIAM of 8 October 2026 are E2 reports of the same concern
+
 ## Version History
 
 | Version | Date | Change |
 |---------|------|--------|
+| 1.3.0 | 2026-10-12 | Added the OpenAI catalog, the independent formalization count, the Navier–Stokes fidelity paper, the 11 September declaration, and the October murder board |
+| 1.2.0 | 2026-10-12 | Added AlphaProof Nexus, Formal Conjectures, FrontierMath Erdős, Tao's wiki, and the Science perspectives |
 | 1.1.1 | 2026-04-21 | Added Simula synthetic-data methodology donor (`NALsdGEPhB`) for future synthetic reasoning dataset and benchmark-evaluation work |
 | 1.1.0 | 2026-04-16 | Added FrenzyMath conjecture-resolution extraction references (arXiv:2604.03789, Rethlas, Archon, Anderson-Conjecture, supporting web surfaces) |
 | 1.0.0 | 2026-04-05 | Initial consolidated bibliography from OMEGA April 2026 audit |

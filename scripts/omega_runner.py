@@ -34,6 +34,12 @@ VALID_PROOF_STATUSES = {
 }
 VALID_CLAIM_CLASSES = {"lemma", "theorem", "structural-claim", "counterexample-cert"}
 VALID_VERIFIER_KINDS = {"lean4", "coq", "isabelle", "cas", "human-line-check"}
+VALID_STATEMENT_FIDELITY = {"unchecked", "faithful", "misformalized", "amended"}
+VALID_AGENT_PROFILES = {"basic-loop", "escalated"}
+VALID_CLAIM_SCOPES = {"registry-statement", "special-case", "forced-variant", "catalog-title"}
+REGISTRY_STATEMENT_SCOPE = "registry-statement"
+FIDELITY_REQUIRED_STATUSES = {"formally-checked", "verified"}
+FAITHFUL_STATEMENT = {"faithful", "amended"}
 VALID_LEDGER_ARTIFACT_TYPES = {
     "log",
     "dataset",
@@ -621,7 +627,31 @@ def create_proof_result(
     artifacts: list[dict] | None = None,
     dependencies: list[str] | None = None,
     notes: str | None = None,
+    statement_fidelity: str = "unchecked",
+    agent_profile: str = "basic-loop",
+    unsafe_candidates_rejected: int = 0,
+    claim_scope: str = REGISTRY_STATEMENT_SCOPE,
 ) -> Path:
+    if statement_fidelity not in VALID_STATEMENT_FIDELITY:
+        raise ValueError(
+            f"Statement fidelity must be one of {sorted(VALID_STATEMENT_FIDELITY)}; got {statement_fidelity}"
+        )
+    if agent_profile not in VALID_AGENT_PROFILES:
+        raise ValueError(f"Agent profile must be one of {sorted(VALID_AGENT_PROFILES)}; got {agent_profile}")
+    if claim_scope not in VALID_CLAIM_SCOPES:
+        raise ValueError(f"Claim scope must be one of {sorted(VALID_CLAIM_SCOPES)}; got {claim_scope}")
+    if unsafe_candidates_rejected < 0:
+        raise ValueError("unsafe_candidates_rejected must be >= 0")
+    if status in FIDELITY_REQUIRED_STATUSES and statement_fidelity not in FAITHFUL_STATEMENT:
+        raise ValueError(
+            "status "
+            f"{status} requires statement_fidelity faithful or amended; got {statement_fidelity}"
+        )
+    if status in FIDELITY_REQUIRED_STATUSES and claim_scope != REGISTRY_STATEMENT_SCOPE:
+        raise ValueError(
+            "status "
+            f"{status} requires claim_scope {REGISTRY_STATEMENT_SCOPE}; got {claim_scope}"
+        )
     if claim_class not in VALID_CLAIM_CLASSES:
         raise ValueError(f"Claim class must be one of {sorted(VALID_CLAIM_CLASSES)}; got {claim_class}")
     if status not in VALID_PROOF_STATUSES:
@@ -668,6 +698,10 @@ def create_proof_result(
         },
         "updated_at": utc_now_iso(),
         "novelty_gate": "unchecked",
+        "statement_fidelity": statement_fidelity,
+        "claim_scope": claim_scope,
+        "agent_profile": agent_profile,
+        "unsafe_candidates_rejected": unsafe_candidates_rejected,
         "dependencies": dependencies or [],
         "artifacts": enriched_artifacts,
         "notes": notes or "",
@@ -798,6 +832,22 @@ def build_parser() -> argparse.ArgumentParser:
     proof_parser.add_argument("--artifact", action="append")
     proof_parser.add_argument("--dependency", action="append")
     proof_parser.add_argument("--notes")
+    proof_parser.add_argument(
+        "--statement-fidelity",
+        default="unchecked",
+        choices=sorted(VALID_STATEMENT_FIDELITY),
+    )
+    proof_parser.add_argument(
+        "--agent-profile",
+        default="basic-loop",
+        choices=sorted(VALID_AGENT_PROFILES),
+    )
+    proof_parser.add_argument("--unsafe-candidates-rejected", type=int, default=0)
+    proof_parser.add_argument(
+        "--claim-scope",
+        default=REGISTRY_STATEMENT_SCOPE,
+        choices=sorted(VALID_CLAIM_SCOPES),
+    )
 
     failure_parser = subparsers.add_parser("failure-pattern", help="Append a run-level failure pattern event")
     failure_parser.add_argument("problem_id")
@@ -866,6 +916,10 @@ def main(argv: list[str] | None = None) -> int:
                 artifacts=parse_artifact_args(args.artifact),
                 dependencies=args.dependency,
                 notes=args.notes,
+                statement_fidelity=args.statement_fidelity,
+                agent_profile=args.agent_profile,
+                unsafe_candidates_rejected=args.unsafe_candidates_rejected,
+                claim_scope=args.claim_scope,
             )
             print(result_path)
             return 0

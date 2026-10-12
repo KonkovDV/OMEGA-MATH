@@ -22,6 +22,17 @@ machine-readable results. It replaces ad-hoc shell commands with a reproducible,
 - **mathlib4** v4.29.0 (leanprover-community/mathlib4): active standard library for Lean 4.
   The adapter must handle mathlib-dependent projects (lake package resolution).
 
+## SOTA Grounding (October 2026)
+
+Tsoukalas et al. (*Science*, 8 October 2026; arXiv:2605.22763) used this same
+shape of tool: an LLM writes Lean, the compiler answer comes back, the next
+episode continues. Their basic loop solved the same nine Erdős problems as
+the evolutionary agent with AlphaProof attached. `check-file` remains the
+verification primitive. The adapter does not decide that a compiled file
+solves the informal problem; that comparison is `statement_fidelity` on the
+prover-result artifact. A file that still contains `sorry` is not a success,
+including when the `sorry` sits in a helper lemma.
+
 ## Adapter Contract
 
 ### Input: `LeanRequest`
@@ -110,8 +121,9 @@ errors:
 
 - **omega-runner**: `proof-first` runs invoke `check-file` or `build-project` and record
   the `LeanResult` as a prover-result artifact.
-- **Prover agent**: uses `check-file` in a loop (subgoal decomposition pattern per
-  DeepSeek-Prover-V2) to validate individual proof steps.
+- **Prover agent**: uses `check-file` in a bounded generate-and-check loop.
+  Subgoal decomposition remains available for an isolated obligation. It is
+  not the first pass on an open statement (PROTOCOL.md §1.9).
 - **CI/verification-pipeline**: `build-project` confirms that a Lean project compiles
   before accepting a proof draft.
 

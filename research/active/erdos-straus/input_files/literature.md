@@ -18,6 +18,13 @@
 - Combined: all n except n ≡ {1,121,169,289,361,529} mod 840 are covered.
 - Natural density of exceptions → 0.
 
+## External status, October 2026
+
+Not resolved by AlphaProof Nexus (Tsoukalas et al., arXiv:2605.22763) and not
+resolved in FrontierMath Erdős (Adamczewski and Bloom, arXiv:2609.25050),
+where it is problem 242 on a list of problems open as of August 2026. The
+local computational frontier below is unchanged.
+
 ## Best Current Bounds
 
 - Computational frontier: 10^17.

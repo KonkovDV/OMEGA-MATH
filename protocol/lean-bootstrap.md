@@ -169,9 +169,14 @@ The loop applies verifier-guided self-correction:
 
 1. detect first unresolved `sorry`
 2. generate tactic candidates
-3. re-check with Lean
-4. keep only improving candidates
-5. stop on verified proof or exhausted budget
+3. discard a candidate that contains `sorry`, `admit`, or `sorryAx`, that opens a new declaration, or that changes the text before the placeholder
+4. re-check the remaining candidates with Lean
+5. keep only improving candidates
+6. stop on verified proof or exhausted budget
+
+Step 3 is mandatory. A model will otherwise close the visible goal by
+restating it as a helper lemma with `sorry`. Prompting against that pattern
+did not stop it in Tsoukalas et al. (*Science*, 8 October 2026).
 
 ## OMEGA conventions on top of this stack
 
@@ -189,6 +194,12 @@ The loop applies verifier-guided self-correction:
 | 8–12 GB | entry | BFS-Prover-V2 7B, DeepSeek-Prover-V2-7B (Q4/Q8) |
 | 24 GB | mid | QwQ 32B (Q4), two-model propose+repair loops |
 | Multi-GPU / Linux | lab | vLLM serving, larger quants, batch proof search |
+
+The table is a hardware menu for short obligations. It is not the open-problem
+search policy. On the nine Erdős problems in Tsoukalas et al., Flash-class
+models and a standalone tree search solved none. A small local model may
+repair an isolated step. It is not the primary search on a fresh open
+statement. See PROTOCOL.md §1.9.
 
 ## References
 

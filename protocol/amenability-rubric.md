@@ -117,12 +117,45 @@ Registry validators and the triage matrix are expected to agree with this mappin
 - Feedback Speed: 0 (no incremental feedback)
 - Publication Yield: 0 (only full resolution counts)
 
+## October 2026 Calibration Note
+
+Tsoukalas et al. (*Science*, 8 October 2026; arXiv:2605.22763) returned nine
+Lean files from 353 already-formalized Erdős statements, and 44 proofs from
+492 OEIS conjectures. The nine files are not nine closed catalog problems.
+The reading is in
+`research/OMEGA_ALPHAPROOF_NEXUS_MATHEMATICAL_READING_2026_10_12.md`.
+Adamczewski and Bloom (arXiv:2609.25050) then scored models on 68 problems
+chosen for mathematical interest, one attempt and $300 each: one pre-release
+model resolved 2, and four other frontier models resolved 0. That result
+does not raise the registry scores in this file. It does change how the axes
+are read:
+
+- Axis 3 stays at 2 only when the statement is already in Lean and the
+  needed theory is already in mathlib. A natural-language conjecture, or a
+  field whose library is thin, stays at 0 or 1. The search also found
+  misformalizations, so a Lean file is not by itself a faithful statement.
+- Axis 4 is 2 for a single Lean compile of a frozen statement. It is not 2
+  for a screen of hundreds of open problems: the paper's per-problem cost
+  was a few hundred dollars, with a hard stop at 3000 episodes, and most
+  attempts still failed.
+- A problem that needs a new theory does not move toward T1 because a
+  frontier model exists. The Nexus successes sat in combinatorics,
+  elementary number theory, and convex optimization. Erdős–Straus is on the
+  curated open list and was not resolved. Its score in this rubric stays
+  where the computational evidence put it.
+
+No score in `registry/` was edited from this note or from the October 2026
+OpenAI manuscript catalog. A headline that a field has been annihilated does
+not move a tier. The next quarterly pass may rescore individual items, and
+it must name each change.
+
 ## Recalibration Schedule
 
 - Scores should be reviewed quarterly as AI capabilities evolve
 - AlphaProof-class systems may shift formalizability scores upward for entire classes
 - FunSearch-class systems may shift searchability scores for combinatorial problems
 - Each version bump should note which scores changed and why
+- The October 2026 note above is a reading rule, not a score change
 
 ## Known Limitations
 

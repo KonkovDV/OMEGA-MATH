@@ -42,6 +42,14 @@ problems:
       - year: 1993
         authors: [Neil Robertson, Paul Seymour, Robin Thomas]
         description: Proved for k = 6
+    notes: >
+      At openai/math commit fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb, the file
+      lean/OAI/Combinatorics/HadwigerCounterexample/Main.lean states
+      not_hadwiger_conjecture, the negation of chromaticNumber at most
+      hadwigerNumber for every finite simple graph. That is this entry's
+      sentence. OMEGA has not compiled the library and has not audited those
+      two definitions. Status stays open. Review:
+      research/OMEGA_OCTOBER_2026_MURDER_BOARD.md.
 
   - id: hadwiger-nelson
     name: Hadwiger–Nelson problem

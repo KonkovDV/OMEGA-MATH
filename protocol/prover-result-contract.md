@@ -39,6 +39,10 @@ updated_at: "<ISO 8601 timestamp>"
 
 ```yaml
 novelty_gate: "unchecked | checked"
+statement_fidelity: "unchecked | faithful | misformalized | amended"
+claim_scope: "registry-statement | special-case | forced-variant | catalog-title"
+agent_profile: "basic-loop | escalated"
+unsafe_candidates_rejected: 0
 dependencies:
   - "<lemma, paper result, or imported module>"
 artifacts:
@@ -54,7 +58,7 @@ notes: "<free-text operator note>"
 |--------|---------|
 | `draft` | A proof attempt exists, but the verifier outcome is not yet stable enough to report. |
 | `verifier-checked` | A verifier accepted the current draft under the stated command/toolchain, but broader formal closure is pending. |
-| `formally-checked` | A formal checker closed the claim under the recorded statement specification and verifier command. |
+| `formally-checked` | A formal checker closed the registry statement under the recorded specification and verifier command. `statement_fidelity` is `faithful` or `amended`, and `claim_scope` is `registry-statement`. |
 | `partial` | Some subclaims or modules verify, but the top-level claim does not yet close. |
 | `verified` | The stated claim passes the named verifier or documented human line-by-line closure. |
 | `rejected` | The verifier or review process refuted the current claim or proof attempt. |
@@ -67,6 +71,10 @@ notes: "<free-text operator note>"
 3. A `positive` ledger verdict does not automatically imply `verified` proof status.
 4. One ledger run may produce multiple prover results if it tests multiple claims.
 5. `statement_spec_path` is mandatory for claim-bearing prover results to enforce statement/proof separation.
+6. `statement_fidelity` stays `unchecked` until a person compares the Lean statement with the informal claim. Compilation does not set it.
+7. `claim_scope` says which sentence the file checks. `formally-checked` and `verified` accept only `registry-statement`. A zero-free region, a forced blowup, or a catalog title may be stored as `verifier-checked` under `special-case`, `forced-variant`, or `catalog-title`.
+8. `agent_profile: basic-loop` is the default open-problem search. Use `escalated` only after that loop has stopped and the fidelity note exists.
+9. `unsafe_candidates_rejected` counts patches the repair loop discarded because they reintroduced `sorry` or `admit`, opened a new declaration, or moved the text before the placeholder.
 
 ## Minimal Artifact Rule
 

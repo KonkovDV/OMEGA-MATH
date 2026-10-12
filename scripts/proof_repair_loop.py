@@ -4,9 +4,14 @@
 This utility implements a bounded self-correction loop:
 1) find `sorry` placeholders;
 2) generate tactic candidates from a model;
-3) patch one `sorry` at a time;
-4) verify each candidate using omega-lean check-file semantics;
-5) keep only improving patches.
+3) reject candidates that reintroduce `sorry`/`admit` or open a new declaration;
+4) patch one `sorry` at a time, leaving the text before that `sorry` unchanged;
+5) verify each candidate using omega-lean check-file semantics;
+6) keep only improving patches.
+
+The rejection step is mechanical. Tsoukalas et al. (Science, 8 Oct 2026;
+arXiv:2605.22763) report that prompting a model not to hide the target inside
+a helper lemma closed by `sorry` did not stop that failure.
 
 Usage:
   python scripts/proof_repair_loop.py repair proof/Example.lean --model goedel-prover-v2-32b
@@ -39,10 +44,43 @@ DEFAULT_TIMEOUT_SECONDS = 120
 DEFAULT_TEMPERATURE_SCHEDULE = "0.1,0.2,0.3,0.5"
 
 SORRY_RE = re.compile(r"\bsorry\b")
+UNSAFE_CLOSER_RE = re.compile(r"\b(sorry|admit|sorryAx)\b")
+NEW_DECL_RE = re.compile(r"(?m)^\s*(theorem|lemma|axiom|opaque|constant)\b")
 
 
 def count_sorries(source: str) -> int:
     return len(SORRY_RE.findall(source))
+
+
+def frozen_prefix(source: str) -> str:
+    """Return the source text before the first `sorry`.
+
+    The repair loop may replace that `sorry` and nothing before it. The
+    theorem statement lives in this prefix whenever the placeholder sits in
+    the proof body.
+    """
+    match = SORRY_RE.search(source)
+    if match is None:
+        return source
+    return source[: match.start()]
+
+
+def count_unsafe_rejections(history: list[dict[str, Any]]) -> int:
+    return sum(1 for item in history if item.get("status") == "rejected-unsafe")
+
+
+def unsafe_candidate_reason(tactic: str) -> str | None:
+    """Reject closers that hide an open goal, and new top-level declarations.
+
+    A tactic that still contains `sorry` or `admit` does not discharge the
+    placeholder; it moves the gap. A new `theorem` or `lemma` is outside the
+    contract of this one-placeholder loop.
+    """
+    if UNSAFE_CLOSER_RE.search(tactic):
+        return "sorry-laundering"
+    if NEW_DECL_RE.search(tactic):
+        return "new-declaration"
+    return None
 
 
 def replace_first_sorry(source: str, replacement: str) -> str:
@@ -182,6 +220,7 @@ def run_proof_repair_loop(
             "iterations": 0,
             "initial_sorries": 0,
             "final_sorries": 0,
+            "unsafe_candidates_rejected": 0,
             "output_path": str(lean_file),
         }
 
@@ -207,6 +246,7 @@ def run_proof_repair_loop(
                 "iterations": iteration,
                 "initial_sorries": count_sorries(lean_file.read_text(encoding="utf-8")),
                 "final_sorries": 0,
+                "unsafe_candidates_rejected": count_unsafe_rejections(history),
                 "output_path": str(output_path),
                 "history": history,
             }
@@ -254,8 +294,32 @@ def run_proof_repair_loop(
         best_source = current_source
         best_tuple = (current_sorries, error_count)
 
+        prefix = frozen_prefix(current_source)
         for tactic in options:
+            reason = unsafe_candidate_reason(tactic)
+            if reason is not None:
+                history.append(
+                    {
+                        "iteration": iteration,
+                        "tactic": tactic,
+                        "status": "rejected-unsafe",
+                        "reason": reason,
+                    }
+                )
+                continue
+
             trial_source = replace_first_sorry(current_source, tactic)
+            if not trial_source.startswith(prefix):
+                history.append(
+                    {
+                        "iteration": iteration,
+                        "tactic": tactic,
+                        "status": "rejected-unsafe",
+                        "reason": "statement-mutated",
+                    }
+                )
+                continue
+
             trial_result = _check_source(engine, trial_source, lean_file, timeout_seconds)
             trial_errors = len(trial_result.get("errors", []))
             trial_sorries = count_sorries(trial_source)
@@ -280,6 +344,7 @@ def run_proof_repair_loop(
                     "iterations": iteration + 1,
                     "initial_sorries": count_sorries(lean_file.read_text(encoding="utf-8")),
                     "final_sorries": 0,
+                    "unsafe_candidates_rejected": count_unsafe_rejections(history),
                     "output_path": str(output_path),
                     "history": history,
                 }
@@ -332,6 +397,7 @@ def run_proof_repair_loop(
         "initial_sorries": count_sorries(lean_file.read_text(encoding="utf-8")),
         "final_sorries": count_sorries(current_source),
         "best_error_count": best_error_count,
+        "unsafe_candidates_rejected": count_unsafe_rejections(history),
         "output_path": str(output_path),
         "history": history,
     }

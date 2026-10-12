@@ -1,0 +1,93 @@
+# Statement ledger for the nine Lean files in
+# google-deepmind/alphaproof-nexus-results, commit 0647711a71183c1ea492ad60860776617ce1ea88.
+# Retrieved 2026-10-12. Each formal_target is read from that file's target_theorem_0.
+# OMEGA did not replay the proofs in Lean. A compiling file is not by itself a
+# closed entry in registry/domains.
+retrieved: "2026-10-12"
+repository: https://github.com/google-deepmind/alphaproof-nexus-results
+commit: 0647711a71183c1ea492ad60860776617ce1ea88
+head_checked: "2026-10-12"
+head_matches_pinned_commit: true
+paper: "Tsoukalas et al., arXiv:2605.22763; Science, 8 October 2026"
+statements:
+  - id: erdos-12-i
+    catalog_id: 12
+    file: APNOutputs/ErdosProblems/erdos_12.parts.i.lean
+    blob_sha: a8b86904c2833e434450db6859e452a5718d428f
+    polarity: affirmative
+    formal_answer: true
+    closes_catalog_problem: false
+    formal_target: "answer(True) iff there exists an infinite divisibility-good set whose liminf counting function over sqrt(N) is positive. Witness in the file: MyGoodSet."
+    residual: "Part (iii), divergence of the reciprocal series, is not in this repository. The catalog problem stays open."
+  - id: erdos-12-ii
+    catalog_id: 12
+    file: APNOutputs/ErdosProblems/erdos_12.parts.ii.lean
+    blob_sha: 889784d2df64400fe917c4a7766db004f6a42277
+    polarity: negative
+    formal_answer: false
+    closes_catalog_problem: false
+    formal_target: "answer(False) iff some c > 0 makes every divisibility-good set thinner than N^(1-c) for infinitely many N. The false answer is the existence of a good set denser than every such power."
+    residual: "Same open third part as erdos-12-i."
+  - id: erdos-125
+    catalog_id: 125
+    file: APNOutputs/ErdosProblems/erdos_125.variants.positive_lower_density.lean
+    blob_sha: dd6f9a90a4699f4e8508c04d0c7202525bddf16d
+    polarity: negative
+    formal_answer: false
+    closes_catalog_problem: true
+    formal_target: "answer(False) iff the sumset of the base-3 and base-4 digit sets has positive lower density. The file proves that lower density is 0."
+    residual: "An earlier natural-density reading was a misformalization. This file is the corrected lower-density question."
+  - id: erdos-138
+    catalog_id: 138
+    file: APNOutputs/ErdosProblems/erdos_138.variants.difference.lean
+    blob_sha: 1e688a506be413d719ce96b2742d58d5af536353
+    polarity: affirmative
+    formal_answer: true
+    closes_catalog_problem: false
+    formal_target: "answer(True) iff the two-color van der Waerden numbers satisfy W(k+1) - W(k) tends to infinity."
+    residual: "The prize question W(k)^(1/k) tends to infinity is a different statement. It is still an open item of FrontierMath Erdős."
+  - id: erdos-152
+    catalog_id: 152
+    file: APNOutputs/ErdosProblems/erdos_152.lean
+    blob_sha: e09219a2220f579656757682839069d30572d28b
+    polarity: affirmative
+    formal_answer: true
+    closes_catalog_problem: true
+    formal_target: "answer(True) iff f(n) tends to infinity, where f(n) is the least number of isolated points in A+A over Sidon sets of cardinality n."
+    residual: "Tao's wiki places the argument next to Erdős–Sárközy–Sós (1994) and marks the proofs similar. Novelty is not the same thing as correctness."
+  - id: erdos-26-tenenbaum
+    catalog_id: 26
+    file: APNOutputs/ErdosProblems/erdos_26.variants.tenenbaum.lean
+    blob_sha: c9a2fcd592ca2051303e99f70cd66e942541a7c5
+    polarity: negative
+    formal_answer: false
+    closes_catalog_problem: false
+    formal_target: "answer(False) iff every strictly monotone thick sequence is weakly Behrend at every positive epsilon. The witness seqA has, for every translate, lower density of the multiples strictly below 1/2, via a counting bound 37/90."
+    residual: "This is Gérald Tenenbaum's variant, not a question posed by Erdős. The paper's prose summary about upper density 1-1/4 is not the target theorem in this file."
+  - id: erdos-741-i
+    catalog_id: 741
+    file: APNOutputs/ErdosProblems/erdos_741.parts.i.lean
+    blob_sha: f443df2a10cf49e00b933ff89551696b8ffabd04
+    polarity: negative
+    formal_answer: false
+    closes_catalog_problem: false
+    formal_target: "answer(False) iff every positive-density sumset A+A splits into two sets whose own sumsets have positive density. The witness is SandorA."
+    residual: "This file refutes the HasPosDensity reading. It does not contain a target theorem for the upper-density reading. The lower-density reading of part (i) is still open in the FrontierMath Erdős discussion. The paper and Bloom's catalog describe a separate positive theorem for upper density."
+  - id: erdos-741-ii
+    catalog_id: 741
+    file: APNOutputs/ErdosProblems/erdos_741.parts.ii.lean
+    blob_sha: ce265785bee364bf843d8ae215e4c2d6ac2cc0ad
+    polarity: affirmative
+    formal_answer: true
+    closes_catalog_problem: false
+    formal_target: "answer(True) iff there is an order-2 additive basis such that every split has at least one non-syndetic sumset. Witness in the file: cassels_set."
+    residual: "Part (ii) alone does not close part (i). An OpenAI model reached part (ii) independently, according to Tao's wiki."
+  - id: erdos-846
+    catalog_id: 846
+    file: APNOutputs/ErdosProblems/erdos_846.lean
+    blob_sha: 2533cd0e1fbe453980aab9519211686c9eb567e3
+    polarity: negative
+    formal_answer: false
+    closes_catalog_problem: true
+    formal_target: "answer(False) iff every infinite epsilon-non-trilinear plane set is a finite union of collinear-free sets. The file builds a counterexample from a map on pairs."
+    residual: "Bloom's catalog also records a counterexample by projecting Theorem 1.7 of Reiher–Rödl–Sales (2024). Tao's wiki marks the AI proof not similar to that paper. Both notes stay; OMEGA does not adjudicate priority."
