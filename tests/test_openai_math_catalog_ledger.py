@@ -51,6 +51,22 @@ class OpenAIMathCatalogLedgerTests(unittest.TestCase):
         self.assertEqual(catalog["main_results"], 200)
         self.assertFalse(catalog["matches_self_report"])
         self.assertFalse(self.payload["secondary_manuscript_count_722_adopted"])
+        history = self.payload["git_history"]
+        self.assertEqual(history["commits_on_main"], 3)
+        self.assertEqual(history["initial"]["manuscripts_claimed"], 722)
+        self.assertFalse(history["initial"]["history_md"])
+        self.assertEqual(history["initial"]["preprint_directories"], 722)
+        self.assertEqual(history["update"]["manuscripts_claimed"], 719)
+        self.assertEqual(history["update"]["preprint_directories"], 749)
+        self.assertEqual(history["update"]["preprint_directories_removed"], 0)
+        self.assertFalse(history["update"]["message_mentions_withdrawal"])
+        self.assertTrue(history["contents_drops_withdrawn_titles"])
+        self.assertEqual(len(history["withdrawn_directories"]), 3)
+        for item in history["withdrawn_directories"]:
+            self.assertGreater(item["initial_pdf_bytes"], 100000)
+            self.assertLess(item["notice_pdf_bytes"], 10000)
+            self.assertTrue(item["build_directory_removed"])
+            self.assertTrue(item["archive_commit"].startswith("adc7f1241b42"))
         protocol = self.payload["release_protocol"]
         self.assertEqual(protocol["comparator_challenges"], 416)
         self.assertEqual(protocol["scope_notes"], 242)

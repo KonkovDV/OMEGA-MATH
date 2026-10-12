@@ -104,6 +104,26 @@ a pass against that patched base. It is not a pass against the upstream
 tags alone. OMEGA does not claim that any particular theorem uses those
 packages. The seam is the base, not an extra theorem.
 
+## What the commits show
+
+`main` has three commits. No other public branch carries a fourth.
+
+| Commit | Date | Subject | What it contains |
+|---|---|---|---|
+| `adc7f1241b42` | 6 October 2026, 21:58 UTC | Initial commit | README and CONTENTS say 722 manuscripts. `history.md` does not exist. The three later-withdrawn directories hold full PDFs, from about 639 KB to 812 KB, and a `build/` directory |
+| `301488868bee` | 8 October 2026, 05:03 UTC | Update manuscripts and Lean formalizations | README and CONTENTS say 719. `history.md` appears. The subject line does not say that anything was withdrawn |
+| `fd4aeeb2ee4f` | 8 October 2026, 05:20 UTC | Merge pull request #1 from `codex/update-10-7` | The update branch merged to `main` |
+
+The preprint directory count goes from 722 to 749. Zero directories are deleted. Twenty-seven new dated directories are added, which is how a revision is published: a new folder, while the old folder stays. The three withdrawn directories stay too, under the same names. In each one the PDF is replaced by a notice of about 3.6 KB, and the `build/` directory is removed. The notice dates the withdrawal 6 October. `history.md` titles the section 7 October. The commit that introduces the notice is 8 October.
+
+Each notice states the gap: a sign error in the stabilization-trace cancellation, so the cited cancellation hypothesis is not met. Each notice says the withdrawal concerns the proof and does not declare the statement false. Each notice links the pre-withdrawal PDF at `adc7f1241b42`. The dependent notices point their ordinary prose link at `blob/main`, which is now the stub, and point the archive link at that initial commit.
+
+`CONTENTS.md` is the map the README tells a reader to use. At the initial commit it names the three manuscripts. At the update it does not. The count in its first line changes from 722 to 719. A reader of HEAD who follows the map does not meet the withdrawn titles. They remain in the git tree and in `history.md`.
+
+The commit page lists 300 files and then stops. In that slice the modified files are `CONTENTS.md`, `README.md`, `lean/ComparatorChallenges/README.md`, and `lean/OAI.lean`. The PDF replacements are not in that slice. The Comparator README gains, in this same commit, the warning that five challenges check supporting results rather than the papers' main theorems. `OAI.lean` gains the import of the Hadwiger counterexample module in this same commit.
+
+The retraction is in the repository. It is not in the commit subject, not in the manuscript map, and not in the first 300 files of the commit page.
+
 ## What OMEGA does with this
 
 A Comparator success is stored as `verifier-checked` with

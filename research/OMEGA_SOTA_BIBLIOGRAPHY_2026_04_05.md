@@ -1,7 +1,7 @@
 ---
 title: "OMEGA SOTA Bibliography"
 status: active
-version: "1.4.0"
+version: "1.5.0"
 last_updated: "2026-10-12"
 date: "2026-04-21"
 role: reference
@@ -366,8 +366,8 @@ OMEGA uses a three-tier evidence classification:
 
 41. **OpenAI mathematics catalog**
     Repository `openai/math`, README and `history.md`, read 12 October 2026. Release note, 6 October 2026.
-    - Evidence class: E1 for the repository's own counts at commit `fd4aeeb2ee4f` (719 manuscripts, 372 families, self-reported 300/719, three withdrawals, and the separate machine count 173 sources / 200 declarations). E2 for the company blog
-    - OMEGA role: mass-release policy in PROTOCOL.md §1.10. The reading is `research/OMEGA_OPENAI_MATH_CATALOG_2026_10_12.md`. The review is `research/OMEGA_OCTOBER_2026_MURDER_BOARD.md`
+    - Evidence class: E1 for the repository's own counts. HEAD `fd4aeeb2ee4f` says 719 manuscripts and 372 families. Initial commit `adc7f1241b42` said 722. The update commit `301488868bee` is the withdrawal
+    - OMEGA role: mass-release policy in PROTOCOL.md §1.10. The commit reading is `protocol/openai-release-functions.md`
 
 42. **Forced Navier–Stokes claim and its fidelity gap**
     OpenAI, "On the Navier–Stokes Millennium Prize Problem", 8 September 2026. Bastounis, Circelli, and Hansen, arXiv:2610.08144.
@@ -388,6 +388,7 @@ OMEGA uses a three-tier evidence classification:
 
 | Version | Date | Change |
 |---------|------|--------|
+| 1.5.0 | 2026-10-12 | Corrected 722: it is the initial commit's own count, not an outside rumor. Recorded the withdrawal commit |
 | 1.4.0 | 2026-10-12 | Added the OpenAI release functions: citation, Comparator, scope notes, and the patched Lean base |
 | 1.3.0 | 2026-10-12 | Added the OpenAI catalog, the independent formalization count, the Navier–Stokes fidelity paper, the 11 September declaration, and the October murder board |
 | 1.2.0 | 2026-10-12 | Added AlphaProof Nexus, Formal Conjectures, FrontierMath Erdős, Tao's wiki, and the Science perspectives |

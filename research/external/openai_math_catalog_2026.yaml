@@ -16,6 +16,52 @@ sources:
   le_monde: https://www.lemonde.fr/sciences/article/2026/10/10/nouveau-coup-de-massue-d-openai-sur-les-mathematiciens-ils-ont-annihile-mon-domaine-de-recherche_6790951_1650684.html
 commit: fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb
 commit_date: "2026-10-08"
+git_history:
+  commits_on_main: 3
+  compare_file_list_cap: 300
+  initial:
+    sha: adc7f1241b42e322a6451854ab7e4b4c146bf78a
+    date: "2026-10-06T21:58:50Z"
+    message: "Initial commit"
+    manuscripts_claimed: 722
+    history_md: false
+    preprint_directories: 722
+  update:
+    sha: 301488868beec11bfd897168433b0a64f5258559
+    date: "2026-10-08T05:03:50Z"
+    message: "Update manuscripts and Lean formalizations"
+    message_mentions_withdrawal: false
+    parent: adc7f1241b42e322a6451854ab7e4b4c146bf78a
+    manuscripts_claimed: 719
+    preprint_directories: 749
+    preprint_directories_removed: 0
+    branch: codex/update-10-7
+  merge:
+    sha: fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb
+    date: "2026-10-08T05:20:00Z"
+    message: "Merge pull request #1 from openai/codex/update-10-7"
+  withdrawal_notice_date: "2026-10-06"
+  history_section_date: "2026-10-07"
+  contents_drops_withdrawn_titles: true
+  stated_reason: "A sign error in the stabilization-trace cancellation. The notices say the statements are not thereby declared false."
+  withdrawn_directories:
+    - path: preprints/Algebraicity-of-Weil-classes-on-split-abelian-eightfolds-September-18-2026
+      initial_pdf_bytes: 812107
+      notice_pdf_bytes: 3587
+      build_directory_removed: true
+      archive_commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
+    - path: preprints/Algebraicity-of-Kuga-Satake-Correspondences-for-K3-Surfaces-October-3-2026
+      initial_pdf_bytes: 719937
+      notice_pdf_bytes: 3715
+      build_directory_removed: true
+      archive_commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
+    - path: preprints/The-rational-Hodge-conjecture-for-products-of-K3-surfaces-October-4-2026
+      initial_pdf_bytes: 639139
+      notice_pdf_bytes: 3748
+      build_directory_removed: true
+      archive_commit: adc7f1241b42e322a6451854ab7e4b4c146bf78a
+  support_disclaimer_added_in_update: true
+  hadwiger_import_added_in_update: true
 manuscripts: 719
 families: 372
 formalized_top_line_self_report: 300

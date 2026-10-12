@@ -27,7 +27,7 @@ either Lean project.
 | `openai/math` commit `fd4aeeb2ee4f`, 8 October 2026 | README, `history.md`, `lean/formalization.yaml` v0.4, three Lean statements | Draft batch. 719 manuscripts, 372 families | Unchanged |
 | Self-reported formalization rate | `history.md`: 300/719 | Kept as a self-report | Unchanged |
 | `formalization.yaml` | 173 source titles, 200 main-result declarations, scope "Partial progress." | Machine count. It does not confirm 300 | Unchanged |
-| Secondary figure 722 | Fork and a rendered page | Rejected. The pinned README says 719 | Unchanged |
+| Opening count 722 | Initial commit `adc7f1241b42`, README and CONTENTS | Historical count. HEAD says 719 after three withdrawals | Unchanged |
 | Three withdrawals, 7 October | One sign error, two dependents | First-class retraction | Unchanged |
 | Navier–Stokes, 8 September | Company note claims Clay (C) and (D) | External claim. Registry tracks (A) and (B) and stays open | Unchanged |
 | arXiv:2610.08144 | Lemma 8.6 and pressure-flux bound (10.19) | Lean at `f9e8bc5b38b6` is not a semantic copy of the prose. The paper does not call the prose false | Unchanged |

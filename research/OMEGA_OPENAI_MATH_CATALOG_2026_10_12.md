@@ -52,8 +52,11 @@ the compute sentence and says the Institute for Advanced Study advisory
 group was consulted. It is a company note, class E2, and it is not a
 stronger count than the README.
 
-A fork and one secondary article say 722 manuscripts. The README at the
-pinned commit says 719. The ledger uses 719.
+A fork and some secondary pages repeat 722. That number is the
+repository's own initial commit, `adc7f1241b42` (6 October 2026), in both
+`README.md` and the first line of `CONTENTS.md`. The next commit,
+`301488868bee` (8 October 2026), changes both lines to 719. The current
+ledger uses 719 for the pinned HEAD and keeps 722 as the opening count.
 
 ## 2. A family is not a theorem
 

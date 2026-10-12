@@ -333,8 +333,9 @@ Operational rules:
   `history.md`. The machine-readable catalog `lean/formalization.yaml` at
   the same commit is version v0.4, scope "Partial progress.", with 173
   source titles and 200 main-result declarations. Those counts are not
-  interchangeable. A secondary page's figure of 722 manuscripts is not
-  the README at this commit.
+  interchangeable. The current README's 719 is the count after the
+  withdrawal commit. The initial commit, `adc7f1241b42`, said 722. A
+  commit subject and a truncated file list are not the retraction record.
 - Do not copy the catalog into `registry/domains/`. Do not retune amenability
   because a headline says a field is finished.
 - The human remainder named at the SMF seminar is the OMEGA remainder:
