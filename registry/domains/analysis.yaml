@@ -33,8 +33,11 @@ problems:
         Clay (C) and (D). The company says it is not claiming the Millennium Prize.
         Bastounis, Circelli, and Hansen, arXiv:2610.08144, show that the Lean file
         is not a semantic translation of the prose, and they do not assert that the
-        prose is false. Status stays open. Reading:
-        research/OMEGA_OPENAI_MATH_CATALOG_2026_10_12.md.
+        prose is false. Family 376 in lean/docs formalizes computation by a
+        forced incompressible flow on the flat three-torus. That is a third
+        sentence, beside (A)/(B) and beside the September blowup claim.
+        Status stays open. The release functions are
+        protocol/openai-release-functions.md.
 
   - id: yang-mills
     name: Yang–Mills existence and mass gap

@@ -185,7 +185,17 @@ The human remainder is to understand the argument, digest the
 dependencies, and write a statement a student can check. That is the
 referee lane. It is not a second generation pass over the PDFs.
 
-## 6. What this note does not do
+## 6. The release functions
+
+The production rule, the citation block, the Comparator contract, the
+scope notes, and the patched Lean base are written out in
+`protocol/openai-release-functions.md`. The operational point is that a
+Comparator success matches a challenge written by the same party, a scope
+note can leave the paper's main consequence outside the formalized
+sentence, and the BibTeX URL tracks `main` rather than a commit. Family
+376 is a forced computation result, not the regularity problem.
+
+## 7. What this note does not do
 
 - It does not copy the catalog, the Le Monde article, or the declaration.
 - It does not mark `navier-stokes`, `riemann-hypothesis`,

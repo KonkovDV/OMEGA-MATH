@@ -450,10 +450,12 @@ class OmegaRunnerTests(unittest.TestCase):
             statement_fidelity="faithful",
             agent_profile="basic-loop",
             unsafe_candidates_rejected=3,
+            challenge_party="frozen-before-search",
         )
         result = yaml.safe_load(proof_result_path.read_text(encoding="utf-8"))
         self.assertEqual(result["statement_fidelity"], "faithful")
         self.assertEqual(result["claim_scope"], "registry-statement")
+        self.assertEqual(result["challenge_party"], "frozen-before-search")
         self.assertEqual(result["agent_profile"], "basic-loop")
         self.assertEqual(result["unsafe_candidates_rejected"], 3)
 
@@ -504,6 +506,53 @@ class OmegaRunnerTests(unittest.TestCase):
         result = yaml.safe_load(proof_result_path.read_text(encoding="utf-8"))
         self.assertEqual(result["status"], "verifier-checked")
         self.assertEqual(result["claim_scope"], "catalog-title")
+
+    def test_same_party_comparator_selection_stays_below_formal_status(self) -> None:
+        run_id = start_run(
+            repo_root=self.repo_root,
+            problem_id=self.problem_id,
+            route="proof-first",
+            agent="prover",
+            description="comparator selection",
+        )
+        proof_file = self.problem_root / "artifacts" / "candidate.lean"
+        proof_file.parent.mkdir(parents=True)
+        proof_file.write_text("theorem candidate : True := by trivial\n", encoding="utf-8")
+        common = dict(
+            repo_root=self.repo_root,
+            problem_id=self.problem_id,
+            run_id=run_id,
+            claim_label="selected comparator statement",
+            claim_class="theorem",
+            verifier_kind="lean4",
+            toolchain="leanprover/lean4:v4.34.1",
+            command="lake env comparator ComparatorChallenges/Example.json",
+            source_entry="artifacts/candidate.lean",
+            artifacts=[{"path": "artifacts/candidate.lean", "type": "source"}],
+            statement_fidelity="faithful",
+        )
+        with self.assertRaises(ValueError):
+            create_proof_result(
+                **common,
+                status="formally-checked",
+                claim_scope="registry-statement",
+            )
+        with self.assertRaises(ValueError):
+            create_proof_result(
+                **common,
+                status="formally-checked",
+                claim_scope="comparator-selection",
+                challenge_party="same-party",
+            )
+        proof_result_path = create_proof_result(
+            **common,
+            status="verifier-checked",
+            claim_scope="comparator-selection",
+            challenge_party="same-party",
+        )
+        result = yaml.safe_load(proof_result_path.read_text(encoding="utf-8"))
+        self.assertEqual(result["challenge_party"], "same-party")
+        self.assertEqual(result["claim_scope"], "comparator-selection")
 
     def test_create_proof_result_requires_existing_proof_obligations(self) -> None:
         run_id = start_run(

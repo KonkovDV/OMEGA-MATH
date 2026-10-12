@@ -27,6 +27,39 @@ formalization_yaml:
   main_results: 200
   matches_self_report: false
 secondary_manuscript_count_722_adopted: false
+release_protocol:
+  note: protocol/openai-release-functions.md
+  problems_posed_approx: 4000
+  significance_filter_published: false
+  model_replayable: false
+  reasoning_summaries: 10
+  procedure_exceptions:
+    - "zero-free region for the Riemann zeta function"
+    - "Hodge conjecture for CM abelian varieties"
+  human_edited_writeup: "Re(s) > 11/12"
+  citation_url_tracks_commit: false
+  citation_author: OpenAI
+  withdrawn_titles_in_contents: false
+  near_titles_not_withdrawn:
+    - "The rational Hodge conjecture for CM abelian varieties, 6 October 2026"
+    - "Weil classes and Hodge classes on abelian powers, 6 October 2026"
+    - "Algebraic Kuga-Satake correspondences and Hodge conjectures on a K3 quadratic locus, 30 September 2026"
+  comparator_challenges: 416
+  scope_notes: 242
+  comparator_same_party: true
+  definition_names_empty_in_sample: "27/29"
+  permitted_axioms: ["propext", "Quot.sound", "Classical.choice"]
+  nanoda_uniformly_enabled: false
+  support_challenges_not_main_theorems:
+    - CharacterVarietiesAllSeamsSupport
+    - CartierChartCompactnessSupport
+    - SurfaceConeCandidateSupport
+    - TraceIdealTransportSupport
+    - HoneycombBridgeMassSupport
+  toolchain: leanprover/lean4:v4.34.1
+  mathlib_commit: d13f23b723b8a846827a245b89c10fc7d3f11612
+  compatibility_patch_suffix: lean4341
+  family_376: "Forced incompressible computation on the flat three-torus. Not Clay (A) or (B), and not the 8 September blowup claim."
 problems_posed_approx: 4000
 mean_compute: "three hours of ChatGPT Pro thinking compute per result"
 model: "unreleased internal OpenAI model"

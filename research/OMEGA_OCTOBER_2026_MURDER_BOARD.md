@@ -103,9 +103,12 @@ pressure-flux bound (10.19), and it declines to call either text false.
 Before this review, `formally-checked` required `statement_fidelity` of
 `faithful` or `amended` and did not ask whether the faithful sentence was
 the registry sentence. `scripts/omega_runner.py` now requires
-`claim_scope: registry-statement` for `formally-checked` and `verified`.
-A zero-free region, a forced blowup, or a catalog title can be stored at
-`verifier-checked` and cannot take the formal status of the open problem.
+`claim_scope: registry-statement` for `formally-checked` and `verified`,
+and it requires `challenge_party` to be `same-party` or
+`frozen-before-search`. A zero-free region, a forced blowup, a catalog
+title, or a Comparator selection can be stored at `verifier-checked` and
+cannot take the formal status of the open problem. The release functions
+themselves are `protocol/openai-release-functions.md`.
 
 **Should Hadwiger move because the formal negation matches?** No. Match of
 the statement is the first gate. A local build and a definition audit are

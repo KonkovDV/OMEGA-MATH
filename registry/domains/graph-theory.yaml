@@ -48,7 +48,10 @@ problems:
       not_hadwiger_conjecture, the negation of chromaticNumber at most
       hadwigerNumber for every finite simple graph. That is this entry's
       sentence. OMEGA has not compiled the library and has not audited those
-      two definitions. Status stays open. Review:
+      two definitions. The Comparator challenge restates hadwigerNumber in
+      the challenge file, leaves definition_names empty, and was written by
+      the same party as the solution. A pass would match that challenge.
+      Status stays open. Review:
       research/OMEGA_OCTOBER_2026_MURDER_BOARD.md.
 
   - id: hadwiger-nelson

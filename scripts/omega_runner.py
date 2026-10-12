@@ -36,8 +36,16 @@ VALID_CLAIM_CLASSES = {"lemma", "theorem", "structural-claim", "counterexample-c
 VALID_VERIFIER_KINDS = {"lean4", "coq", "isabelle", "cas", "human-line-check"}
 VALID_STATEMENT_FIDELITY = {"unchecked", "faithful", "misformalized", "amended"}
 VALID_AGENT_PROFILES = {"basic-loop", "escalated"}
-VALID_CLAIM_SCOPES = {"registry-statement", "special-case", "forced-variant", "catalog-title"}
+VALID_CLAIM_SCOPES = {
+    "registry-statement",
+    "special-case",
+    "forced-variant",
+    "catalog-title",
+    "comparator-selection",
+}
 REGISTRY_STATEMENT_SCOPE = "registry-statement"
+VALID_CHALLENGE_PARTIES = {"unchecked", "same-party", "frozen-before-search"}
+FORMAL_CHALLENGE_PARTIES = {"same-party", "frozen-before-search"}
 FIDELITY_REQUIRED_STATUSES = {"formally-checked", "verified"}
 FAITHFUL_STATEMENT = {"faithful", "amended"}
 VALID_LEDGER_ARTIFACT_TYPES = {
@@ -631,6 +639,7 @@ def create_proof_result(
     agent_profile: str = "basic-loop",
     unsafe_candidates_rejected: int = 0,
     claim_scope: str = REGISTRY_STATEMENT_SCOPE,
+    challenge_party: str = "unchecked",
 ) -> Path:
     if statement_fidelity not in VALID_STATEMENT_FIDELITY:
         raise ValueError(
@@ -640,6 +649,10 @@ def create_proof_result(
         raise ValueError(f"Agent profile must be one of {sorted(VALID_AGENT_PROFILES)}; got {agent_profile}")
     if claim_scope not in VALID_CLAIM_SCOPES:
         raise ValueError(f"Claim scope must be one of {sorted(VALID_CLAIM_SCOPES)}; got {claim_scope}")
+    if challenge_party not in VALID_CHALLENGE_PARTIES:
+        raise ValueError(
+            f"Challenge party must be one of {sorted(VALID_CHALLENGE_PARTIES)}; got {challenge_party}"
+        )
     if unsafe_candidates_rejected < 0:
         raise ValueError("unsafe_candidates_rejected must be >= 0")
     if status in FIDELITY_REQUIRED_STATUSES and statement_fidelity not in FAITHFUL_STATEMENT:
@@ -651,6 +664,11 @@ def create_proof_result(
         raise ValueError(
             "status "
             f"{status} requires claim_scope {REGISTRY_STATEMENT_SCOPE}; got {claim_scope}"
+        )
+    if status in FIDELITY_REQUIRED_STATUSES and challenge_party not in FORMAL_CHALLENGE_PARTIES:
+        raise ValueError(
+            "status "
+            f"{status} requires challenge_party in {sorted(FORMAL_CHALLENGE_PARTIES)}; got {challenge_party}"
         )
     if claim_class not in VALID_CLAIM_CLASSES:
         raise ValueError(f"Claim class must be one of {sorted(VALID_CLAIM_CLASSES)}; got {claim_class}")
@@ -700,6 +718,7 @@ def create_proof_result(
         "novelty_gate": "unchecked",
         "statement_fidelity": statement_fidelity,
         "claim_scope": claim_scope,
+        "challenge_party": challenge_party,
         "agent_profile": agent_profile,
         "unsafe_candidates_rejected": unsafe_candidates_rejected,
         "dependencies": dependencies or [],
@@ -848,6 +867,11 @@ def build_parser() -> argparse.ArgumentParser:
         default=REGISTRY_STATEMENT_SCOPE,
         choices=sorted(VALID_CLAIM_SCOPES),
     )
+    proof_parser.add_argument(
+        "--challenge-party",
+        default="unchecked",
+        choices=sorted(VALID_CHALLENGE_PARTIES),
+    )
 
     failure_parser = subparsers.add_parser("failure-pattern", help="Append a run-level failure pattern event")
     failure_parser.add_argument("problem_id")
@@ -920,6 +944,7 @@ def main(argv: list[str] | None = None) -> int:
                 agent_profile=args.agent_profile,
                 unsafe_candidates_rejected=args.unsafe_candidates_rejected,
                 claim_scope=args.claim_scope,
+                challenge_party=args.challenge_party,
             )
             print(result_path)
             return 0

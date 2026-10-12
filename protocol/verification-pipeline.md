@@ -124,9 +124,12 @@ withdrawn the next day for a shared sign error. Rules:
 4. Registry status does not move because a newspaper, a blog, or the catalog
    overview says a famous problem has fallen. `navier-stokes`,
    `riemann-hypothesis`, `hodge-conjecture`, and `hadwiger-conjecture` stay
-   `open`. A file whose sentence is a special case, a forced variant, or a
-   catalog title is stored with that `claim_scope` and is not promoted to
-   `formally-checked`.
+   `open`. A file whose sentence is a special case, a forced variant, a
+   catalog title, or a Comparator selection is stored with that
+   `claim_scope` and is not promoted to `formally-checked`. A Comparator
+   challenge written by the solution's author is `challenge_party:
+   same-party`. The pass matches that challenge. It does not choose the
+   challenge.
 
 The note is `research/OMEGA_OPENAI_MATH_CATALOG_2026_10_12.md`.
 

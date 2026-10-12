@@ -204,6 +204,7 @@ python -m pytest -q
 - [protocol/operator-runbook.md](protocol/operator-runbook.md)
 - [protocol/lean-bootstrap.md](protocol/lean-bootstrap.md)
 - [protocol/verification-pipeline.md](protocol/verification-pipeline.md)
+- [protocol/openai-release-functions.md](protocol/openai-release-functions.md)
 
 ### Reference surfaces
 

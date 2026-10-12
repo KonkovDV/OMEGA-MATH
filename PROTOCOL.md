@@ -341,6 +341,12 @@ Operational rules:
   understand the argument, digest the dependencies, and transmit a checked
   statement. That work is the referee and literature lanes, not a second
   generation pass over the PDFs.
+- Their checker, citation rule, scope notes, and patched Lean base are
+  described in `protocol/openai-release-functions.md`. A Comparator pass
+  in that repository matches a challenge written by the same party. Record
+  it as `claim_scope: comparator-selection` and `challenge_party:
+  same-party`. Cite the commit and the `OAI:` slug, not the `blob/main`
+  URL in their BibTeX.
 
 ## 2. Problem Taxonomy
 

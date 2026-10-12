@@ -51,6 +51,16 @@ class OpenAIMathCatalogLedgerTests(unittest.TestCase):
         self.assertEqual(catalog["main_results"], 200)
         self.assertFalse(catalog["matches_self_report"])
         self.assertFalse(self.payload["secondary_manuscript_count_722_adopted"])
+        protocol = self.payload["release_protocol"]
+        self.assertEqual(protocol["comparator_challenges"], 416)
+        self.assertEqual(protocol["scope_notes"], 242)
+        self.assertTrue(protocol["comparator_same_party"])
+        self.assertFalse(protocol["citation_url_tracks_commit"])
+        self.assertFalse(protocol["withdrawn_titles_in_contents"])
+        self.assertFalse(protocol["model_replayable"])
+        self.assertEqual(len(protocol["support_challenges_not_main_theorems"]), 5)
+        self.assertEqual(protocol["toolchain"], "leanprover/lean4:v4.34.1")
+        self.assertIn("Not Clay", protocol["family_376"])
 
     def test_three_withdrawals_from_one_sign_error(self) -> None:
         titles = [item["title"] for item in self.payload["withdrawn"]]

@@ -40,7 +40,8 @@ updated_at: "<ISO 8601 timestamp>"
 ```yaml
 novelty_gate: "unchecked | checked"
 statement_fidelity: "unchecked | faithful | misformalized | amended"
-claim_scope: "registry-statement | special-case | forced-variant | catalog-title"
+claim_scope: "registry-statement | special-case | forced-variant | catalog-title | comparator-selection"
+challenge_party: "unchecked | same-party | frozen-before-search"
 agent_profile: "basic-loop | escalated"
 unsafe_candidates_rejected: 0
 dependencies:
@@ -72,9 +73,10 @@ notes: "<free-text operator note>"
 4. One ledger run may produce multiple prover results if it tests multiple claims.
 5. `statement_spec_path` is mandatory for claim-bearing prover results to enforce statement/proof separation.
 6. `statement_fidelity` stays `unchecked` until a person compares the Lean statement with the informal claim. Compilation does not set it.
-7. `claim_scope` says which sentence the file checks. `formally-checked` and `verified` accept only `registry-statement`. A zero-free region, a forced blowup, or a catalog title may be stored as `verifier-checked` under `special-case`, `forced-variant`, or `catalog-title`.
-8. `agent_profile: basic-loop` is the default open-problem search. Use `escalated` only after that loop has stopped and the fidelity note exists.
-9. `unsafe_candidates_rejected` counts patches the repair loop discarded because they reintroduced `sorry` or `admit`, opened a new declaration, or moved the text before the placeholder.
+7. `claim_scope` says which sentence the file checks. `formally-checked` and `verified` accept only `registry-statement`. A zero-free region, a forced blowup, a catalog title, or a Comparator selection may be stored as `verifier-checked` under `special-case`, `forced-variant`, `catalog-title`, or `comparator-selection`.
+8. `challenge_party` says who wrote the statement that the checker matched. `unchecked` cannot be promoted. `same-party` means the challenge and the solution come from the same author, which is the OpenAI Comparator setup; a pass then shows that the solution matches that challenge, and the human fidelity note still has to say whether the challenge is the mathematical statement. `frozen-before-search` is the OMEGA case: the statement was fixed before the search.
+9. `agent_profile: basic-loop` is the default open-problem search. Use `escalated` only after that loop has stopped and the fidelity note exists.
+10. `unsafe_candidates_rejected` counts patches the repair loop discarded because they reintroduced `sorry` or `admit`, opened a new declaration, or moved the text before the placeholder.
 
 ## Minimal Artifact Rule
 

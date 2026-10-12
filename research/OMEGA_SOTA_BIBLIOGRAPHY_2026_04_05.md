@@ -1,7 +1,7 @@
 ---
 title: "OMEGA SOTA Bibliography"
 status: active
-version: "1.3.0"
+version: "1.4.0"
 last_updated: "2026-10-12"
 date: "2026-04-21"
 role: reference
@@ -379,10 +379,16 @@ OMEGA uses a three-tier evidence classification:
     - Evidence class: E1 as a community document, not as a theorem
     - OMEGA role: a solved problem is not yet a transmitted proof. Le Monde, 10 October 2026, and the SMF seminar MIAM of 8 October 2026 are E2 reports of the same concern
 
+44. **Comparator**
+    `leanprover/comparator`. Used by `openai/math` at commit `fd4aeeb2ee4f` through 416 challenge files.
+    - Evidence class: E1 for the tool contract. A success means the named solution theorems match the challenge statements and the permitted axioms
+    - OMEGA role: same-party challenges are `challenge_party: same-party` and `claim_scope: comparator-selection` until a person matches the challenge to the registry statement. The reading is `protocol/openai-release-functions.md`
+
 ## Version History
 
 | Version | Date | Change |
 |---------|------|--------|
+| 1.4.0 | 2026-10-12 | Added the OpenAI release functions: citation, Comparator, scope notes, and the patched Lean base |
 | 1.3.0 | 2026-10-12 | Added the OpenAI catalog, the independent formalization count, the Navier–Stokes fidelity paper, the 11 September declaration, and the October murder board |
 | 1.2.0 | 2026-10-12 | Added AlphaProof Nexus, Formal Conjectures, FrontierMath Erdős, Tao's wiki, and the Science perspectives |
 | 1.1.1 | 2026-04-21 | Added Simula synthetic-data methodology donor (`NALsdGEPhB`) for future synthetic reasoning dataset and benchmark-evaluation work |
