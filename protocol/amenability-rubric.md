@@ -159,6 +159,13 @@ them. Axes 1 and 2 do not move because a catalog got larger. Tier 5
 stays tier 5. The reading is
 `research/OMEGA_DECADE_FROM_2026_CATALOGS.md`.
 
+A registration at Palomar, a grade at qed.bot, a row in Formal
+Conjectures, or a significance mark on a community list does not move
+an axis. Those projects are read in
+`research/OMEGA_PUBLIC_REGISTRY_LANDSCAPE_2026_10_12.md`. An independent
+rebuild of this problem's own frozen statement is evidence a later
+quarterly pass may name. It is not an automatic score change.
+
 ## Recalibration Schedule
 
 - Scores should be reviewed quarterly as AI capabilities evolve

@@ -1,7 +1,7 @@
 ---
 title: "OMEGA SOTA Bibliography"
 status: active
-version: "1.6.0"
+version: "1.7.0"
 last_updated: "2026-10-12"
 date: "2026-04-21"
 role: reference
@@ -389,10 +389,36 @@ OMEGA uses a three-tier evidence classification:
     - Evidence class: E1 for the mechanisms it cites (Nexus, FrontierMath Erdős, the pinned OpenAI commits, arXiv:2610.08144). The ten-year split is a reading, class H where it projects cost
     - OMEGA role: PROTOCOL.md §1.11. Search inside a frozen statement and choice of the sentence stay separate. No registry score changes
 
+46. **Palomar**
+    Public registry of pinned Lean snapshots. https://palomar-registry.org/about, read 12 October 2026.
+    - Evidence class: E1 for the registry's own account of its checks
+    - OMEGA role: separate sandboxes, named kernels, and a language-model review that is not a human fidelity grade. PROTOCOL.md §1.12
+
+47. **qed.bot**
+    Claim graph. https://qed.bot/ and https://qed.bot/method, read 12 October 2026.
+    - Evidence class: E1 for the published rubric and the counts on those pages
+    - OMEGA role: source-anchored identity, independent autonomy/evidence/fidelity grades, and the rule that V3 is an independent rebuild. Same-party `formally-checked` is not V3
+
+48. **Formal Conjectures statistics page**
+    https://google-deepmind.github.io/formal-conjectures/stats/, read 12 October 2026. 6329 indexed statements that day. firsching.ch reported 5172 on the same day. The paper's 2615 and qed.bot's 1417 graph records are further counts, not earlier censuses of that page.
+    - Evidence class: E1
+    - OMEGA role: a statement library's `sorry` is not a status. Subject rows are not summed
+
+49. **MathDB**
+    https://mathdb.com/about, read 12 October 2026.
+    - Evidence class: E2. The page reports 87,328 catalogued problems and does not run a kernel
+    - OMEGA role: a prose verdict is not a checker. Advertised 2026 claims on that page are not adopted
+
+50. **Cross-registry comparison**
+    https://whataifound.org/registries, read 12 October 2026. It describes Palomar, ProofAtlas, MathDB, and VibeMathed.
+    - Evidence class: E2. OMEGA has not read ProofAtlas's own contract
+    - OMEGA role: one result can be checked in one registry and still unaccepted in another. A summary audit is not a transcript
+
 ## Version History
 
 | Version | Date | Change |
 |---------|------|--------|
+| 1.7.0 | 2026-10-12 | Added Palomar, qed.bot, the Formal Conjectures stats snapshot, MathDB, and the cross-registry comparison. No score change |
 | 1.6.0 | 2026-10-12 | Added the decade reading: which 2026 mechanisms to keep, and which axes do not move |
 | 1.5.0 | 2026-10-12 | Corrected 722: it is the initial commit's own count, not an outside rumor. Recorded the withdrawal commit |
 | 1.4.0 | 2026-10-12 | Added the OpenAI release functions: citation, Comparator, scope notes, and the patched Lean base |

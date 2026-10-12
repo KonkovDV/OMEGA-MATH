@@ -1,0 +1,75 @@
+# Public registries read on 2026-10-12. Counts are page snapshots.
+# They are not a size of mathematics, and they are not OMEGA registry entries.
+# OMEGA did not replay any of these proofs. No amenability score moves.
+retrieved: "2026-10-12"
+registry_growth: false
+score_change: none
+runner_gate_unchanged: true
+
+snapshots:
+  formal_conjectures_paper:
+    source: "Firsching et al., arXiv:2605.13171v1"
+    indexed_statements: 2615
+    open_research_conjectures: 1029
+    solved_for_autoformalization: 836
+    evidence_class: E1
+  formal_conjectures_stats:
+    source: "https://google-deepmind.github.io/formal-conjectures/stats/"
+    indexed_statements: 6329
+    evidence_class: E1
+    note: "Subject rows are multi-tagged, so they must not be summed into this total."
+  formal_conjectures_firsching:
+    source: "https://firsching.ch/formal-conjectures/stats/"
+    indexed_statements: 5172
+    evidence_class: E1
+    reconciled_with_official_stats: false
+    note: "Fetched the same day as the official stats page. The two totals are not ordered and are not reconciled."
+  qed_homepage:
+    source: "https://qed.bot/"
+    statements: 1858
+    collections: 19
+    record_targets: 77
+    ai_claims: 650
+    machine_checked: 37
+    evidence_class: E1
+  qed_ingest:
+    source: "https://qed.bot/method"
+    sources_read: "12 of 13"
+    erdos_problems_dataset: 1221
+    formal_conjectures_records: 1417
+    cited_lean_artifacts: 741
+    declared_formalisations: 733
+    erdosproblems_proof_claims: unavailable
+    evidence_class: E1
+  mathdb_about:
+    source: "https://mathdb.com/about"
+    problems_catalogued: 87328
+    recorded_ai_attempts: 225
+    claimed_solved_with_ai: 195
+    evidence_class: E2
+    mechanical_check: false
+    claims_adopted: false
+
+adopted:
+  - source-anchored identity, aliases, no merge on title resemblance
+  - proposition nodes and record targets stay different objects
+  - autonomy, evidence, and fidelity are independent grades
+  - V3 requires a rebuild by someone other than the authors
+  - same-party formally-checked stays at most an artifact-reported grade
+  - sorryAx, extra axioms, and native_decide are named verdicts
+  - a static source read is not a rebuild
+  - object checks measure first and compare afterwards
+  - sorry inside a statement library is not an open/solved status
+  - a container that names many results speaks for none of them
+  - supporting success and primary success are not added together
+  - a pinned snapshot is not re-checked against a later library
+  - a language-model fidelity note is not statement_fidelity faithful
+  - a missing source feed stays missing
+
+rejected:
+  - closing an OMEGA entry from another registry's title
+  - treating any snapshot count as a theorem count
+  - adopting MathDB's advertised 2026 claims
+  - moving an amenability axis because a project registered a result
+  - replacing the human fidelity gate with Palomar's language-model filter
+  - requiring an independent rebuild before formally-checked

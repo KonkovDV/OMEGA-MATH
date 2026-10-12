@@ -182,8 +182,12 @@ Move from a working bounded runtime to a research platform that integrates moder
 
 October 2026 revision: the default prover pass is one model in a bounded
 repair loop against a frozen statement. A heavier agent is an escalation
-after that loop stops. Each attempt records a denominator. The reading is
-`research/OMEGA_DECADE_FROM_2026_CATALOGS.md`.
+after that loop stops. Each attempt records a denominator. An outside
+registration is not this outcome: the local artifact still needs its
+own pin, its fidelity note, and an independent rebuild before anyone
+calls the evidence a third-party check. The readings are
+`research/OMEGA_DECADE_FROM_2026_CATALOGS.md` and
+`research/OMEGA_PUBLIC_REGISTRY_LANDSCAPE_2026_10_12.md`.
 
 ### Required outcomes
 
@@ -235,8 +239,11 @@ Make OMEGA capable of translating natural-language mathematics into formal and m
 October 2026 revision: a better prover does not by itself translate a
 paper. The pipeline to build is a named-definition challenge, an outside
 list, and a retraction that updates dependents. A fluent conjecture
-without a frozen statement stays a draft. The reading is
-`research/OMEGA_DECADE_FROM_2026_CATALOGS.md`.
+without a frozen statement stays a draft. Identity stays anchored to
+the collection that owns the statement, and a `sorry` in a statement
+library is not a status. The readings are
+`research/OMEGA_DECADE_FROM_2026_CATALOGS.md` and
+`research/OMEGA_PUBLIC_REGISTRY_LANDSCAPE_2026_10_12.md`.
 
 ### Required outcomes
 

@@ -133,6 +133,35 @@ withdrawn the next day for a shared sign error. Rules:
 
 The note is `research/OMEGA_OPENAI_MATH_CATALOG_2026_10_12.md`.
 
+## Reading Another Registry (October 2026)
+
+Palomar, qed.bot, Formal Conjectures, and MathDB are evidence surfaces,
+not a second OMEGA registry. The note is
+`research/OMEGA_PUBLIC_REGISTRY_LANDSCAPE_2026_10_12.md`.
+
+1. Quote the page and the date. The paper, the official stats page,
+   firsching.ch, and qed.bot's source list are four counts. Do not add
+   them, and do not sort them into a history the pages do not give.
+2. Join a foreign entry to an OMEGA id only on a locator the source
+   supplies. A shared title is not a join. A file that names several
+   problems is a container and closes none of them.
+3. Record qed.bot's autonomy, evidence, and fidelity beside the result
+   when that grade was actually computed. Do not invent a grade for an
+   announcement that never identified the result.
+4. Call a check V3 only when someone other than the authors rebuilt it
+   at a pinned commit, on `propext`, `Classical.choice`, and
+   `Quot.sound` alone, or measured an object against the problem's
+   constraints. `sorryAx` fails the proof. Extra axioms are named.
+   `native_decide` is named, not ignored. Reading the file for `sorry`
+   is not this check.
+5. A Palomar registration is a pinned mechanical record plus a
+   language-model review. The review is not the human fidelity note,
+   and the registration is not novelty.
+6. A statement library's `sorry` does not mean the problem is open or
+   solved. Read the research annotation.
+7. If the source feed was unavailable, write that down. Do not fill the
+   gap from a blog.
+
 ## Literature-Positioning Requirements
 
 When a result claims novelty, contrast, or survey completeness, preserve:

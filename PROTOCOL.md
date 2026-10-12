@@ -374,6 +374,58 @@ For this decade:
   statements. Axis 4 moves for a problem after its own statement is
   faithful and frozen. Tier 5 stays tier 5.
 
+## 1.12 Public Registries (October 2026)
+
+Palomar, qed.bot, Formal Conjectures, and MathDB keep different objects.
+The extraction is `research/OMEGA_PUBLIC_REGISTRY_LANDSCAPE_2026_10_12.md`.
+The snapshots are `research/external/public_registry_landscape_2026.yaml`.
+On 12 October 2026 four counts were in front of the reader at once.
+arXiv:2605.13171v1 said 2615 statements. The project's own stats page
+said 6329. firsching.ch said 5172 on the same day. qed.bot's source list
+counted 1417 Formal Conjectures records inside its own graph. These are
+four readings. They are not a time series, and none of them is a theorem
+count or an addition to `registry/`.
+
+Operational rules:
+
+- Identify a statement by the collection that owns it, and store every
+  other locator as an alias. Do not merge two records because their
+  titles look alike.
+- A settled proposition and a moved constant are different nodes. A
+  better construction does not by itself close the conjecture it
+  illustrates.
+- When reading an outside claim, keep autonomy, evidence, and fidelity
+  in separate fields. qed.bot's V3 means someone other than the authors
+  rebuilt the artifact at a pinned commit. OMEGA's `formally-checked`
+  with `challenge_party: same-party` is an artifact plus a human
+  fidelity note. It is not V3. The runner gate is unchanged: that case
+  can still be promoted when `claim_scope` is `registry-statement` and
+  `statement_fidelity` is `faithful` or `amended`.
+- A language-model comparison of prose and Lean, including Palomar's
+  filter, is a review to read. It is not `statement_fidelity: faithful`.
+- `sorryAx` is an unproved goal. Any further axiom is named.
+  `native_decide` shows up as `Lean.ofReduceBool` and
+  `Lean.trustCompiler`. A file that only imports its own project is a
+  fragment. A static reading of the source is not a rebuild. A missing
+  file stays missing.
+- Check a construction by measuring the object against the problem's
+  constraints, and do that before reading the claim. A disagreement is
+  kept as a refutation.
+- In a library of statements, `sorry` is the normal state of an unproved
+  claim. Status comes from the research annotation, not from a count of
+  placeholders.
+- A catalog file that names many results speaks for none of them. Use
+  the newest declaration, and record a move with the commit that
+  documents it. A formalization that succeeded is not counted as a
+  problem that fell.
+- Do not re-verify an old pinned snapshot against a later mathlib and
+  then replace the old record. A new version is a new pin. The previous
+  version stays addressable.
+- Do not retune amenability from a registration, a significance score,
+  or a catalog's advertised claim. The Riemann hypothesis, the Hodge
+  conjecture, unforced Navier–Stokes, and the Hadwiger conjecture stay
+  `open`.
+
 ## 2. Problem Taxonomy
 
 ### 2.1 Domains (12 primary taxonomy domains)
