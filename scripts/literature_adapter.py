@@ -22,6 +22,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
+from datetime import UTC, datetime
 from typing import Any
 
 import yaml
@@ -197,6 +198,7 @@ def build_novelty_packet(
         "source": "omega-literature-novelty-packet",
         "packet_version": "v1",
         "query": query,
+        "retrieved_at": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "count": len(candidates),
         "candidates": candidates,
         "risk_summary": risk_summary,

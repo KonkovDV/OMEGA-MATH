@@ -611,12 +611,142 @@ class TestAuditGates(unittest.TestCase):
                         "confidence": "C2",
                         "evidence_assignment": "checked",
                         "evidence_anchor": "input_files/ledger.txt",
+                        "evidence_verifier": "human-line-check",
+                        "evidence_claim": "the ledger command matches the prose",
                     },
                 )
             manifest = yaml.safe_load((workspace / "artifacts" / "manifest.yaml").read_text(encoding="utf-8"))
         entry = manifest["artifacts"][0]
         self.assertEqual(entry["evidence_class"], "R0")
+        self.assertEqual(entry["confidence"], "C2")
         self.assertEqual(entry["evidence_anchor_sha256"], hashlib.sha256(b"replay me").hexdigest())
+
+    def test_anchor_without_a_named_verifier_stays_a_hypothesis(self) -> None:
+        import tempfile
+        from agent_orchestrator import save_artifact
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp_path = Path(tmpdir)
+            workspace = tmp_path / "research" / "active" / "test-problem"
+            anchor = workspace / "input_files" / "ledger.txt"
+            anchor.parent.mkdir(parents=True)
+            anchor.write_text("replay me", encoding="utf-8")
+            with patch("agent_orchestrator.REPO_ROOT", tmp_path):
+                save_artifact(
+                    "test-problem",
+                    "prove",
+                    "checked",
+                    {
+                        "evidence_class": "R0",
+                        "confidence": "C3",
+                        "evidence_assignment": "checked",
+                        "evidence_anchor": "input_files/ledger.txt",
+                    },
+                )
+            manifest = yaml.safe_load((workspace / "artifacts" / "manifest.yaml").read_text(encoding="utf-8"))
+        self.assertEqual(manifest["artifacts"][0]["evidence_class"], "H")
+        self.assertEqual(manifest["artifacts"][0]["confidence"], "C1")
+
+    def test_c3_without_an_external_source_stays_c2(self) -> None:
+        import tempfile
+        from agent_orchestrator import save_artifact
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp_path = Path(tmpdir)
+            workspace = tmp_path / "research" / "active" / "test-problem"
+            anchor = workspace / "input_files" / "ledger.txt"
+            anchor.parent.mkdir(parents=True)
+            anchor.write_text("replay me", encoding="utf-8")
+            with patch("agent_orchestrator.REPO_ROOT", tmp_path):
+                save_artifact(
+                    "test-problem",
+                    "prove",
+                    "checked",
+                    {
+                        "evidence_class": "R0",
+                        "confidence": "C3",
+                        "evidence_assignment": "checked",
+                        "evidence_anchor": "input_files/ledger.txt",
+                        "evidence_verifier": "human-line-check",
+                        "evidence_claim": "the ledger command matches the prose",
+                    },
+                )
+            manifest = yaml.safe_load((workspace / "artifacts" / "manifest.yaml").read_text(encoding="utf-8"))
+        self.assertEqual(manifest["artifacts"][0]["evidence_class"], "R0")
+        self.assertEqual(manifest["artifacts"][0]["confidence"], "C2")
+
+    def test_resolved_path_cannot_leave_the_workspace(self) -> None:
+        import tempfile
+        from agent_orchestrator import path_inside, save_artifact
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp_path = Path(tmpdir)
+            workspace = tmp_path / "research" / "active" / "test-problem"
+            workspace.mkdir(parents=True)
+            secret = tmp_path / "secret.txt"
+            secret.write_text("hidden", encoding="utf-8")
+            with self.assertRaises(ValueError):
+                path_inside(workspace, workspace / ".." / ".." / ".." / "secret.txt")
+            with patch("agent_orchestrator.REPO_ROOT", tmp_path):
+                save_artifact(
+                    "test-problem",
+                    "prove",
+                    "escape",
+                    {
+                        "evidence_class": "R0",
+                        "confidence": "C3",
+                        "evidence_assignment": "checked",
+                        "evidence_anchor": "../secret.txt",
+                        "evidence_verifier": "human-line-check",
+                        "evidence_claim": "outside file",
+                    },
+                )
+            manifest = yaml.safe_load((workspace / "artifacts" / "manifest.yaml").read_text(encoding="utf-8"))
+        self.assertEqual(manifest["artifacts"][0]["evidence_class"], "H")
+
+    def test_parallel_saves_keep_both_manifest_entries(self) -> None:
+        import tempfile
+        from concurrent.futures import ThreadPoolExecutor
+        from agent_orchestrator import save_artifact
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp_path = Path(tmpdir)
+            (tmp_path / "research" / "active" / "test-problem").mkdir(parents=True)
+            with patch("agent_orchestrator.REPO_ROOT", tmp_path):
+                with ThreadPoolExecutor(max_workers=2) as pool:
+                    futures = [
+                        pool.submit(save_artifact, "test-problem", "experiment", str(index), {})
+                        for index in (1, 2)
+                    ]
+                    paths = [future.result() for future in futures]
+            manifest = yaml.safe_load((tmp_path / "research" / "active" / "test-problem" / "artifacts" / "manifest.yaml").read_text(encoding="utf-8"))
+        self.assertEqual(len({path.name for path in paths}), 2)
+        self.assertEqual(len(manifest["artifacts"]), 2)
+
+    def test_saved_prompt_packet_redacts_an_api_key(self) -> None:
+        import os
+        import tempfile
+        from agent_orchestrator import save_artifact
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmp_path = Path(tmpdir)
+            (tmp_path / "research" / "active" / "test-problem").mkdir(parents=True)
+            with patch.dict(os.environ, {"OPENAI_API_KEY": "sk-test-secret-value"}), patch(
+                "agent_orchestrator.REPO_ROOT", tmp_path
+            ):
+                save_artifact(
+                    "test-problem",
+                    "experiment",
+                    "key sk-test-secret-value stays out",
+                    {},
+                    prompt_packet={"messages": [{"role": "user", "content": "sk-test-secret-value"}]},
+                )
+            artifacts = tmp_path / "research" / "active" / "test-problem" / "artifacts"
+            prompt = next((artifacts / "prompts").glob("*.prompt.json")).read_text(encoding="utf-8")
+            body = next(artifacts.glob("experiment_*.md")).read_text(encoding="utf-8")
+        self.assertNotIn("sk-test-secret-value", prompt)
+        self.assertNotIn("sk-test-secret-value", body)
+        self.assertIn("[redacted]", prompt)
 
     def test_stale_manifest_lock_is_replaced(self) -> None:
         import os
@@ -653,7 +783,10 @@ class TestAuditGates(unittest.TestCase):
             tmp_path = Path(tmpdir)
             packet = tmp_path / "research" / "active" / "test-problem" / "input_files"
             packet.mkdir(parents=True)
-            (packet / "novelty-packet.yaml").write_text("candidates: yes\n", encoding="utf-8")
+            (packet / "novelty-packet.yaml").write_text(
+                "query: erdos\nsource: semantic-scholar\ncandidates:\n  - title: A paper\n    paper_id: p1\n",
+                encoding="utf-8",
+            )
             (packet / "literature.md").write_text("\n", encoding="utf-8")
             context: dict[str, Any] = {}
             with patch("agent_orchestrator.REPO_ROOT", tmp_path):

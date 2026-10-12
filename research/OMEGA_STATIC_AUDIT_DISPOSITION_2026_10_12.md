@@ -75,6 +75,33 @@ No amenability score moved. No registry entry was closed.
 - A Stanford AI Index percentage for a later FrontierMath slice was not
   added. The audit named it. This tree has not read that page.
 
+## What the 12 October follow-up still required
+
+The follow-up audit read an April snapshot. On `c765c97` the model label
+was already a self-report, empty literature templates were already
+`not_run`, and path identifiers were already confined. Three gaps in
+that repair remained.
+
+- A file hash alone could still be read as a review. Promotion now also
+  needs `evidence_verifier` and `evidence_claim`. `C2` is kept for `R0`
+  or `R1`. `C3` also needs `evidence_external` of `E1` or `E2`.
+- A packet with a paper and no retrieval time could still be read as a
+  finished search. `local_packet` now requires a query, a source, a
+  `retrieved_at`, and one paper. `omega-literature novelty-packet`
+  writes `retrieved_at`. Without that packet, `novelty_claim_allowed`
+  is false.
+- Prompt packets and artifact text now replace known API-key environment
+  values with `[redacted]`. The packets remain in the workspace until
+  the operator deletes them. A dry run does not send them.
+- `validate.yml` and `ci.yml` run on Python 3.12 and 3.13. The Actions
+  used by the workflows are pinned to the commits that `v4` and `v5`
+  resolved to on 12 October 2026. `validate.yml` now sets
+  `contents: read`.
+
+This pass did not run an inter-rater study, did not install a wheel in a
+clean environment, and did not republish the April SOTA tables as one
+compute protocol.
+
 ## What the second pass removed
 
 The first repair still let three weak readings through.

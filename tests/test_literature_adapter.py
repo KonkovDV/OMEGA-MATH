@@ -191,6 +191,8 @@ class LiteratureAdapterTests(unittest.TestCase):
         self.assertEqual(packet["problem_id"], "erdos-straus")
         self.assertEqual(packet["candidates"][0]["paper_id"], "p1")
         self.assertEqual(packet["candidates"][0]["collision_risk"], "medium")
+        self.assertEqual(packet["query"], "autonomous mathematics")
+        self.assertTrue(packet["retrieved_at"])
 
 
 if __name__ == "__main__":

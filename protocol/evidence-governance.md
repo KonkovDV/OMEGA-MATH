@@ -32,13 +32,18 @@ Do not use `C3` if the repo-local runtime path is missing.
 The YAML block returned by the model is kept as `model_asserted_evidence_class`
 and `model_asserted_confidence`. It does not become the artifact class.
 A stronger class is recorded only when the caller sets `evidence_assignment`
-to `checked` and `evidence_anchor` names a file that exists inside the
-problem workspace. The function stores that file's SHA-256. It does not
-rerun the checker. The orchestrator dispatch does not set `checked`.
-A novelty stage also records whether a local literature packet was present.
-`not_run` means no search was executed. `local_files` means workspace prose
-was present. `local_packet` means the saved packet listed at least one
-paper. The novelty status stays preliminary in all three cases.
+to `checked`, `evidence_anchor` names a file inside the workspace, and both
+`evidence_verifier` and `evidence_claim` are non-empty. The function stores
+that file's SHA-256. It does not rerun the checker. `C2` is available for
+`R0` or `R1`. `C3` also needs `evidence_external` of `E1` or `E2`. The
+orchestrator dispatch does not set `checked`. A novelty claim is allowed
+only when `input_files/novelty-packet.yaml` names a query, a source, a
+retrieval time, and at least one paper. Otherwise the status stays
+preliminary and `novelty_claim_allowed` is false. Prompt packets are kept
+in the workspace until the operator deletes them, and known API-key
+environment values are replaced with `[redacted]` before those files are
+written. A dispatch sends the prompt to the resolved backend. A dry run
+does not.
 
 ## Claim Rules
 

@@ -200,6 +200,15 @@ def _is_literature_template(name: str, text: str) -> bool:
 def _usable_novelty_packet(loaded: Any) -> bool:
     if not isinstance(loaded, dict):
         return False
+    query = loaded.get("query")
+    source = loaded.get("source")
+    retrieved_at = loaded.get("retrieved_at")
+    if not isinstance(query, str) or not query.strip():
+        return False
+    if not isinstance(source, str) or not source.strip():
+        return False
+    if not isinstance(retrieved_at, str) or not retrieved_at.strip():
+        return False
     candidates = loaded.get("candidates")
     if not isinstance(candidates, list):
         return False
@@ -466,9 +475,10 @@ def build_user_prompt(
         "brief": "Create a research brief: scope, objectives, success criteria, compute budget estimate, and risk assessment.",
         "novelty": (
             "Write a prior-work memo from the literature surfaces included below. "
-            "The memo stays preliminary. local_packet means a saved search file was present. "
+            "The memo stays preliminary unless retrieval is local_packet. "
+            "local_packet means the saved file names a query, a source, a retrieval time, and at least one paper. "
             "local_files means workspace prose was present. not_run means no search was executed. "
-            "None of the three is a systematic review."
+            "Without that packet, say what was not searched. Do not call the result new."
         ),
         "plan": "Create a detailed method plan: algorithm choice, parameter ranges, verification strategy, and expected outputs.",
         "experiment": "Design and describe the computational experiment. Specify: algorithm, parameters, stopping criteria, expected output format, and verification steps.",
@@ -499,7 +509,7 @@ def build_user_prompt(
     sections.append(f"\n## Output Format\nProvide your analysis, then include a ```yaml block at the end with structured output containing:")
     sections.append(f"- artifact_type: the type of artifact produced")
     sections.append(f"- evidence_class: R0|R1|E1|E2|H")
-    sections.append("  This field is a self-report. The stored class stays H until a caller sets evidence_assignment to checked and names a file that exists inside the workspace.")
+    sections.append("  This field is a self-report. The stored class stays H unless a caller sets evidence_assignment to checked, names a file inside the workspace, and names both the verifier and the claim. C3 also needs an external source class.")
     sections.append(f"- confidence: C1|C2|C3")
     sections.append(f"- summary: one-paragraph summary of the output")
     sections.append(f"- key_findings: list of key findings or decisions")
@@ -849,13 +859,7 @@ def save_artifact(
     confidence = "C1"
     if assignment == "checked":
         anchor_sha = _anchor_sha256(workspace, metadata.get("evidence_anchor"))
-        if anchor_sha is not None:
-            supplied_class = metadata.get("evidence_class", "H")
-            supplied_confidence = metadata.get("confidence", "C1")
-            if supplied_class in EVIDENCE_CLASSES:
-                evidence_class = supplied_class
-            if supplied_confidence in CONFIDENCE_LABELS:
-                confidence = supplied_confidence
+        evidence_class, confidence = _promotion(metadata, anchor_sha)
 
     prompt_packet_path: Path | None = None
     prompt_packet_file_sha256: str | None = None
@@ -864,7 +868,9 @@ def save_artifact(
         prompt_dir.mkdir(parents=True, exist_ok=True)
         prompt_filename = f"{stage}_{timestamp}_{run_token}.prompt.json"
         prompt_packet_path = prompt_dir / prompt_filename
-        prompt_packet_payload = json.dumps(prompt_packet, ensure_ascii=False, indent=2, sort_keys=True)
+        prompt_packet_payload = _redact_secrets(
+            json.dumps(prompt_packet, ensure_ascii=False, indent=2, sort_keys=True)
+        )
         _atomic_write(prompt_packet_path, prompt_packet_payload)
         prompt_packet_file_sha256 = _sha256_text(prompt_packet_payload)
         metadata["prompt_packet_file"] = f"prompts/{prompt_filename}"
@@ -886,7 +892,7 @@ def save_artifact(
         allow_unicode=True,
     )
 
-    artifact_content = f"---\n{header}---\n\n{content}"
+    artifact_content = _redact_secrets(f"---\n{header}---\n\n{content}")
     _atomic_write(artifact_path, artifact_content)
 
     checksum = hashlib.sha256(artifact_content.encode("utf-8")).hexdigest()
@@ -929,6 +935,54 @@ def save_artifact(
         lock_path.unlink(missing_ok=True)
 
     return artifact_path
+
+
+_SECRET_ENV_NAMES = (
+    "OPENAI_API_KEY",
+    "ANTHROPIC_API_KEY",
+    "DEEPSEEK_API_KEY",
+    "SEMANTIC_SCHOLAR_API_KEY",
+    "AZURE_OPENAI_API_KEY",
+)
+
+
+def _redact_secrets(text: str) -> str:
+    redacted = text
+    for name in _SECRET_ENV_NAMES:
+        value = os.environ.get(name)
+        if value and len(value) >= 8:
+            redacted = redacted.replace(value, "[redacted]")
+    return redacted
+
+
+def _promotion(metadata: dict[str, Any], anchor_sha: str | None) -> tuple[str, str]:
+    """A file hash is not a review. Promotion also needs a named verifier and a named claim."""
+    if anchor_sha is None:
+        return "H", "C1"
+    verifier = metadata.get("evidence_verifier")
+    claim = metadata.get("evidence_claim")
+    if not isinstance(verifier, str) or not verifier.strip():
+        return "H", "C1"
+    if not isinstance(claim, str) or not claim.strip():
+        return "H", "C1"
+    supplied = metadata.get("evidence_class", "H")
+    if supplied not in EVIDENCE_CLASSES:
+        supplied = "H"
+    requested = metadata.get("confidence", "C1")
+    if requested not in CONFIDENCE_LABELS:
+        requested = "C1"
+    confidence = "C1"
+    if requested in {"C2", "C3"} and supplied in {"R0", "R1"}:
+        confidence = "C2"
+    external = metadata.get("evidence_external")
+    if (
+        requested == "C3"
+        and supplied == "R0"
+        and isinstance(external, str)
+        and external in {"E1", "E2"}
+    ):
+        confidence = "C3"
+    return supplied, confidence
 
 
 def _anchor_sha256(workspace: Path, anchor: Any) -> str | None:
@@ -1097,6 +1151,7 @@ def dispatch_agent(
         "model_asserted_confidence": yaml_meta.get("confidence"),
         "literature_retrieval": context.get("literature_retrieval", "not_run"),
         "novelty_status": "preliminary" if stage == "novelty" else "not_applicable",
+        "novelty_claim_allowed": stage == "novelty" and context.get("literature_retrieval") == "local_packet",
         "prompt_tokens": llm_result.get("prompt_tokens", 0),
         "completion_tokens": llm_result.get("completion_tokens", 0),
         "duration_seconds": llm_result.get("duration_seconds", 0),
