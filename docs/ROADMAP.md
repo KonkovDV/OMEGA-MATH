@@ -14,6 +14,7 @@ Done in October 2026 (details in the [audit](AUDIT_2026-10.md)):
 - [x] First Lean statement, checked in CI with mathlib.
 - [x] Dependency updates merged, Einstein Arena sync merged after checking every number.
 - [x] README and documentation rewritten; fact-check table for every number.
+- [x] Investor decks, marketing notes and an old LLM prompt removed from the repository.
 
 ## Next release (0.7)
 
@@ -21,7 +22,6 @@ Done in October 2026 (details in the [audit](AUDIT_2026-10.md)):
 - [ ] Interval-arithmetic certificate for small Thomson configurations, so "local minimum" becomes a proof rather than a numerical statement.
 - [ ] Lean statements for the other residue classes covered by Mordell's identities (n ≡ 2 mod 3, the classes mod 5, 7 and 8).
 - [ ] One end-to-end example that goes registry → experiment → evidence bundle → verifier sign-off, runnable in a few minutes.
-- [ ] Trim `docs/research/`: archive pitch and marketing notes out of the technical docs.
 - [ ] Zenodo DOI for releases, so the software is citable with a persistent identifier (FAIR4RS, see below).
 
 ## Horizons

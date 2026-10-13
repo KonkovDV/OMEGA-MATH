@@ -131,8 +131,6 @@ Organised along the four kinds of documentation described by [Diátaxis](https:/
 | Reference | [PROTOCOL.md](PROTOCOL.md), [orchestrator contract](protocol/orchestrator-contract.md), [prover result contract](protocol/prover-result-contract.md), [evidence governance](protocol/evidence-governance.md), [registry schemas](registry/schemas) |
 | Explanation | [roadmap](docs/ROADMAP.md), [audit, October 2026](docs/AUDIT_2026-10.md), [triage calibration](docs/AMENABILITY_CALIBRATION.md), [SOTA landscape](research/OMEGA_SOTA_LANDSCAPE_UPDATE_2026_10_12.md) |
 
-Older files in `docs/research/` (pitch decks, go-to-market notes, an upgrade prompt) are kept for history. They are not part of the technical documentation and are not maintained.
-
 ## Contributing, security, citation
 
 - How to contribute: [CONTRIBUTING.md](CONTRIBUTING.md). Code of conduct: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
