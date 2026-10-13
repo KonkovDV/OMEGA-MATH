@@ -111,6 +111,6 @@
    "configFile": "lakefile.toml"
   }
  ],
- "name": "erdos-straus",
+ "name": "erdos_straus",
  "lakeDir": ".lake"
 }
