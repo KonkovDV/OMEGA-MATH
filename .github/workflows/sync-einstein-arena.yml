@@ -50,7 +50,7 @@ jobs:
           python -m pytest tests/test_import_einstein_arena.py tests/test_registry_pipeline.py --tb=short
 
       - name: Create pull request if drift found
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           branch: bot/sync-einstein-arena
           delete-branch: true
