@@ -7,6 +7,7 @@ Usage:
     python phase2_parametric.py [--max-n 10000] [--max-denom 10000000]
 """
 
+import sys
 import argparse
 import json
 import time
@@ -125,4 +126,8 @@ def main():
 
 
 if __name__ == "__main__":
+    # Windows consoles default to a legacy code page; keep Unicode output readable.
+    for _stream in (sys.stdout, sys.stderr):
+        if hasattr(_stream, "reconfigure"):
+            _stream.reconfigure(encoding="utf-8", errors="replace")
     main()

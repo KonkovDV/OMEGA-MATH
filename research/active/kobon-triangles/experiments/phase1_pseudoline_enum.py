@@ -7,6 +7,7 @@ Usage:
     python phase1_pseudoline_enum.py [--k-min 3] [--k-max 12]
 """
 
+import sys
 import argparse
 import json
 import time
@@ -378,4 +379,8 @@ def main():
 
 
 if __name__ == "__main__":
+    # Windows consoles default to a legacy code page; keep Unicode output readable.
+    for _stream in (sys.stdout, sys.stderr):
+        if hasattr(_stream, "reconfigure"):
+            _stream.reconfigure(encoding="utf-8", errors="replace")
     main()
