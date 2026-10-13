@@ -11,6 +11,8 @@ Usage:
 
 from __future__ import annotations
 
+import sys
+
 import argparse
 import json
 import time
@@ -128,16 +130,40 @@ def tangent_basis(points: np.ndarray) -> list[np.ndarray]:
     return basis
 
 
-def energy_from_perturbation(base_points: np.ndarray, perturbation: np.ndarray, step: float) -> float:
-    displaced = project_points(base_points + step * perturbation.reshape(base_points.shape))
-    points_mp = [mp_point(point.tolist()) for point in displaced]
-    return float(high_precision_energy(points_mp))
+def mp_project(point: tuple[mp.mpf, mp.mpf, mp.mpf]) -> tuple[mp.mpf, mp.mpf, mp.mpf]:
+    return mp_scale(point, mp.mpf("1") / mp_norm(point))
+
+
+def energy_from_perturbation(base_points: np.ndarray, perturbation: np.ndarray, step: float) -> mp.mpf:
+    """Energy after a projected tangent step, computed entirely in mpmath.
+
+    The step, the projection back onto the sphere and the energy sum all run at
+    the working precision (mp.dps), so the finite-difference quotient is not
+    limited by double-precision rounding of the energy.
+    """
+    h = mp.mpf(step)
+    direction = perturbation.reshape(base_points.shape)
+    displaced = []
+    for point, delta in zip(base_points, direction):
+        base = mp_point(point.tolist())
+        shift = tuple(mp.mpf(float(value)) for value in delta)
+        displaced.append(mp_project(mp_add(base, mp_scale(shift, h))))
+    return high_precision_energy(displaced)
 
 
 def finite_difference_hessian(base_points: np.ndarray, step: float) -> tuple[np.ndarray, np.ndarray]:
+    """Tangent-space Hessian by central differences in mpmath.
+
+    With mp.dps digits the rounding error of each entry is about
+    E * 10**(-dps) / step**2, far below the eigenvalue tolerance for the default
+    dps=80; the remaining error is the O(step**2) truncation term.
+    """
+    base_points = project_points(base_points)
     basis = tangent_basis(base_points)
     dimension = len(basis)
     hessian = np.zeros((dimension, dimension), dtype=float)
+    h = mp.mpf(step)
+    four_h2 = 4 * h * h
 
     for i in range(dimension):
         for j in range(i, dimension):
@@ -145,13 +171,12 @@ def finite_difference_hessian(base_points: np.ndarray, step: float) -> tuple[np.
             plus_minus = energy_from_perturbation(base_points, basis[i] - basis[j], step)
             minus_plus = energy_from_perturbation(base_points, -basis[i] + basis[j], step)
             minus_minus = energy_from_perturbation(base_points, -basis[i] - basis[j], step)
-            value = (plus_plus - plus_minus - minus_plus + minus_minus) / (4.0 * step * step)
+            value = float((plus_plus - plus_minus - minus_plus + minus_minus) / four_h2)
             hessian[i, j] = value
             hessian[j, i] = value
 
     eigenvalues = np.linalg.eigvalsh(hessian)
     return hessian, eigenvalues
-
 
 def classify_certification(
     max_force_norm: float,
@@ -212,7 +237,11 @@ def certify_run(
     if not skip_hessian:
         _, eigenvalues = finite_difference_hessian(base_points, hessian_step)
         smallest = sorted(float(value) for value in eigenvalues[: min(8, len(eigenvalues))])
-        post_symmetry = eigenvalues[3:] if len(eigenvalues) > 3 else np.array([], dtype=float)
+        # Drop the three eigenvalues closest to zero (the rotational modes), not
+        # the three smallest: a genuine negative mode of a saddle point would be
+        # among the smallest and would otherwise be thrown away.
+        by_magnitude = np.argsort(np.abs(eigenvalues))
+        post_symmetry = np.sort(eigenvalues[by_magnitude[3:]]) if len(eigenvalues) > 3 else np.array([], dtype=float)
         post_symmetry_min = float(np.min(post_symmetry)) if post_symmetry.size else None
         negatives_excluding_symmetry = int(np.sum(post_symmetry < -eigen_tolerance)) if post_symmetry.size else 0
         zero_like = int(np.sum(np.abs(eigenvalues) <= zero_tolerance))
@@ -311,4 +340,8 @@ def main() -> None:
 
 
 if __name__ == "__main__":
+    # Windows consoles default to a legacy code page; keep Unicode output readable.
+    for _stream in (sys.stdout, sys.stderr):
+        if hasattr(_stream, "reconfigure"):
+            _stream.reconfigure(encoding="utf-8", errors="replace")
     main()
