@@ -116,7 +116,7 @@ You need [elan](https://github.com/leanprover/elan); the toolchain is pinned in 
 
 - Core dependencies are pinned (`PyYAML==6.0.3`, `jsonschema==4.26.0`); mathlib and its dependencies are pinned in `lake-manifest.json`.
 - CI runs on Python 3.12 and 3.13. Every GitHub Action is pinned by commit hash.
-- Experiment scripts take a `--seed` and write JSON artifacts; `omega-verify-evidence` checks bundle checksums.
+- Experiment scripts that use randomness (Kobon, Thomson) take a `--seed`; all of them write JSON artifacts; `omega-verify-evidence` checks bundle checksums.
 - Windows works: scripts switch their output to UTF-8, so a Russian or other non-UTF-8 console no longer crashes them.
 - Machine reports in [`reports/`](reports) state which tools were present on the machine that produced them.
 
