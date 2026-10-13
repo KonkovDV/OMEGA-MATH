@@ -1,371 +1,189 @@
-# OMEGA - Open Mathematics Exploration by Generative Agents
+# OMEGA
 
-> English: a standalone, registry-first research environment for bounded AI-assisted investigation of open mathematical problems.
+**Open Mathematics Exploration by Generative Agents**: a research workbench for working on open mathematical problems with AI help, while keeping every claim traceable to evidence.
 
-> Русский: автономная исследовательская среда с реестром задач и ограниченным контуром исполнения для ИИ-поддержки исследований открытых математических проблем.
+[![CI](https://github.com/KonkovDV/OMEGA-MATH/actions/workflows/ci.yml/badge.svg)](https://github.com/KonkovDV/OMEGA-MATH/actions/workflows/ci.yml)
+[![Registry](https://github.com/KonkovDV/OMEGA-MATH/actions/workflows/validate.yml/badge.svg)](https://github.com/KonkovDV/OMEGA-MATH/actions/workflows/validate.yml)
+[![Lean](https://github.com/KonkovDV/OMEGA-MATH/actions/workflows/lean.yml/badge.svg)](https://github.com/KonkovDV/OMEGA-MATH/actions/workflows/lean.yml)
+[![CodeQL](https://github.com/KonkovDV/OMEGA-MATH/actions/workflows/codeql.yml/badge.svg)](https://github.com/KonkovDV/OMEGA-MATH/actions/workflows/codeql.yml)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/KonkovDV/OMEGA-MATH/badge)](https://scorecard.dev/viewer/?uri=github.com/KonkovDV/OMEGA-MATH)
+![Python 3.12 | 3.13](https://img.shields.io/badge/python-3.12%20%7C%203.13-blue)
+![License: MIT](https://img.shields.io/badge/license-MIT-green)
 
-[![Validate OMEGA Registry](https://github.com/KonkovDV/OMEGA-MATH/actions/workflows/validate.yml/badge.svg)](https://github.com/KonkovDV/OMEGA-MATH/actions/workflows/validate.yml)
-![Python](https://img.shields.io/badge/python-3.12%2B-blue)
-![License](https://img.shields.io/badge/license-MIT-green)
-
-## Start Here / Быстрый Вход
-
-### English
-
-- [Abstract](#abstract)
-- [Verified Snapshot (2026-04-21)](#verified-snapshot-2026-04-21)
-- [What Is In The Repo Now](#what-is-in-the-repo-now)
-- [Boundaries and Non-Claims](#boundaries-and-non-claims)
-- [Reproducible Quick Start](#reproducible-quick-start)
-- [Documentation Map](#documentation-map)
-
-### Русский
-
-- [Краткая аннотация](#краткая-аннотация)
-- [Проверенный срез на 2026-04-21](#проверенный-срез-на-2026-04-21)
-- [Что сейчас есть в репозитории](#что-сейчас-есть-в-репозитории)
-- [Границы проекта](#границы-проекта)
-- [Быстрый старт](#быстрый-старт)
-- [Карта документации](#карта-документации)
+[Русская версия ниже](#по-русски)
 
 ---
 
-## Abstract
+## What OMEGA is, and what it is not
 
-OMEGA is not a single-problem demo and not a generic "AI for math" wrapper. It is a structured research-software repository built around five operational commitments:
+OMEGA does not prove theorems on its own. It is the bookkeeping and plumbing around that work:
 
-1. Registry first: track targets in machine-readable form before execution.
-2. Triage first: prioritize by practical AI amenability, not only by prestige.
-3. Bounded execution: run explicit, restartable stages with audit-friendly state.
-4. Evidence-bearing artifacts: tie claims to ledgers, manifests, checksums, and machine-readable reports.
-5. Honest scope: separate what is implemented, what is experimental, and what is still only a scaffold.
+- a **registry** of open problems in YAML, checked against a JSON schema;
+- a **triage** step that estimates how much a problem is likely to benefit from computation and AI;
+- a **per-problem workflow** with explicit, restartable stages;
+- **experiment ledgers and evidence bundles** with checksums, so a result can be traced back to the run that produced it;
+- **adapters** for Lean 4, SAT/SMT solvers and computer algebra;
+- a **novelty check** against the literature before anyone calls a result new.
 
-OMEGA borrows ideas from external research-agent and proving ecosystems, but it executes on local contracts, local scripts, and local evidence surfaces.
+What it does not claim, so you do not have to dig for it:
 
-## Documentation Design Note (April 2026)
-
-This README is an entrypoint and router.
-
-- It tells you what the repository can already do.
-- It points to the protocol and evidence surfaces that carry the details.
-- It avoids turning the root README into a dump of every internal document.
-
-## Verified Snapshot (2026-04-21)
-
-| Surface | Verified state | Source |
-|---|---|---|
-| Release version | `0.6.0` | `pyproject.toml` |
-| Python support | `3.12`, `3.13` | `pyproject.toml` |
-| Registry size | `252` problems | `registry/index.yaml` |
-| Triage coverage | `73 / 252` (`29.0%`) | `registry/index.yaml` |
-| Domain files | `14` | `registry/index.yaml` |
-| Collection files | `6` | `registry/index.yaml` |
-| Tier distribution | T1 `28`, T2 `22`, T3 `10`, T4 `5`, T5 `8`, untriaged `179` | `registry/index.yaml` |
-| Latest local full test run | `241 passed in 27.74s` | `python -m pytest -q` (2026-04-21) |
-| Runtime baseline report | `APPROVED` | `reports/omega_runtime_evidence_report_v1.json` |
-| Execution maturity report | `WARNING` on the audited host: Lean/Lake and `z3` absent, SAT fallback still works | `reports/omega_execution_maturity_report_v1.json` |
-| FT scaffold gate | `APPROVED` | `reports/omega_ft_scaffold_gate_report_v1.json` |
-| Docs closure rail | `8 passed, 0 warnings, 0 failures` | `agent:preflight:docs` |
-
-## What Is In The Repo Now
-
-### Core research runtime
-
-- Schema-validated registry and generated index under [registry](registry).
-- Deterministic per-problem workflow controller, including stricter transition validation and machine-readable YAML or JSON output through `omega-workflow`.
-- Experiment lifecycle, evidence bundle generation, and global experiment index surfaces through `omega-runner`, `omega-verify-evidence`, and `omega-generate-experiment-index`.
-- Query surfaces for per-run ledgers and the global experiment index through `omega-query`.
-
-### Execution and orchestration surfaces
-
-- Lean, SAT/SMT, and CAS adapters through `omega-lean`, `omega-solve`, and `omega-cas`.
-- Machine-readable runtime capability probing for Lean/Lake and solver backends.
-- Model routing and multi-stage orchestration through `omega-model-router` and `omega-orchestrate`.
-- Orchestrator result envelopes that now preserve failed stage metadata and prompt-packet file references.
-
-### Literature and novelty surfaces
-
-- Programmatic literature lookup, title matching, and search through `omega-literature`.
-- Deterministic novelty-collision packet generation through `omega-literature novelty-packet`.
-- Local literature evidence surfaces under `input_files/literature.md`, `input_files/literature_graph.md`, and `input_files/citation_evidence.md`.
-
-### Synthetic reasoning packet lane
-
-- A bounded synthetic reasoning contract in [protocol/synthetic-reasoning-packets.md](protocol/synthetic-reasoning-packets.md).
-- Problem-local taxonomy and evaluation packet templates under [templates/synthetic-reasoning-taxonomy.md](templates/synthetic-reasoning-taxonomy.md) and [templates/synthetic-evaluation-packet.md](templates/synthetic-evaluation-packet.md).
-- Ledger support for `prompt-packet`, `synthetic-taxonomy`, and `evaluation-packet` artifacts.
-
-### Runtime evidence and export surfaces
-
-- Runtime baseline export through `omega-export-runtime-baseline`.
-- Lean or solver execution maturity export through `omega-export-execution-maturity`.
-- FT scaffold gate export through `omega-export-ft-scaffold-gate`.
-- Machine-readable reports under [reports](reports).
-
-### FT scaffold (OMG-201)
-
-- A bounded train/eval/serve smoke scaffold under [llm](llm).
-- Deterministic dataset manifest and split policy for the smoke lane.
-- Local smoke entrypoints for training, evaluation, and serving.
-- An explicit non-claim boundary: this scaffold proves readiness prerequisites, not theorem-quality model performance or production serving.
-
-## Boundaries and Non-Claims
-
-OMEGA does not currently claim:
-
-1. End-to-end autonomous publication with acceptance-grade review guarantees.
-2. Full theorem-level correctness closure without human or formal verification gates.
-3. Complete literature coverage for every registry entry.
-4. A synthetic reasoning lane that by itself proves novelty, correctness, or proof closure.
-5. A fine-tuning stack that already delivers production inference or benchmark-leading theorem capability.
-6. A host-independent Lean or SMT toolchain guarantee; execution maturity reports are environment-relative.
-
-These are scope controls, not omitted disclaimers.
-
-## Flagship Tracks (Run-Ready Surfaces)
-
-| Problem | Current executable surface | Primary scripts |
-|---|---|---|
-| Erdős-Straus | covering analysis, parametric decomposition | `phase1_covering.py`, `phase2_parametric.py` |
-| Kobon triangles | arrangement search | `phase1_pseudoline_enum.py` |
-| Thomson problem | multistart optimization, basin hopping, numerical certification scaffold | `phase1_multistart.py`, `phase2_basin_hopping.py`, `phase3_certify.py` |
-
-Planned later phases remain in each workspace `planning/attack_plan.md`; only the surfaces above are treated as run-ready.
-
-## Reproducible Quick Start
-
-### 1) Install
-
-```bash
-python -m pip install -e .[all]
-```
-
-The command above is an editable install from this checkout. `omega-orchestrate` reads `agents/`, `registry/`, and `research/` from that tree. Those directories are not included in the wheel.
-
-### 2) Validate registry and release metadata
-
-```bash
-omega-validate-registry
-omega-verify-version-sync
-```
-
-### 3) Scaffold and triage a workspace
-
-```bash
-omega-scaffold-problem erdos-straus --title "Erdos-Straus Conjecture"
-omega-workflow triage erdos-straus
-omega-workflow status erdos-straus --format json
-```
-
-### 4) Build a novelty-collision packet before plan or publication work
-
-```bash
-omega-literature novelty-packet "erdos-straus conjecture unit fractions" --problem-id erdos-straus --max-items 10
-```
-
-### 5) Dry-run orchestration before live calls
-
-```bash
-omega-orchestrate run erdos-straus --stage plan --dry-run
-```
-
-### 6) Export runtime evidence
-
-```bash
-omega-export-runtime-baseline
-omega-export-execution-maturity
-```
-
-### 7) Run the FT scaffold gate when you need the bounded smoke lane
-
-```bash
-omega-export-ft-scaffold-gate
-```
-
-### 8) Optional full local verification
-
-```bash
-python -m pytest -q
-```
-
-## Documentation Map
-
-### Explanation surfaces
-
-- [README.md](README.md)
-- [PROTOCOL.md](PROTOCOL.md)
-- [llm/README.md](llm/README.md)
-- [research/OMEGA_DEVELOPMENT_ROADMAP_2026_04_05.md](research/OMEGA_DEVELOPMENT_ROADMAP_2026_04_05.md)
-- [research/OMEGA_SOTA_LANDSCAPE_UPDATE_2026_10_12.md](research/OMEGA_SOTA_LANDSCAPE_UPDATE_2026_10_12.md)
-- [research/OMEGA_ALPHAPROOF_NEXUS_MATHEMATICAL_READING_2026_10_12.md](research/OMEGA_ALPHAPROOF_NEXUS_MATHEMATICAL_READING_2026_10_12.md)
-- [research/OMEGA_OPENAI_MATH_CATALOG_2026_10_12.md](research/OMEGA_OPENAI_MATH_CATALOG_2026_10_12.md)
-- [research/OMEGA_OCTOBER_2026_MURDER_BOARD.md](research/OMEGA_OCTOBER_2026_MURDER_BOARD.md)
-- [research/OMEGA_DECADE_FROM_2026_CATALOGS.md](research/OMEGA_DECADE_FROM_2026_CATALOGS.md)
-- [research/OMEGA_PUBLIC_REGISTRY_LANDSCAPE_2026_10_12.md](research/OMEGA_PUBLIC_REGISTRY_LANDSCAPE_2026_10_12.md)
-- [research/OMEGA_STATIC_AUDIT_DISPOSITION_2026_10_12.md](research/OMEGA_STATIC_AUDIT_DISPOSITION_2026_10_12.md)
-
-### How-to surfaces
-
-- [protocol/operator-runbook.md](protocol/operator-runbook.md)
-- [protocol/lean-bootstrap.md](protocol/lean-bootstrap.md)
-- [protocol/verification-pipeline.md](protocol/verification-pipeline.md)
-- [protocol/openai-release-functions.md](protocol/openai-release-functions.md)
-
-### Reference surfaces
-
-- [protocol/orchestrator-contract.md](protocol/orchestrator-contract.md)
-- [protocol/prover-result-contract.md](protocol/prover-result-contract.md)
-- [protocol/experiment-ledger-spec.md](protocol/experiment-ledger-spec.md)
-- [protocol/evidence-governance.md](protocol/evidence-governance.md)
-- [protocol/literature-adapter.md](protocol/literature-adapter.md)
-- [protocol/synthetic-reasoning-packets.md](protocol/synthetic-reasoning-packets.md)
-
-### Evidence and audit surfaces
-
-- [docs/reports/EXTRACTION_REPORT.md](docs/reports/EXTRACTION_REPORT.md)
-- [reports/omega_runtime_evidence_report_v1.json](reports/omega_runtime_evidence_report_v1.json)
-- [reports/omega_execution_maturity_report_v1.json](reports/omega_execution_maturity_report_v1.json)
-- [reports/omega_ft_scaffold_gate_report_v1.json](reports/omega_ft_scaffold_gate_report_v1.json)
-
-## Repository Topology
-
-```text
-math/
-├── README.md
-├── PROTOCOL.md
-├── protocol/
-├── research/
-├── docs/
-├── registry/
-├── scripts/
-├── tests/
-├── templates/
-├── llm/
-├── reports/
-├── agents/
-└── .github/
-```
-
-## Governance, Help, and Contribution
-
-- License: [LICENSE](LICENSE)
-- Citation metadata: [CITATION.cff](CITATION.cff)
-- Contribution guide: [CONTRIBUTING.md](CONTRIBUTING.md)
-- Code of conduct: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
-- Security policy: [SECURITY.md](SECURITY.md)
-- Maintainer surface: MicroPhoenix open-source community
-- Issue tracker: <https://github.com/KonkovDV/OMEGA-MATH/issues>
-
-## Citation
-
-If you use OMEGA in research or derived tooling, cite via [CITATION.cff](CITATION.cff).
-
----
-
-## Краткая аннотация
-
-OMEGA - это не витрина на одну задачу и не общая обёртка "ИИ для математики". Это исследовательский репозиторий, в котором работа идёт по явному контуру:
-
-1. сначала реестр задач,
-2. затем triage по практической доступности,
-3. затем ограниченное исполнение по стадиям,
-4. затем пакет свидетельств, отчёты и формулировка результата.
-
-Репозиторий сознательно разделяет то, что уже исполняется локально, то, что пока является bounded scaffold, и то, что ещё не должно звучать как закрытая научная претензия.
-
-## Проверенный срез на 2026-04-21
-
-| Показатель | Значение |
+| OMEGA does **not** claim | Why it matters |
 |---|---|
-| Версия | `0.6.0` |
-| Поддерживаемый Python | `3.12`, `3.13` |
-| Задач в реестре | `252` |
-| Триажировано | `73 / 252` (`29.0%`) |
-| Последний полный локальный тестовый прогон | `241 passed in 27.74s` |
-| Runtime baseline report | `APPROVED` |
-| Execution maturity report | `WARNING`: на проверенной машине не найден Lean/Lake и `z3`, SAT fallback работает |
-| FT scaffold gate | `APPROVED` |
-| Статус docs closure rail | `8 passed, 0 warnings, 0 failures` |
+| Any new mathematical result | None exists in this repository. The flagship scripts reproduce known values. |
+| Automatic correctness | A result counts only after a named human or formal verifier signs off. |
+| Complete literature coverage | Since 2025 several "open" problems turned out to be solved already ([arXiv:2601.22401](https://arxiv.org/abs/2601.22401)). The novelty packet reduces this risk; it does not remove it. |
+| A host-independent toolchain | Lean, z3 and SAT availability is probed per machine and reported as such. |
 
-## Что сейчас есть в репозитории
+## Snapshot (13 October 2026)
 
-### Базовый исследовательский runtime
+Every number below was recomputed on that date; the method is in the [fact-check table](docs/AUDIT_2026-10.md#fact-check).
 
-- машиночитаемый реестр с валидацией схем;
-- контроллер рабочего процесса по стадиям с более строгой валидацией переходов и выводом в YAML или JSON;
-- раннер экспериментов, evidence bundle и глобальный experiment index;
-- query surfaces для ledger и experiment index через `omega-query`.
+| Item | Value | How it was checked |
+|---|---|---|
+| Version | `0.6.0` | `pyproject.toml`, `omega-verify-version-sync` |
+| Problems in the registry | 252 | count of entries in `registry/domains/*.yaml`, matches `registry/index.yaml` |
+| Triaged problems | 73 of 252 (29%) | `registry/index.yaml` |
+| Tiers | T1 28 · T2 22 · T3 10 · T4 5 · T5 8 · untriaged 179 | `registry/index.yaml` |
+| Domain files | 14 active + 1 redirect | `registry/domains/` |
+| Collections | 6 | `registry/collections/` |
+| Tests | 273 passed, 8 skipped | `python -m pytest -q` on Windows 11, Python 3.12.10 |
+| Lean | one checked statement (Erdős–Straus, n ≡ 3 mod 4) | `lean.yml` workflow, mathlib v4.29.0 |
 
-### Исполнительные и orchestration surfaces
+## How it fits together
 
-- адаптеры Lean, SAT/SMT и CAS;
-- capability probing для Lean/Lake и solver backends;
-- маршрутизация моделей и стадийная оркестрация;
-- более информативные orchestrator envelopes: сохраняются failed stage metadata и prompt-packet file references.
+```mermaid
+flowchart LR
+    R[Registry<br/>YAML + JSON Schema] --> T[Triage<br/>amenability tiers]
+    T --> W[Workspace<br/>omega-workflow]
+    W --> E[Experiments<br/>Python, SAT/SMT, CAS]
+    W --> P[Proofs<br/>Lean 4 + mathlib]
+    W --> L[Literature<br/>novelty packet]
+    E --> B[Evidence bundle<br/>ledger + checksums]
+    P --> B
+    L --> B
+    B --> V{Named verifier}
+    V -->|accepted| C[Evidence class rises]
+    V -->|rejected| W
+```
 
-### Literature и novelty lane
+Model and prover backends are pluggable (`omega-model-router`, `omega-lean`, `omega-solve`, `omega-cas`), so a better model or prover can be swapped in without touching the registry or the evidence format.
 
-- `omega-literature` теперь покрывает lookup, search, match-title и `novelty-packet`;
-- novelty packet строится детерминированно и даёт collision-risk labels для предварительной проверки новизны;
-- локальные surfaces для литературы и citation evidence остаются обязательными при реальных novelty claims.
+## Flagship tracks
 
-### Synthetic reasoning packet lane
+| Problem | What runs today | Independently checked |
+|---|---|---|
+| Erdős–Straus conjecture | covering analysis of the residues mod 840 left open by Mordell; bounded decomposition search; one Lean proof | Mordell's six residues `1, 121, 169, 289, 361, 529` recomputed; every n from 2 to 3000 has a decomposition |
+| Kobon triangles | pseudoline arrangement search with simulated annealing | known optima for k ≤ 17 match [OEIS A006066](https://oeis.org/A006066) |
+| Thomson problem | multistart, basin hopping, and a numerical certificate (tangent forces plus a full-precision Hessian) | energies for N = 2…12 recomputed by an independent optimizer; N = 10…100 match the [Cambridge Cluster Database](https://www-wales.ch.cam.ac.uk/~wales/CCD/Thomson/table.html) |
 
-- появился локальный контракт для synthetic reasoning work;
-- есть problem-local шаблоны taxonomy и evaluation packet;
-- ledger умеет хранить `prompt-packet`, `synthetic-taxonomy` и `evaluation-packet`.
+For scale: Erdős–Straus has been checked by others up to 10^17 ([Salez](https://arxiv.org/abs/1406.6307)) and 10^18 ([arXiv:2509.00128](https://arxiv.org/html/2509.00128)). OMEGA's scripts are a test bed for the workflow, not a competitor to those searches.
 
-### Runtime evidence и FT scaffold
-
-- `omega-export-runtime-baseline` собирает общий runtime evidence report;
-- `omega-export-execution-maturity` фиксирует состояние Lean и solver toolchains на текущем хосте;
-- `omega-export-ft-scaffold-gate` проверяет bounded FT scaffold в `llm/`;
-- под `llm/` лежит локальный smoke train/eval/serve scaffold с явными non-claims.
-
-## Границы проекта
-
-Сейчас OMEGA не заявляет:
-
-1. полностью автономную публикацию с гарантиями уровня рецензируемого журнала;
-2. закрытие теоремных утверждений без человека или формального верификатора;
-3. полный литераторный граф по всем записям реестра;
-4. что synthetic reasoning lane сам по себе доказывает новизну, корректность или proof closure;
-5. что FT scaffold уже означает production inference или theorem-level model capability;
-6. что Lean или SMT toolchain гарантированно доступны на любой машине без отдельной локальной настройки.
-
-## Быстрый старт
+## Quick start
 
 ```bash
+git clone https://github.com/KonkovDV/OMEGA-MATH.git
+cd OMEGA-MATH
 python -m pip install -e .[all]
+
 omega-validate-registry
 omega-verify-version-sync
+python -m pytest -q
+```
+
+Then walk one problem through the workflow:
+
+```bash
 omega-scaffold-problem erdos-straus --title "Erdos-Straus Conjecture"
 omega-workflow triage erdos-straus
 omega-workflow status erdos-straus --format json
 omega-literature novelty-packet "erdos-straus conjecture unit fractions" --problem-id erdos-straus --max-items 10
 omega-orchestrate run erdos-straus --stage plan --dry-run
-omega-export-runtime-baseline
-omega-export-execution-maturity
-omega-export-ft-scaffold-gate
+```
+
+`omega-orchestrate` reads `agents/`, `registry/` and `research/` from the checkout, which is why the install is editable. Those folders are not part of the wheel.
+
+### Lean
+
+```bash
+cd research/active/erdos-straus/proof/lean
+lake exe cache get
+lake build
+```
+
+You need [elan](https://github.com/leanprover/elan); the toolchain is pinned in `lean-toolchain`.
+
+## Reproducibility
+
+- Core dependencies are pinned (`PyYAML==6.0.3`, `jsonschema==4.26.0`); mathlib and its dependencies are pinned in `lake-manifest.json`.
+- CI runs on Python 3.12 and 3.13. Every GitHub Action is pinned by commit hash.
+- Experiment scripts take a `--seed` and write JSON artifacts; `omega-verify-evidence` checks bundle checksums.
+- Windows works: scripts switch their output to UTF-8, so a Russian or other non-UTF-8 console no longer crashes them.
+- Machine reports in [`reports/`](reports) state which tools were present on the machine that produced them.
+
+## Documentation
+
+Organised along the four kinds of documentation described by [Diátaxis](https://diataxis.fr/).
+
+| Kind | Start here |
+|---|---|
+| Tutorial | this README, quick start above |
+| How-to | [operator runbook](protocol/operator-runbook.md), [Lean bootstrap](protocol/lean-bootstrap.md), [publication workflow](protocol/publication-workflow.md) |
+| Reference | [PROTOCOL.md](PROTOCOL.md), [orchestrator contract](protocol/orchestrator-contract.md), [prover result contract](protocol/prover-result-contract.md), [evidence governance](protocol/evidence-governance.md), [registry schemas](registry/schemas) |
+| Explanation | [roadmap](docs/ROADMAP.md), [audit, October 2026](docs/AUDIT_2026-10.md), [triage calibration](docs/AMENABILITY_CALIBRATION.md), [SOTA landscape](research/OMEGA_SOTA_LANDSCAPE_UPDATE_2026_10_12.md) |
+
+Older files in `docs/research/` (pitch decks, go-to-market notes, an upgrade prompt) are kept for history. They are not part of the technical documentation and are not maintained.
+
+## Contributing, security, citation
+
+- How to contribute: [CONTRIBUTING.md](CONTRIBUTING.md). Code of conduct: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
+- Report vulnerabilities privately, see [SECURITY.md](SECURITY.md).
+- To cite OMEGA, use [CITATION.cff](CITATION.cff) (GitHub shows a "Cite this repository" button).
+- License: [MIT](LICENSE).
+
+---
+
+## По-русски
+
+### Что это
+
+OMEGA — рабочее место для исследования открытых математических задач с помощью ИИ. Сама она теорем не доказывает. Её работа в том, чтобы вести учёт: какие задачи есть, какие из них стоит пробовать, что именно запускали, что получилось и кто это проверил.
+
+В репозитории есть:
+
+- **реестр** из 252 открытых задач в YAML, каждая запись проверяется по схеме;
+- **оценка задач**: насколько задача поддаётся вычислениям и ИИ. Оценены пока 73 задачи;
+- **пошаговый процесс** по каждой задаче. Этап можно повторить или продолжить с места остановки;
+- **журналы экспериментов** с контрольными суммами, чтобы любой результат можно было проследить до запуска, который его дал;
+- **подключение** к Lean 4, SAT- и SMT-решателям и системам компьютерной алгебры;
+- **проверка новизны** по литературе, прежде чем называть результат новым.
+
+### Чего OMEGA не утверждает
+
+- Новых математических результатов здесь нет. Демонстрационные скрипты воспроизводят известные значения.
+- Сама по себе программа ничего не считает доказанным. Результат принимается, только когда его подтвердил названный человек или Lean.
+- Литература по каждой задаче не собрана полностью.
+- Наличие Lean, z3 и SAT-решателя проверяется на каждой машине отдельно.
+
+### Три демонстрационные задачи
+
+| Задача | Что работает | Что перепроверено независимо |
+|---|---|---|
+| Гипотеза Эрдёша — Штрауса | разбор остатков по модулю 840, которые не закрыл Морделл; перебор разложений; одно доказательство в Lean | шесть остатков Морделла пересчитаны; для всех n от 2 до 3000 разложение найдено |
+| Треугольники Кобона | поиск расстановок прямых | известные максимумы до k = 17 совпадают с OEIS A006066 |
+| Задача Томсона | поиск минимума энергии и численная проверка, что найден именно минимум | энергии для N от 2 до 12 пересчитаны другим методом, для N от 10 до 100 сверены с базой Кембриджа |
+
+### Быстрый старт
+
+```bash
+python -m pip install -e .[all]
+omega-validate-registry
 python -m pytest -q
 ```
 
-Установка редактируемая и читает `agents/`, `registry/` и `research/` из этого дерева. Эти каталоги в wheel не входят.
+Всё работает и на Windows с русской локалью.
 
-## Карта документации
+### Куда смотреть дальше
 
-- Полный протокол: [PROTOCOL.md](PROTOCOL.md)
-- Операторский запуск: [protocol/operator-runbook.md](protocol/operator-runbook.md)
-- Literature adapter contract: [protocol/literature-adapter.md](protocol/literature-adapter.md)
-- Synthetic reasoning packet contract: [protocol/synthetic-reasoning-packets.md](protocol/synthetic-reasoning-packets.md)
-- Контракт оркестратора: [protocol/orchestrator-contract.md](protocol/orchestrator-contract.md)
-- Контракт результата доказательства: [protocol/prover-result-contract.md](protocol/prover-result-contract.md)
-- Политика свидетельств: [protocol/evidence-governance.md](protocol/evidence-governance.md)
-- FT scaffold note: [llm/README.md](llm/README.md)
-- Extraction report: [docs/reports/EXTRACTION_REPORT.md](docs/reports/EXTRACTION_REPORT.md)
-- Machine-readable reports: [reports](reports)
-
-## Лицензия и цитирование
-
-- Лицензия проекта: [LICENSE](LICENSE)
-- Правила цитирования: [CITATION.cff](CITATION.cff)
+- [План развития](docs/ROADMAP.md): что сделано и что дальше на горизонте до 10 лет.
+- [Аудит октября 2026](docs/AUDIT_2026-10.md): найденные проблемы, исправления и таблица проверки фактов.
+- [Как калибруется оценка задач](docs/AMENABILITY_CALIBRATION.md).

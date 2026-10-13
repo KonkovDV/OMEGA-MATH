@@ -18,6 +18,10 @@ python scripts/validate_registry.py
 python -m pytest -q
 ```
 
+If you touch Lean files, also run `lake build` in `research/active/erdos-straus/proof/lean` (needs elan; run `lake exe cache get` first).
+
+Every number you add to the README or docs should come with a way to check it. The audit keeps a fact-check table in `docs/AUDIT_2026-10.md`; follow the same habit.
+
 ## Pull Request Rules
 
 1. Keep changes focused and atomic.
