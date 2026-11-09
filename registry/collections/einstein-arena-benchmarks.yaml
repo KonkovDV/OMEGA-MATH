@@ -4,7 +4,7 @@
 collection: einstein-arena-benchmarks
 status: active
 source: https://raw.githubusercontent.com/togethercomputer/EinsteinArena-new-SOTA/main/README.md
-last_synced: '2026-05-18T08:03:24Z'
+last_synced: '2026-11-09T12:38:50Z'
 problems:
 - id: einstein-arena-erdos-minimum-overlap
   name: Erdős' Minimum Overlap
